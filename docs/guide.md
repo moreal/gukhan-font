@@ -65,7 +65,7 @@ Set `line-height: 2` for Gukhan Sans so the reading is not clipped. Stylistic se
     font-weight: 400;
     font-display: swap;
     unicode-range: U+349A, U+4E00-4E01, U+4E03, /* … cmap 과 같은 8,497자 … */ U+2F9DF;
-    ascent-override: 133%;
+    ascent-override: 158%;
     descent-override: 28.8%;
     line-gap-override: 0%;
     size-adjust: 100%;
@@ -90,15 +90,15 @@ Set `line-height: 2` for Gukhan Sans so the reading is not clipped. Stylistic se
 | 한자 너비 | 1,000 |
 | OS/2 typo ascender / descender | 880 / −120 |
 | hhea (치환, 베이스와 같음) | 1,160 / −288, line gap 0 |
-| hhea (루비, 독음을 위해 올림) | 1,330 / −288, line gap 0 |
+| hhea (루비, 독음을 위해 올림) | 1,580 / −288, line gap 0 |
 | 한글 `가`의 상단 / 높이 | y 827, 높이 904 |
 
 CSS로 줄 상자를 그 값에 맞춥니다. 퍼센트는 em 기준입니다.
 
-- 루비: `ascent-override: 133%` (1,330 / 1,000)
+- 루비: `ascent-override: 158%` (1,580 / 1,000)
 - 치환: `ascent-override: 116%` (1,160 / 1,000)
 - 둘 다: `descent-override: 28.8%`, `line-gap-override: 0%`
-- 루비는 `line-height: 2`. 133% + 28.8%보다 줄이 커야 루비가 줄 안에 남습니다.
+- 루비는 `line-height: 2`. 158% + 28.8%보다 줄이 커야 루비가 줄 안에 남습니다.
 
 ### 본문 글꼴의 메트릭
 
@@ -110,7 +110,7 @@ CSS로 줄 상자를 그 값에 맞춥니다. 퍼센트는 em 기준입니다.
   src: url("GothicA1-Regular.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
-  ascent-override: 133%;
+  ascent-override: 158%;
   descent-override: 28.8%;
   line-gap-override: 0%;
 }
@@ -132,7 +132,7 @@ CSS로 줄 상자를 그 값에 맞춥니다. 퍼센트는 em 기준입니다.
 }
 ```
 
-Gothic A1은 OFL이라 데모가 파일을 직접 둡니다. 다른 한글 글꼴을 쓰면 그 글꼴의 `@font-face`에 같은 세 값을 적습니다. 루비 애드온 앞에는 133% 패밀리, 치환 애드온 앞에는 116% 패밀리를 둡니다.
+Gothic A1은 OFL이라 데모가 파일을 직접 둡니다. 다른 한글 글꼴을 쓰면 그 글꼴의 `@font-face`에 같은 세 값을 적습니다. 루비 애드온 앞에는 158% 패밀리, 치환 애드온 앞에는 116% 패밀리를 둡니다.
 
 `size-adjust`의 기본은 100%입니다. 본문 한글의 키에 맞출 때는 다음을 씁니다.
 
@@ -146,7 +146,7 @@ size-adjust = (본문 한글 높이 / 본문 upem) / (904 / 1000)
 
 브라우저는 텍스트를 스크립트마다 나누어 셰이핑합니다. 한자 뒤에 한글이 와도, 한자만 이어진 런이 한 번의 셰이핑입니다. 애드온의 cmap이 그 런을 맡고, 한글은 다음 글꼴로 넘어갑니다. 그래서 `音樂`, `六月`, `國漢文混用` 같은 단어 합자는 애드온 안에서도 그대로입니다. 한자 중간에 한글이나 라틴을 끼우면 런이 갈라지고 합자가 풀립니다.
 
-The add-on cmap is Hanja only: 8,497 codepoints, listed exactly in `dist/hanja.css`. Over-approximating a block would make a missing character tofu instead of falling through. Reading outlines are Source Han, at 920 units per Hangul syllable on a 1,000-unit em. `ascent-override` is 133% for ruby and 116% for replacement, with a 28.8% descent. Give the Hangul face those same three overrides. Ruby and replacement need two family names on that file, because the ascenders differ. Use `line-height: 2` for ruby. `size-adjust` stays 100% until you match the body face; Gothic A1's syllable is 912/1024 tall and 984 wide, against 904/1000 and 920 here. Word ligatures still form because the browser shapes each Han run on its own.
+The add-on cmap is Hanja only: 8,497 codepoints, listed exactly in `dist/hanja.css`. Over-approximating a block would make a missing character tofu instead of falling through. Reading outlines are Source Han, at 920 units per Hangul syllable on a 1,000-unit em. `ascent-override` is 158% for ruby and 116% for replacement, with a 28.8% descent. Give the Hangul face those same three overrides. Ruby and replacement need two family names on that file, because the ascenders differ. Use `line-height: 2` for ruby. `size-adjust` stays 100% until you match the body face; Gothic A1's syllable is 912/1024 tall and 984 wide, against 904/1000 and 920 here. Word ligatures still form because the browser shapes each Han run on its own.
 
 ## 웹 서브셋
 
@@ -259,7 +259,7 @@ Date tags are `vYYYY.MM.DD`, with `vYYYY.MM.DD.N` when the same day needs anothe
 
 두 글꼴은 `planReadings` 한 번으로 같은 합자, 같은 글자 폴백, 같은 `rclt` 규칙을 고릅니다. 그리는 방식만 다릅니다.
 
-- **Gukhan Sans**는 한자 획을 두고 그 위에 독음을 줄여 올립니다. 배율은 0.4이고, 한자와 루비 사이 간격은 em의 0.05입니다.
+- **Gukhan Sans**는 한자 획을 두고 그 위에 독음을 줄여 올립니다. 배율은 0.68이고, 한자와 루비 사이 간격은 em의 0.02입니다. 한 글자 독음은 그 글자의 너비 한가운데에 놓입니다.
 - **Gukhan Hangul**은 한자 획을 그리지 않고, 독음의 음절을 제 크기로 나란히 놓습니다. 음절 하나의 너비는 베이스 글꼴의 한글(920)이고, N음절 합자는 그 N개를 더한 값입니다. `音樂`은 글자 둘을 `음`+`악` 너비의 합자 하나로 바꿉니다. `上海`처럼 음절이 글자보다 많으면(`상하이`) 음절 수만큼의 너비가 됩니다.
 
 This follows [furifont](https://github.com/antfu/furifont): one plan, then a compiler draws it into a CFF font and appends OpenType lookups. The compiler in `vendor/furifont/` is furifont's, MIT. Gukhan adds a `replace` placement that draws Hangul on the baseline. Korean readings, 두음 법칙, and which words become ligatures are implemented here and are not a copy of seonbi's code. The variable font is TrueType, so the reading composites follow the `wght` axis. Static CFF readings are flattened outlines.

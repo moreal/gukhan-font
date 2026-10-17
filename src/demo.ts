@@ -154,10 +154,10 @@ function familyRules(target: string): string {
 /** Web-font specimens follow region and family. They do not pull the variable font. */
 function specimenRules(): string {
   const lines = [
-    '      .page .spec p { font-family: "Gukhan Sans Web", sans-serif; }',
-    '      .page:has(#kp:checked) .spec p { font-family: "Gukhan Sans KP Web", sans-serif; }',
-    '      .page:has(#hangul:checked) .spec p { font-family: "Gukhan Hangul Web", sans-serif; }',
-    '      .page:has(#kp:checked):has(#hangul:checked) .spec p { font-family: "Gukhan Hangul KP Web", sans-serif; }',
+    '      .page .spec p, .page .glyphs span { font-family: "Gukhan Sans Web", sans-serif; }',
+    '      .page:has(#kp:checked) .spec p, .page:has(#kp:checked) .glyphs span { font-family: "Gukhan Sans KP Web", sans-serif; }',
+    '      .page:has(#hangul:checked) .spec p, .page:has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul Web", sans-serif; }',
+    '      .page:has(#kp:checked):has(#hangul:checked) .spec p, .page:has(#kp:checked):has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul KP Web", sans-serif; }',
     '      .wsample { font-family: "Gukhan Sans Web", sans-serif; }',
     '      #weights.live .wsample { font-family: "Gukhan Sans VF", sans-serif; }',
     '      .page:has(#kp:checked) #weights.live .wsample { font-family: "Gukhan Sans KP VF", sans-serif; }',
@@ -195,7 +195,7 @@ export function renderHanjaCss(metrics: DemoMetrics, only?: { style: FamilyStyle
   return `/* 한자 애드온. unicode-range 안의 한자만 이 글꼴이 그립니다. 한글과 라틴은 다음 글꼴로 넘어갑니다.
    루비(Gukhan Sans Hanja)는 글줄을 키우므로 line-height: 2 를 씁니다.
    본문 한글 글꼴에도 같은 ascent-override, descent-override, line-gap-override 를 주세요.
-   루비는 133%, 치환은 116%라서 본문 글꼴의 폰트 패밀리를 둘로 나눕니다.
+   루비는 ${metrics.rubyAscent}, 치환은 ${metrics.replaceAscent}라서 본문 글꼴의 폰트 패밀리를 둘로 나눕니다.
    size-adjust 로 본문 한글의 크기에 맞춥니다. 기본은 100%입니다. */
 ${blocks.join('\n')}
 .gukhan-hanja {
@@ -285,6 +285,7 @@ export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local')
 ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국한 Gukhan — 한자 위에 독음을 그리는 글꼴</title>
     <meta name="description" content="한자는 그대로 두고, 독음만 그립니다. 루비와 치환, 남한·북한 독음, 가변 폰트.">
     <link rel="preload" href="${preload}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/GothicA1-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <style>
       ${fontFaces(metrics, profile)}
       :root {
@@ -296,6 +297,7 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
         --cinnabar: #8c2f2b;
         --indigo: #243856;
         --chip: #efe6d6;
+        --ui: "Gothic A1", sans-serif;
       }
       * { box-sizing: border-box; }
       html { background: var(--paper); color: var(--ink); }
@@ -303,86 +305,133 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
         margin: 0;
         background: var(--paper);
         color: var(--ink);
-        font-family: "Iowan Old Style", Palatino, "Palatino Linotype", "Songti SC", serif;
-        font-size: 1.05rem;
-        line-height: 1.65;
+        font-family: var(--ui);
+        font-size: 1.0625rem;
+        font-weight: 400;
+        font-synthesis: none;
+        line-height: 1.75;
+        word-break: keep-all;
+        overflow-wrap: anywhere;
+        text-wrap: pretty;
         overflow-x: clip;
       }
-      .wrap { max-width: 68rem; margin: 0 auto; padding: 0 clamp(1.15rem, 4vw, 3.5rem); }
+      .wrap { max-width: 72rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4.5vw, 4rem); }
       .bar {
         position: sticky;
         top: 0;
-        z-index: 2;
+        z-index: 4;
         background: var(--paper);
         border-bottom: 1px solid var(--rule);
       }
       .bar-inner {
         display: flex;
         flex-wrap: wrap;
-        align-items: baseline;
+        align-items: center;
         justify-content: space-between;
-        gap: 0.6rem 1.2rem;
+        gap: 0.55rem 1.4rem;
         padding-top: 0.85rem;
         padding-bottom: 0.85rem;
       }
       .mark {
-        color: var(--ink);
+        color: var(--cinnabar);
         text-decoration: none;
-        font-size: 1.15rem;
-        letter-spacing: 0.04em;
+        font-size: 1.05rem;
+        letter-spacing: 0.14em;
       }
-      .nav { display: flex; flex-wrap: wrap; gap: 0.35rem 0.95rem; }
+      .nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.15rem; }
       .nav a {
         color: var(--ink);
-        text-decoration: underline;
-        text-underline-offset: 0.22em;
-        text-decoration-color: var(--rule);
-        font-size: 0.95rem;
-      }
-      .nav a:hover { color: var(--cinnabar); text-decoration-color: var(--cinnabar); }
-      .hero { padding: clamp(2.6rem, 7vw, 5.5rem) 0 clamp(2.2rem, 5vw, 4rem); scroll-margin-top: 4.5rem; }
-      .kicker {
-        margin: 0 0 0.8rem;
-        color: var(--muted);
+        text-decoration: none;
         font-size: 0.92rem;
-        letter-spacing: 0.08em;
+      }
+      .nav a:hover { color: var(--cinnabar); }
+      .hero {
+        position: relative;
+        padding: clamp(3.5rem, 9vw, 7.5rem) 0 clamp(3.2rem, 7vw, 6rem);
+        scroll-margin-top: 4.5rem;
+        background-image:
+          linear-gradient(to right, rgba(28, 25, 21, 0.045) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(28, 25, 21, 0.045) 1px, transparent 1px);
+        background-size: 4.5rem 4.5rem;
+        background-position: -1px -1px;
+      }
+      .hero-top {
+        display: flex;
+        align-items: center;
+        gap: 1rem 1.25rem;
+      }
+      .seal {
+        flex: 0 0 auto;
+        width: 3.6rem;
+        height: 3.6rem;
+        display: grid;
+        place-items: center;
+        margin: 0;
+        background: var(--cinnabar);
+        color: var(--paper);
+        font-family: "Gukhan Sans Web", sans-serif;
+        font-feature-settings: "ss01" 1;
+        font-size: 1.7rem;
+        line-height: 1;
+      }
+      .kicker {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .hero-lockup {
+        margin-top: clamp(1.8rem, 4vw, 3rem);
+        padding-left: clamp(0.9rem, 2vw, 1.5rem);
+        border-left: 1px solid var(--cinnabar);
       }
       h1 {
         margin: 0;
         font-family: "Gukhan Sans Web", sans-serif;
         font-weight: 400;
-        font-size: clamp(2.8rem, 12vw, 8.25rem);
-        line-height: 1.9;
-        letter-spacing: -0.03em;
+        font-size: clamp(3.15rem, 10.2vw, 7.15rem);
+        line-height: 2.05;
+        letter-spacing: 0;
       }
       .tagline {
-        margin: 0.4rem 0 0;
-        max-width: 28em;
-        font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+        margin: 0.15rem 0 0;
+        max-width: 16em;
+        font-size: clamp(1.35rem, 2.2vw, 1.85rem);
         line-height: 1.45;
       }
-      .sub { margin: 0.7rem 0 0; max-width: 36em; color: var(--muted); }
-      .actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.6rem; }
+      .sub { margin: 0.85rem 0 0; max-width: 34em; color: var(--muted); }
+      .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.85rem 1.3rem; margin-top: 1.8rem; }
       .btn {
         display: inline-block;
         background: var(--cinnabar);
-        color: #f3efe4;
+        color: var(--paper);
         text-decoration: none;
-        padding: 0.7rem 1.2rem;
-        border-radius: 999px;
+        padding: 0.72rem 1.25rem;
+        border-radius: 2px;
         border: 1px solid var(--cinnabar);
       }
       .btn:hover { background: #6e2622; border-color: #6e2622; }
-      .btn.ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
-      .btn.ghost:hover { color: var(--cinnabar); border-color: var(--cinnabar); background: transparent; }
-      .block { padding: clamp(3rem, 7vw, 5.5rem) 0; border-top: 1px solid var(--rule); scroll-margin-top: 4.5rem; }
-      h2 {
-        margin: 0 0 0.7rem;
-        font-size: clamp(1.55rem, 3vw, 2.2rem);
-        font-weight: 500;
-        line-height: 1.25;
+      .btn.text {
+        background: transparent;
+        color: var(--ink);
+        border-color: transparent;
+        padding: 0.72rem 0;
+        text-decoration: underline;
+        text-underline-offset: 0.28em;
+        text-decoration-color: var(--rule);
       }
-      .lead { margin: 0 0 1.2rem; max-width: 40em; }
+      .btn.text:hover { color: var(--cinnabar); text-decoration-color: var(--cinnabar); background: transparent; }
+      .block { padding: clamp(4.2rem, 9vw, 7rem) 0; border-top: 1px solid var(--rule); scroll-margin-top: 4.5rem; }
+      h2 {
+        margin: 0 0 0.85rem;
+        font-size: clamp(1.75rem, 3vw, 2.45rem);
+        font-weight: 400;
+        line-height: 1.3;
+        letter-spacing: -0.02em;
+      }
+      .lead { margin: 0 0 1.5rem; max-width: 38em; color: var(--muted); }
+      .glyph-title { margin: 2.6rem 0 0.4rem; font-size: 1.2rem; font-weight: 400; }
       .snippet { margin: 1.4rem 0 0; }
       .snippet-head {
         display: flex;
@@ -405,45 +454,88 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
       .stage {
         display: block;
         width: 100%;
-        min-height: 4.6em;
-        margin: 0 0 1.2rem;
-        padding: 0.15rem 0 0.4rem;
+        min-height: 5.2em;
+        margin: 0 0 1.6rem;
+        padding: 0.2rem 0 0.55rem;
         border: 0;
         border-bottom: 1px solid var(--rule);
+        border-radius: 0;
         resize: vertical;
         background: transparent;
         color: var(--ink);
         font-family: "Gukhan Sans Web", sans-serif;
         font-weight: 400;
         font-size: 48px;
-        line-height: 2;
+        line-height: 2.05;
         overflow-wrap: anywhere;
       }
       .stage:focus { outline: none; border-bottom-color: var(--cinnabar); }
       .controls {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1.1rem 1.6rem;
+        gap: 1.35rem 2.2rem;
+        align-items: end;
       }
       .slider, fieldset { margin: 0; }
       .slider {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+      .slider input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 1.1rem;
+        margin: 0;
+        background: transparent;
+        cursor: pointer;
+      }
+      .slider input[type="range"]::-webkit-slider-runnable-track {
+        height: 1px;
+        background: var(--ink);
+      }
+      .slider input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 0.85rem;
+        height: 0.85rem;
+        margin-top: -0.4rem;
+        border: 0;
+        border-radius: 50%;
+        background: var(--cinnabar);
+      }
+      .slider input[type="range"]::-moz-range-track {
+        height: 1px;
+        background: var(--ink);
+        border: 0;
+      }
+      .slider input[type="range"]::-moz-range-thumb {
+        width: 0.85rem;
+        height: 0.85rem;
+        border: 0;
+        border-radius: 50%;
+        background: var(--cinnabar);
+      }
+      .slider output { color: var(--ink); min-width: 2.2rem; text-align: right; font-variant-numeric: tabular-nums; }
+      fieldset { border: 0; padding: 0; min-width: 0; }
+      legend { padding: 0; margin-bottom: 0.5rem; color: var(--muted); font-size: 0.88rem; }
+      .choice {
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
-        gap: 0.45rem 0.7rem;
-        color: var(--muted);
-        font-size: 0.92rem;
-      }
-      .slider input { flex: 1 1 8rem; accent-color: var(--cinnabar); }
-      .slider output { color: var(--ink); min-width: 2.4rem; }
-      fieldset { border: 0; padding: 0; }
-      legend { padding: 0; margin-bottom: 0.4rem; color: var(--muted); font-size: 0.92rem; }
-      .choice { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-      .choice label {
-        position: relative;
+        gap: 0.2rem;
+        width: fit-content;
+        max-width: 100%;
+        padding: 0.2rem;
         border: 1px solid var(--rule);
         border-radius: 999px;
-        padding: 0.32rem 0.75rem;
+      }
+      .choice label {
+        position: relative;
+        border-radius: 999px;
+        padding: 0.38rem 0.8rem;
         cursor: pointer;
         color: var(--ink);
       }
@@ -455,41 +547,100 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
         cursor: pointer;
       }
       .choice label:has(input:checked) {
-        color: var(--cinnabar);
-        border-color: var(--cinnabar);
+        background: var(--ink);
+        color: var(--paper);
       }
       .choice label:focus-within { outline: 2px solid var(--cinnabar); outline-offset: 2px; }
+      .switch {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        cursor: pointer;
+      }
+      .switch input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        margin: 0;
+        cursor: pointer;
+      }
+      .switch i {
+        width: 2.3rem;
+        height: 1.28rem;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: radial-gradient(circle at 0.68rem 50%, var(--ink) 0.36rem, transparent 0.4rem);
+        font-style: normal;
+      }
+      .page:has(#ss01:checked) .switch i {
+        border-color: var(--cinnabar);
+        background:
+          radial-gradient(circle at calc(100% - 0.68rem) 50%, var(--paper) 0.36rem, transparent 0.4rem),
+          var(--cinnabar);
+      }
+      .switch:focus-within { outline: 2px solid var(--cinnabar); outline-offset: 3px; }
 ${familyRules('.stage')}
       .page:has(#ss01:checked) .stage { font-feature-settings: "ss01" 1; }
       .page:has(#ss01:checked):has(#hangul:checked) .stage { font-feature-settings: "ss01" 0; }
       .wrow {
         display: grid;
-        grid-template-columns: 9.5rem 1fr;
-        gap: 0.4rem 1.2rem;
-        align-items: baseline;
+        grid-template-columns: 9.2rem 1fr;
+        gap: 0.15rem 1.5rem;
+        align-items: center;
         border-top: 1px solid var(--rule);
-        padding: 0.35rem 0 0.15rem;
+        padding: 0.85rem 0 0.35rem;
       }
-      .wmeta { margin: 0; color: var(--muted); font-size: 0.92rem; font-weight: 400; line-height: 1.4; }
-      .wnum { color: var(--ink); }
+      .wrow:last-child { border-bottom: 1px solid var(--rule); }
+      .wmeta { margin: 0; color: var(--muted); font-size: 0.84rem; font-weight: 400; line-height: 1.4; letter-spacing: 0.04em; }
+      .wnum { display: block; color: var(--ink); letter-spacing: 0; font-variant-numeric: tabular-nums; }
       .wsample {
         margin: 0;
-        font-size: clamp(1.65rem, 3.3vw, 2.7rem);
-        line-height: 2;
+        font-size: clamp(1.85rem, 3.6vw, 3.15rem);
+        line-height: 2.05;
         font-weight: 400;
         overflow-wrap: anywhere;
       }
       #weights.live .wsample { font-weight: var(--w); font-synthesis: none; }
 ${specimenRules()}
-      .spec { margin: 0; padding: 1.15rem 0; border-top: 1px solid var(--rule); }
-      .spec figcaption { color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
-      .spec .read { display: block; color: var(--cinnabar); margin-top: 0.15rem; }
+      .specs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.85rem;
+      }
+      .spec {
+        margin: 0;
+        padding: 1.15rem 1.25rem 1.35rem;
+        border: 1px solid var(--rule);
+      }
+      .spec figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
+      .spec .read { display: block; color: var(--cinnabar); margin-top: 0.2rem; }
       .spec p {
-        margin: 0.35rem 0 0;
-        font-size: clamp(1.55rem, 3vw, 2.35rem);
-        line-height: 2;
+        margin: 0.45rem 0 0;
+        font-size: clamp(1.65rem, 2.5vw, 2.35rem);
+        line-height: 2.05;
         font-weight: 400;
         overflow-wrap: anywhere;
+      }
+      .glyphs {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        margin-top: 1.6rem;
+        border-top: 1px solid var(--rule);
+        border-left: 1px solid var(--rule);
+      }
+      .glyphs span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0.15rem 0.2rem;
+        border-right: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+        font-weight: 400;
+        font-size: clamp(1.55rem, 2.8vw, 2.35rem);
+        line-height: 2.05;
+        text-align: center;
       }
       .kp-note, .kp-read { display: none; }
       .page:has(#kp:checked) .kr-note,
@@ -509,7 +660,34 @@ ${explainCss()}
       }
       .how svg { max-width: 100%; height: auto; }
       .credit { margin: 0.35rem 0; }
-      .how a, .credit a, .lead a { color: var(--cinnabar); }
+      .how a, .foot a, .lead a { color: var(--cinnabar); }
+      .how h2 {
+        font-size: clamp(1.75rem, 3vw, 2.45rem);
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        line-height: 1.3;
+        margin: 0 0 0.85rem;
+      }
+      .foot {
+        padding: clamp(3.2rem, 7vw, 5rem) 0 clamp(2.6rem, 5vw, 3.5rem);
+        border-top: 1px solid var(--rule);
+        scroll-margin-top: 4.5rem;
+      }
+      .foot-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 1.4fr 0.8fr;
+        gap: 1.5rem 2.5rem;
+      }
+      .foot-label {
+        margin: 0 0 0.45rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .foot p { margin: 0.3rem 0; max-width: 38em; }
+      .foot nav { display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem; }
+      .foot nav a { text-decoration: underline; text-underline-offset: 0.22em; text-decoration-color: var(--rule); }
       code {
         font-family: ui-monospace, monospace;
         font-size: 0.88em;
@@ -528,14 +706,24 @@ ${explainCss()}
         white-space: pre-wrap;
         overflow-wrap: anywhere;
         word-break: break-word;
+        text-wrap: wrap;
         font-size: 0.82rem;
         line-height: 1.5;
       }
       pre code { background: transparent; color: inherit; padding: 0; font-size: 1em; }
       :focus-visible { outline: 2px solid var(--cinnabar); outline-offset: 2px; }
+      @media (prefers-reduced-motion: reduce) {
+        .btn, .nav a, .choice label { transition: none; }
+      }
+      @media (max-width: 860px) {
+        .specs { grid-template-columns: 1fr; }
+        .glyphs { grid-template-columns: repeat(3, 1fr); }
+        .foot-grid { grid-template-columns: 1fr; }
+      }
       @media (max-width: 720px) {
         .controls { grid-template-columns: 1fr; }
-        .wrow { grid-template-columns: 1fr; gap: 0; padding-top: 0.7rem; }
+        .wrow { grid-template-columns: 1fr; gap: 0.1rem; padding-top: 0.85rem; }
+        .hero-lockup { max-width: none; }
       }
     </style>
   </head>
@@ -554,19 +742,25 @@ ${explainCss()}
           </nav>
         </div>
       </header>
-      <div class="wrap">
-        <section class="hero">
-          <p class="kicker">GUKHAN SANS · OFL</p>
-          <h1>國漢文混用</h1>
+      <section class="hero">
+        <div class="wrap">
+          <div class="hero-top">
+            <p class="seal" aria-hidden="true">國</p>
+            <p class="kicker">Gukhan Sans · OFL</p>
+          </div>
+          <div class="hero-lockup">
+            <h1>國漢文混用</h1>
+          </div>
           <p class="tagline">한자는 그대로 두고, 독음만 그립니다.</p>
           <p class="sub">OpenType 셰이핑으로 독음을 붙입니다. <code>&lt;ruby&gt;</code>도 자바스크립트도 필요 없고, 복사하면 한자입니다.</p>
           <div class="actions">
             <a class="btn" href="${RELEASES}">다운로드</a>
-            <a class="btn ghost" href="/gukhan-font/slides/">슬라이드</a>
-            <a class="btn ghost" href="${REPO}">저장소</a>
+            <a class="btn text" href="/gukhan-font/slides/">슬라이드</a>
+            <a class="btn text" href="${REPO}">저장소</a>
           </div>
-        </section>
-
+        </div>
+      </section>
+      <div class="wrap">
         <section class="block" id="use">
           <h2>넣는 법</h2>
           <p class="lead">파일은 <a href="${RELEASES}">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 루비는 <code>line-height</code>를 2로 둡니다.</p>
@@ -625,9 +819,7 @@ ${explainCss()}
             </fieldset>
             <fieldset>
               <legend>루비</legend>
-              <div class="choice">
-                <label><input id="ss01" type="checkbox">루비 끄기 · ss01</label>
-              </div>
+              <label class="switch"><input id="ss01" type="checkbox"><i aria-hidden="true"></i>루비 끄기 · ss01</label>
             </fieldset>
           </div>
         </section>
@@ -641,18 +833,39 @@ ${waterfall}
         <section class="block" id="specimens">
           <h2>예문</h2>
           <p class="lead">국한문혼용 문장입니다. 웹 서브셋으로 그립니다. 지역과 폰트 패밀리를 바꾸면 독음이 바뀝니다.</p>
+          <div class="specs">
 ${cards}
+          </div>
+          <h3 class="glyph-title">글자</h3>
+          <p class="lead">한 칸에 한 글자입니다. 독음은 글꼴이 그립니다.</p>
+          <div class="glyphs" aria-label="한자 견본">
+            ${['國', '漢', '文', '混', '用', '樂', '女', '男', '冷', '六', '月', '律', '來', '難', '問', '平', '壤', '麵'].map(char => `<span>${char}</span>`).join('')}
+          </div>
         </section>
 
 ${explainHtml()}
 
-        <section class="block" id="license">
-          <h2>라이선스</h2>
-          <p class="credit">글꼴은 <a href="https://github.com/morealdot/gukhan-font/blob/main/OFL.txt">SIL OFL 1.1</a>입니다. 윤곽은 Adobe <a href="https://github.com/adobe-fonts/source-han-sans">Source Han Sans</a> KR에서 왔습니다. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다.</p>
-          <p class="credit">단어 독음 표는 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서 왔습니다. 글꼴 컴파일은 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>입니다.</p>
-          <p class="credit">데모의 한글 본문은 Gothic A1(OFL)입니다. 애드온과 짝이 되는 폰트 패밀리에는 같은 메트릭 오버라이드를 얹었습니다. 저장소 코드는 MIT입니다.</p>
-          <p class="credit"><a href="/gukhan-font/slides/">슬라이드</a>가 셰이핑과 합자, 두음 법칙을 코드와 함께 설명합니다.</p>
-        </section>
+        <footer class="foot" id="license">
+          <div class="foot-grid">
+            <div>
+              <p class="foot-label">라이선스</p>
+              <p>글꼴은 <a href="https://github.com/morealdot/gukhan-font/blob/main/OFL.txt">SIL OFL 1.1</a>입니다. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. 저장소 코드는 MIT입니다.</p>
+            </div>
+            <div>
+              <p class="foot-label">바탕</p>
+              <p>윤곽은 Adobe <a href="https://github.com/adobe-fonts/source-han-sans">Source Han Sans</a> KR에서 왔습니다. 단어 독음 표는 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서 왔습니다. 글꼴 컴파일은 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>입니다.</p>
+              <p>화면의 한글 본문은 Gothic A1(OFL)입니다. 애드온과 짝이 되는 폰트 패밀리에는 같은 메트릭 오버라이드를 얹었습니다.</p>
+            </div>
+            <div>
+              <p class="foot-label">더 보기</p>
+              <nav aria-label="바깥 링크">
+                <a href="/gukhan-font/slides/">슬라이드</a>
+                <a href="${REPO}">저장소</a>
+                <a href="${RELEASES}">릴리스</a>
+              </nav>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
     <style>

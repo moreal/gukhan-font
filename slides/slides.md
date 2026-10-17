@@ -559,7 +559,7 @@ name 테이블의 폰트 패밀리를 애드온 이름으로 바꿉니다.
   font-family: "Gukhan Sans Hanja";
   src: url("GukhanSansHanja-Regular.woff2") format("woff2");
   unicode-range: /* dist/hanja.css, cmap과 같은 8497자 */;
-  ascent-override: 133%;
+  ascent-override: 158%;
   descent-override: 28.8%;
   line-gap-override: 0%;
 }
@@ -574,7 +574,7 @@ name 테이블의 폰트 패밀리를 애드온 이름으로 바꿉니다.
 루비는 줄 높이 2가 필요합니다.
 애드온은 폰트 패밀리 목록의 맨 앞에 둡니다.
 unicode-range는 한자 스타일시트의 목록을 그대로 붙입니다.
-ascent-override 133퍼센트는 루비 때문에 올린 hhea 어센더입니다.
+ascent-override 158퍼센트는 루비 때문에 올린 hhea 어센더입니다.
 descent-override는 28.8퍼센트입니다.
 size-adjust 기본은 100퍼센트입니다.
 본문 한글 키에 맞출 때만 바꿉니다.

@@ -4,8 +4,8 @@ import { GLYPH_LIMIT, GLYPH_MARGIN, selectLigatures, type Reader, type WordEntry
 import { codePoints, isHan, segment, uniName } from './text.ts'
 
 const RUBY_METRICS = {
-  rubyScale: 0.4,
-  rubyGap: 0.05,
+  rubyScale: 0.68,
+  rubyGap: 0.02,
   compressionFloor: 0.6,
   maxRubyWidth: 1.6,
 } as const

@@ -38,8 +38,8 @@ const PAGES = process.argv.includes('--pages')
 if (CHECK && PAGES)
   throw new Error('pass either --check or --pages')
 const WOFF2_QUALITY = CHECK ? 5 : 11
-const RUBY_SCALE = 0.4
-const RUBY_GAP = 0.05
+const RUBY_SCALE = 0.68
+const RUBY_GAP = 0.02
 
 function sha256(bytes: Uint8Array): string {
   return createHash('sha256').update(bytes).digest('hex')
