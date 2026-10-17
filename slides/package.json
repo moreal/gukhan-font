@@ -1,0 +1,16 @@
+{
+  "name": "gukhan-slides",
+  "private": true,
+  "type": "module",
+  "description": "Developer introduction to gukhan-font.",
+  "scripts": {
+    "dev": "slidev --open false",
+    "build": "slidev build --base /gukhan-font/slides/ --out dist"
+  },
+  "dependencies": {
+    "@slidev/cli": "53.0.0",
+    "@slidev/theme-default": "0.25.0",
+    "@slidev/types": "53.0.0",
+    "slidev-addon-subtitle": "0.1.0"
+  }
+}

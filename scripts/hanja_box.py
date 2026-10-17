@@ -52,6 +52,9 @@ def main() -> None:
         'psName': 'HanjaBox-Regular',
         'version': 'Version 1.000',
     })
+    # Chrome rejects the WOFF2 of this cmap (the Hanja blocks are one glyph). WOFF loads.
+    if dest.endswith('.woff'):
+        builder.font.flavor = 'woff'
     builder.save(dest)
 
 if __name__ == '__main__':

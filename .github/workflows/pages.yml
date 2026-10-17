@@ -1,0 +1,68 @@
+name: Pages
+
+# Publishing workflow. Dependency caches stay off so a poisoned cache cannot ship to GitHub Pages.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build the demo site
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          cache: false
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          package-manager-cache: false
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Install fontTools
+        run: python3 -m pip install --user fonttools==4.67.0
+      - name: Test
+        run: pnpm test
+      - name: Build the Pages demo
+        run: pnpm build:pages
+      - name: Build the slides
+        run: pnpm slides:build
+      - name: Place the slides on the site
+        run: mkdir -p site/slides && cp -a slides/dist/. site/slides/
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+          include-hidden-files: "true"
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write # Publish the built demo to the github-pages environment.
+      id-token: write # Mint the OIDC token deploy-pages uses for that environment.
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

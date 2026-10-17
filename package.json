@@ -7,10 +7,19 @@
   "engines": {
     "node": ">=22.14"
   },
+  "packageManager": "pnpm@10.33.4",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"],
+    "overrides": {
+      "markdown-it": "14.1.0"
+    }
+  },
   "scripts": {
     "test": "node --import tsx --test src/read.test.ts",
     "build": "tsx src/cli.ts",
     "build:check": "tsx src/cli.ts --check",
+    "build:pages": "tsx src/cli.ts --pages",
+    "slides:build": "pnpm --filter gukhan-slides build",
     "demo": "python3 -m http.server 4173"
   },
   "dependencies": {

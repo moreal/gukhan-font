@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path'
 import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { createHash } from 'node:crypto'
+import { pagesDistFonts, renderDemo } from './demo.ts'
 import { emitFamily, planReadings } from './emit.ts'
 import { productName } from './families.ts'
 import { applyInitialSoundLaw, revertInitialSoundLaw } from './hangul.ts'
@@ -258,4 +259,42 @@ test('web coverage keeps non-Hanja and KS X 1001, and shared outlines', () => {
   assert.deepEqual(selected, [cp('A'), cp('가'), cp('國'), cp('樂')].sort((a, b) => a - b))
   const glyphOf = new Map([[cp('女'), 7], [cp('女'), 7], [cp('가'), 3]])
   assert.deepEqual(codepointsSharingGlyph(glyphOf, [cp('女')]), [cp('女'), cp('女')].sort((a, b) => a - b))
+})
+
+test('the pages demo is rooted at /gukhan-font/ and ships the light font set', () => {
+  const metrics = {
+    unicodeRange: 'U+4E00',
+    kpUnicodeRange: 'U+4E01',
+    rubyAscent: '133%',
+    replaceAscent: '116%',
+    descent: '28.8%',
+    lineGap: '0%',
+  }
+  const pages = renderDemo(metrics, 'pages')
+  assert.match(pages, /<base href="\/gukhan-font\/">/)
+  assert.equal(pages.includes('../dist/'), false)
+  assert.equal(pages.includes('GukhanSansVF'), false)
+  assert.equal(pages.includes('전체 가변'), false)
+  assert.equal(pages.includes('id="w700"'), false)
+  assert.equal(pages.includes('id="full"'), false)
+  assert.match(pages, /id="web" name="source" type="radio" checked/)
+  for (const name of pagesDistFonts())
+    assert.ok(pages.includes(`fonts/${name}`), name)
+  assert.match(pages, /fonts\/GothicA1-Regular\.woff2/)
+  assert.match(pages, /fonts\/HanjaBox\.woff"/)
+  assert.match(pages, /unicode-range: U\+4E00;/)
+  assert.match(pages, /unicode-range: U\+4E01;/)
+  const local = renderDemo(metrics)
+  assert.equal(local.includes('<base '), false)
+  assert.match(local, /\.\.\/dist\/GukhanSansVF\.woff2/)
+  assert.match(local, /전체 가변/)
+  assert.match(local, /id="full" name="source" type="radio" checked/)
+  assert.match(local, /id="w900"/)
+  assert.match(pages, /id="how"/)
+  assert.match(pages, /gkw00891/)
+  assert.match(pages, /gid34500/)
+  assert.match(pages, /<svg /)
+  assert.match(pages, /가장 긴 단어가 이깁니다/)
+  assert.match(pages, /href="\/gukhan-font\/slides\/"/)
+  assert.match(local, /id="how"/)
 })

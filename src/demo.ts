@@ -1,3 +1,4 @@
+import { explainCss, explainHtml } from './explain.ts'
 import { fileName, productName, WEIGHTS, type WeightName } from './families.ts'
 import type { FamilyStyle } from './emit.ts'
 import type { Region } from './region.ts'
@@ -21,7 +22,7 @@ function escapeHtml(text: string): string {
   return text.replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char]!)
 }
 
-function faceBlock(input: { family: string, weight: string, src: string, range?: string, ascent?: string, descent?: string, lineGap?: string }): string {
+function faceBlock(input: { family: string, weight: string, src: string, format?: string, range?: string, ascent?: string, descent?: string, lineGap?: string }): string {
   const extra = [
     input.range ? `unicode-range: ${input.range};` : '',
     input.ascent ? `ascent-override: ${input.ascent};` : '',
@@ -30,7 +31,7 @@ function faceBlock(input: { family: string, weight: string, src: string, range?:
   ].filter(Boolean)
   return `@font-face {
         font-family: "${input.family}";
-        src: url("${input.src}") format("woff2");
+        src: url("${input.src}") format("${input.format ?? 'woff2'}");
         font-weight: ${input.weight};
         font-style: normal;
         font-display: swap;
@@ -38,22 +39,34 @@ function faceBlock(input: { family: string, weight: string, src: string, range?:
       }`
 }
 
-function fontFaces(metrics: DemoMetrics): string {
+export type DemoProfile = 'local' | 'pages'
+
+/** Project-site prefix. Relative `fonts/` URLs resolve here even when the path has no trailing slash. */
+export const PAGES_BASE = '/gukhan-font/'
+
+function fontSrc(profile: DemoProfile, file: string): string {
+  return profile === 'pages' ? `fonts/${file}.woff2` : `../dist/${file}.woff2`
+}
+
+function fontFaces(metrics: DemoMetrics, profile: DemoProfile): string {
   const blocks: string[] = []
+  const hanjaWeights = profile === 'pages' ? WEIGHTS.filter(weight => weight.name === 'Regular') : WEIGHTS
   for (const region of REGIONS) {
     for (const style of STYLES) {
-      const vf = productName(style, region, 'vf')
-      blocks.push(faceBlock({ family: vf.family, weight: '250 900', src: `../dist/${fileName(style, region, 'vf')}.woff2` }))
+      if (profile === 'local') {
+        const vf = productName(style, region, 'vf')
+        blocks.push(faceBlock({ family: vf.family, weight: '250 900', src: fontSrc(profile, fileName(style, region, 'vf')) }))
+      }
       const web = productName(style, region, 'web')
-      blocks.push(faceBlock({ family: web.family, weight: '400', src: `../dist/${fileName(style, region, 'web')}.woff2` }))
+      blocks.push(faceBlock({ family: web.family, weight: '400', src: fontSrc(profile, fileName(style, region, 'web')) }))
       const hanja = productName(style, region, 'hanja')
       const ascent = style === 'ruby' ? metrics.rubyAscent : metrics.replaceAscent
       const range = region === 'ko-KP' ? metrics.kpUnicodeRange : metrics.unicodeRange
-      for (const weight of WEIGHTS) {
+      for (const weight of hanjaWeights) {
         blocks.push(faceBlock({
           family: hanja.family,
           weight: String(weight.css),
-          src: `../dist/${fileName(style, region, 'hanja', weight.name)}.woff2`,
+          src: fontSrc(profile, fileName(style, region, 'hanja', weight.name)),
           range,
           ascent,
           descent: metrics.descent,
@@ -66,10 +79,23 @@ function fontFaces(metrics: DemoMetrics): string {
   blocks.push(faceBlock({
     family: 'Hanja Box',
     weight: '400',
-    src: 'fonts/HanjaBox.woff2',
+    src: 'fonts/HanjaBox.woff',
+    format: 'woff',
     range: 'U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF',
   }))
   return blocks.join('\n')
+}
+
+/** WOFF2 files the Pages demo loads from `dist/`. Gothic A1 and the Hanja box are copied beside them. */
+export function pagesDistFonts(): string[] {
+  const names: string[] = []
+  for (const region of REGIONS) {
+    for (const style of STYLES) {
+      names.push(`${fileName(style, region, 'web')}.woff2`)
+      names.push(`${fileName(style, region, 'hanja', 'Regular')}.woff2`)
+    }
+  }
+  return names
 }
 
 function familyOf(source: 'full' | 'web' | 'addon', region: 'kr' | 'kp', family: 'sans' | 'hangul'): string {
@@ -89,9 +115,10 @@ function selector(source: 'full' | 'web' | 'addon', region: 'kr' | 'kp', family:
   return ids.length ? `${ids.join(' ~ ')} ~ main .face` : 'main .face'
 }
 
-function familyRules(): string {
+function familyRules(profile: DemoProfile): string {
   const lines: string[] = []
-  for (const source of ['full', 'web', 'addon'] as const) {
+  const sources = profile === 'pages' ? ['web', 'addon'] as const : ['full', 'web', 'addon'] as const
+  for (const source of sources) {
     for (const region of ['kr', 'kp'] as const) {
       for (const family of ['sans', 'hangul'] as const) {
         const weight = source === 'web' ? ' font-weight: 400;' : ''
@@ -142,8 +169,9 @@ ${blocks.join('\n')}
 `
 }
 
-/** Region, family, weight, and source, plus a Hanja add-on layered on Gothic A1. */
-export function renderDemo(metrics: DemoMetrics): string {
+/** Region, family, weight, and source, plus a Hanja add-on layered on Gothic A1.
+ *  `local` is the full demo. `pages` ships the web subset and Regular Hanja add-on under `/gukhan-font/`. */
+export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local'): string {
   const cards = SAMPLES.map(sample => `        <figure>
           <figcaption>
             <span class="kr-note">${escapeHtml(sample.note)}</span>
@@ -155,14 +183,44 @@ export function renderDemo(metrics: DemoMetrics): string {
         </figure>`).join('\n')
   const weights = WEIGHTS.map(weight => `      <input id="w${weight.css}" name="weight" type="radio"${weight.name === 'Regular' ? ' checked' : ''}>
       <label for="w${weight.css}">${weight.name} ${weight.css}</label>`).join('\n')
+  const checkedIds = [
+    ...(profile === 'local' ? ['full'] : []),
+    'web',
+    'addon',
+    'off',
+    'kr',
+    'kp',
+    'sans',
+    'hangul',
+    ...(profile === 'local' ? WEIGHTS.map(weight => `w${weight.css}`) : []),
+  ]
+  const defaultFamily = profile === 'pages' ? 'Gukhan Sans Web' : 'Gukhan Sans VF'
+  const lede = profile === 'pages'
+    ? '같은 한자를 독음 글꼴, 치환 글꼴, 남한·북한 읽음, 웹 서브셋, 한자 애드온으로 바꿉니다. 복사하면 한자입니다. 이 사이트는 웹 서브셋과 Regular 한자 애드온만 올립니다.'
+    : '같은 한자를 독음 글꼴, 치환 글꼴, 남한·북한 읽음, 굵기, 웹 서브셋, 한자 애드온으로 바꿉니다. 복사하면 한자입니다.'
+  const footer = profile === 'pages'
+    ? `이 페이지는 웹 서브셋(Regular)과 Regular 한자 애드온만 올립니다. 일곱 굵기와 가변 글꼴은 <a href="https://github.com/morealdot/gukhan-font/releases">GitHub Release</a>에 있습니다. 한자 애드온의 독음은 올라간 어센더(${escapeHtml(metrics.rubyAscent)})를 쓰고, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 디센더는 ${escapeHtml(metrics.descent)}입니다.`
+    : `가변 글꼴의 기본 인스턴스는 ExtraLight라, 이 페이지는 굵기 400에서 시작합니다. 웹 서브셋은 Regular 하나입니다. 한자 애드온의 독음은 올라간 어센더(${escapeHtml(metrics.rubyAscent)})를 쓰고, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 디센더는 ${escapeHtml(metrics.descent)}입니다.`
+  const sourceInputs = profile === 'pages'
+    ? `    <input id="web" name="source" type="radio" checked>
+    <input id="addon" name="source" type="radio">`
+    : `    <input id="full" name="source" type="radio" checked>
+    <input id="web" name="source" type="radio">
+    <input id="addon" name="source" type="radio">`
+  const sourceLabels = profile === 'pages'
+    ? `        <label for="web">웹 서브셋</label>
+        <label for="addon">한자 애드온</label>`
+    : `        <label for="full">전체 가변</label>
+        <label for="web">웹 서브셋</label>
+        <label for="addon">한자 애드온</label>`
   return `<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>국한 Gukhan</title>
+${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국한 Gukhan</title>
     <style>
-      ${fontFaces(metrics)}
+      ${fontFaces(metrics, profile)}
       :root {
         color-scheme: light;
         --paper: #f3efe4;
@@ -195,15 +253,7 @@ export function renderDemo(metrics: DemoMetrics): string {
       fieldset { border: 1px solid var(--rule); margin: 0.8rem 0; padding: 0.7rem 0.9rem 0.8rem; }
       legend { padding: 0 0.3rem; color: var(--muted); }
       label { margin-right: 0.8rem; cursor: pointer; }
-      #full:checked ~ main label[for="full"],
-      #web:checked ~ main label[for="web"],
-      #addon:checked ~ main label[for="addon"],
-      #off:checked ~ main label[for="off"],
-      #kr:checked ~ main label[for="kr"],
-      #kp:checked ~ main label[for="kp"],
-      #sans:checked ~ main label[for="sans"],
-      #hangul:checked ~ main label[for="hangul"],
-      ${WEIGHTS.map(weight => `#w${weight.css}:checked ~ main label[for="w${weight.css}"]`).join(',\n      ')} {
+      ${checkedIds.map(id => `#${id}:checked ~ main label[for="${id}"]`).join(',\n      ')} {
         color: var(--cinnabar);
       }
       .face, .try, .layer p {
@@ -211,9 +261,8 @@ export function renderDemo(metrics: DemoMetrics): string {
         line-height: 2;
         margin: 0;
       }
-      main .face { font-family: "Gukhan Sans VF", sans-serif; font-weight: 400; }
-      ${WEIGHTS.map(weight => `#w${weight.css}:checked ~ main .face { font-weight: ${weight.css}; }`).join('\n      ')}
-${familyRules()}
+      main .face { font-family: "${defaultFamily}", sans-serif; font-weight: 400; }
+${profile === 'local' ? `      ${WEIGHTS.map(weight => `#w${weight.css}:checked ~ main .face { font-weight: ${weight.css}; }`).join('\n      ')}\n` : ''}${familyRules(profile)}
       #off:checked ~ main .face { font-feature-settings: "ss01" 1; }
       #off:checked ~ #hangul:checked ~ main .face { font-feature-settings: "ss01" 0; }
       .kp-note, .kp-read { display: none; }
@@ -242,30 +291,27 @@ ${familyRules()}
       .layer-ruby { font-family: "Gukhan Sans Hanja", "Gothic A1", sans-serif; }
       .layer-replace { font-family: "Gukhan Hangul Hanja", "Gothic A1", sans-serif; color: var(--indigo); }
       .layer-kp { font-family: "Gukhan Sans KP Hanja", "Gothic A1", sans-serif; }
+${explainCss()}
       footer { margin-top: 2rem; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+      footer a, .how a { color: var(--cinnabar); }
       code { font-family: ui-monospace, monospace; font-size: 0.88em; }
     </style>
   </head>
   <body>
-    <input id="full" name="source" type="radio" checked>
-    <input id="web" name="source" type="radio">
-    <input id="addon" name="source" type="radio">
+${sourceInputs}
     <input id="off" type="checkbox">
     <input id="kr" name="region" type="radio" checked>
     <input id="kp" name="region" type="radio">
     <input id="sans" name="family" type="radio" checked>
     <input id="hangul" name="family" type="radio">
-${weights}
-    <main>
+${profile === 'local' ? `${weights}\n` : ''}    <main>
       <header>
         <h1>國漢文混用</h1>
-        <p class="lede">같은 한자를 독음 글꼴, 치환 글꼴, 남한·북한 읽음, 굵기, 웹 서브셋, 한자 애드온으로 바꿉니다. 복사하면 한자입니다.</p>
+        <p class="lede">${lede}</p>
       </header>
       <fieldset>
         <legend>판</legend>
-        <label for="full">전체 가변</label>
-        <label for="web">웹 서브셋</label>
-        <label for="addon">한자 애드온</label>
+${sourceLabels}
       </fieldset>
       <fieldset>
         <legend>독음</legend>
@@ -281,27 +327,20 @@ ${weights}
         <label for="sans">독음 Gukhan Sans</label>
         <label for="hangul">치환 Gukhan Hangul</label>
       </fieldset>
-      <fieldset>
+${profile === 'local' ? `      <fieldset>
         <legend>굵기</legend>
         ${WEIGHTS.map(weight => `<label for="w${weight.css}">${weight.name}</label>`).join('\n        ')}
       </fieldset>
-      <section>
+` : ''}      <section>
 ${cards}
         <figure>
           <figcaption>직접 쳐 보세요. 복사하면 한자입니다.</figcaption>
           <textarea class="try face" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</textarea>
         </figure>
       </section>
-      <section class="layer">
-        <h2>한자만 얹기</h2>
-        <p class="lede">본문은 Gothic A1입니다. 한자가 없는 글꼴이라 첫 줄의 한자는 빈칸입니다. 아래 줄은 한자 애드온이 그 한자만 그리고, 와 같은 한글은 Gothic A1이 그립니다.</p>
-        <p class="layer-body">女子와 男女, 平壤 冷麵</p>
-        <p class="layer-ruby">女子와 男女, 平壤 冷麵</p>
-        <p class="layer-replace">女子와 男女, 平壤 冷麵</p>
-        <p class="layer-kp">女子와 男女, 平壤 冷麵</p>
-      </section>
+${explainHtml()}
       <footer>
-        <p>가변 글꼴의 기본 인스턴스는 ExtraLight라, 이 페이지는 굵기 400에서 시작합니다. 웹 서브셋은 Regular 하나입니다. 한자 애드온의 독음은 올라간 어센더(${escapeHtml(metrics.rubyAscent)})를 쓰고, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 디센더는 ${escapeHtml(metrics.descent)}입니다.</p>
+        <p>${footer}</p>
       </footer>
     </main>
   </body>

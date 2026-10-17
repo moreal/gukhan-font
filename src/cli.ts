@@ -8,7 +8,7 @@ import { promisify } from 'node:util'
 import * as hb from 'harfbuzzjs'
 import { brotli, compileFont, readFontInfo, subsetWasm, toWoff2 } from '../vendor/furifont/index.ts'
 import { subsetFont } from '../vendor/furifont/subset.ts'
-import { renderDemo, renderHanjaCss, type DemoMetrics } from './demo.ts'
+import { pagesDistFonts, renderDemo, renderHanjaCss, type DemoMetrics } from './demo.ts'
 import { emitFamily, planReadings, type BuildReport, type FamilyStyle, type ReadingPlan } from './emit.ts'
 import { fileName, productName, WEIGHTS, type ProductKind, type WeightName } from './families.ts'
 import { cssPercent, faceMetrics, rubyAscender } from './metrics.ts'
@@ -34,6 +34,9 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const VERSION = '0.2.0'
 const BUILD_DATE = new Date('2026-10-17T00:00:00Z')
 const CHECK = process.argv.includes('--check')
+const PAGES = process.argv.includes('--pages')
+if (CHECK && PAGES)
+  throw new Error('pass either --check or --pages')
 const WOFF2_QUALITY = CHECK ? 5 : 11
 const RUBY_SCALE = 0.4
 const RUBY_GAP = 0.05
@@ -283,18 +286,10 @@ async function ensureGothic(): Promise<void> {
     console.log('compressing Gothic A1 for the demo')
     await writeFile(woff2, await toWoff2(ttf, data => brotli(data, 11)))
   }
-  const box = join(dir, 'HanjaBox.woff2')
+  const box = join(dir, 'HanjaBox.woff')
   if (!await exists(box)) {
     console.log('building the demo Hanja box')
-    const stage = await mkdirTemp()
-    try {
-      const ttfPath = join(stage, 'HanjaBox.ttf')
-      await exec('python3', [join(root, 'scripts', 'hanja_box.py'), ttfPath])
-      await writeFile(box, await toWoff2(new Uint8Array(await readFile(ttfPath)), data => brotli(data, 11)))
-    }
-    finally {
-      await rm(stage, { recursive: true, force: true })
-    }
+    await exec('python3', [join(root, 'scripts', 'hanja_box.py'), box])
   }
 }
 
@@ -421,6 +416,9 @@ function jobsFor(planned: PlannedRegion[], weights: Map<WeightName, Uint8Array>,
       out.push({ style, region: region.region, kind: 'vf', weight: null, base: vf, planned: region.vf, glyphOf: region.glyphOf, reference: vf })
       out.push({ style, region: region.region, kind: 'web', weight: null, base: region.webBase, planned: region.web, glyphOf: region.glyphOf, reference: region.webBase })
     }
+  }
+  if (PAGES) {
+    return out.filter(job => job.kind === 'web' || (job.kind === 'static' && job.weight === 'Regular'))
   }
   if (!CHECK)
     return out
@@ -549,6 +547,20 @@ async function pack(dist: string, files: Artifact[], metrics: DemoMetrics): Prom
   await writeFile(join(release, 'hanja.css'), css)
   zipSums.sort()
   await writeFile(join(release, 'SHA256SUMS.txt'), `${zipSums.join('\n')}\n`)
+}
+
+async function publishSite(dist: string, metrics: DemoMetrics): Promise<void> {
+  const site = join(root, 'site')
+  await rm(site, { recursive: true, force: true })
+  const fonts = join(site, 'fonts')
+  await mkdir(fonts, { recursive: true })
+  for (const name of pagesDistFonts())
+    await writeFile(join(fonts, name), await readFile(join(dist, name)))
+  for (const name of ['GothicA1-Regular.woff2', 'HanjaBox.woff'])
+    await writeFile(join(fonts, name), await readFile(join(root, 'demo', 'fonts', name)))
+  await writeFile(join(site, 'index.html'), renderDemo(metrics, 'pages'))
+  await writeFile(join(site, '.nojekyll'), '')
+  console.log(`wrote site/ with ${pagesDistFonts().length + 2} fonts`)
 }
 
 async function mkdirTemp(): Promise<string> {
@@ -701,7 +713,10 @@ async function main(): Promise<void> {
     throw new Error('hanja unicode-range was not measured')
   metrics.unicodeRange = krRange
   metrics.kpUnicodeRange = hanjaRange.get('ko-KP') ?? krRange
-  await writeFile(join(root, 'demo', 'index.html'), renderDemo(metrics))
+  if (PAGES)
+    await publishSite(dist, metrics)
+  else
+    await writeFile(join(root, 'demo', 'index.html'), renderDemo(metrics))
   await writeFile(join(dist, 'hanja.css'), renderHanjaCss(metrics))
   const reports: Record<string, { full: BuildReport, web: BuildReport }> = {}
   for (const region of planned)
@@ -710,11 +725,12 @@ async function main(): Promise<void> {
     version: VERSION,
     woff2Quality: WOFF2_QUALITY,
     check: CHECK,
+    pages: PAGES,
     metrics,
     regions: reports,
     files: artifacts.sort((a, b) => a.file < b.file ? -1 : a.file > b.file ? 1 : 0),
   }, null, 2)}\n`)
-  if (!CHECK)
+  if (!CHECK && !PAGES)
     await pack(dist, artifacts.filter(artifact => artifact.file.endsWith('.otf') || artifact.file.endsWith('.ttf') || artifact.file.endsWith('.woff2')), metrics)
   console.log(`wrote ${artifacts.length} files`)
 }
