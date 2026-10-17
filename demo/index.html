@@ -442,7 +442,7 @@
       #w900:checked ~ main label[for="w900"] {
         color: var(--cinnabar);
       }
-      .face, .try, .layer p {
+      .face, .try {
         font-size: clamp(1.45rem, 2.8vw, 2.15rem);
         line-height: 2;
         margin: 0;
@@ -488,9 +488,6 @@
         color: inherit;
       }
       .try:focus { outline: none; }
-      .layer { margin-top: 1.6rem; padding-top: 0.4rem; border-top: 1px solid var(--rule); }
-      .layer h2 { font-size: 1.15rem; font-weight: 500; margin: 0.8rem 0; }
-      .layer p { margin: 0.2rem 0 0.8rem; }
       .layer-body { font-family: "Gothic A1", "Hanja Box"; color: var(--indigo); }
       .layer-ruby { font-family: "Gukhan Sans Hanja", "Gothic A1", sans-serif; }
       .layer-replace { font-family: "Gukhan Hangul Hanja", "Gothic A1", sans-serif; color: var(--indigo); }
@@ -512,6 +509,11 @@
         line-height: 2;
         margin: 0.1rem 0;
       }
+      .how .layer-body, .how .layer-ruby, .how .layer-replace, .how .layer-kp {
+        font-size: clamp(1.45rem, 2.8vw, 2.15rem);
+        line-height: 2;
+        margin: 0.2rem 0 0.8rem;
+      }
       .run { font-size: 1.35rem; line-height: 1.8; }
       .run .han { background: #f6d7c8; padding: 0 0.15rem; }
       .ch { display: inline-block; }
@@ -523,9 +525,16 @@
         background: #1c1915;
         color: #f3efe4;
         padding: 0.75rem 0.9rem;
-        overflow: auto;
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
         font-size: 0.78rem;
         line-height: 1.45;
+      }
+      .how pre code {
+        white-space: inherit;
       }
       @media (max-width: 640px) {
         .how .pair { grid-template-columns: 1fr; }
@@ -533,7 +542,20 @@
   
       footer { margin-top: 2rem; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
       footer a, .how a { color: var(--cinnabar); }
-      code { font-family: ui-monospace, monospace; font-size: 0.88em; }
+      code {
+        font-family: ui-monospace, monospace;
+        font-size: 0.88em;
+        background: #efe6d6;
+        color: var(--ink);
+        padding: 0.08em 0.32em;
+        border-radius: 0.25em;
+      }
+      pre code {
+        background: transparent;
+        color: inherit;
+        padding: 0;
+        font-size: 1em;
+      }
     </style>
   </head>
   <body>

@@ -256,7 +256,7 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>êµ­í
       ${checkedIds.map(id => `#${id}:checked ~ main label[for="${id}"]`).join(',\n      ')} {
         color: var(--cinnabar);
       }
-      .face, .try, .layer p {
+      .face, .try {
         font-size: clamp(1.45rem, 2.8vw, 2.15rem);
         line-height: 2;
         margin: 0;
@@ -284,9 +284,6 @@ ${profile === 'local' ? `      ${WEIGHTS.map(weight => `#w${weight.css}:checked 
         color: inherit;
       }
       .try:focus { outline: none; }
-      .layer { margin-top: 1.6rem; padding-top: 0.4rem; border-top: 1px solid var(--rule); }
-      .layer h2 { font-size: 1.15rem; font-weight: 500; margin: 0.8rem 0; }
-      .layer p { margin: 0.2rem 0 0.8rem; }
       .layer-body { font-family: "Gothic A1", "Hanja Box"; color: var(--indigo); }
       .layer-ruby { font-family: "Gukhan Sans Hanja", "Gothic A1", sans-serif; }
       .layer-replace { font-family: "Gukhan Hangul Hanja", "Gothic A1", sans-serif; color: var(--indigo); }
@@ -294,7 +291,20 @@ ${profile === 'local' ? `      ${WEIGHTS.map(weight => `#w${weight.css}:checked 
 ${explainCss()}
       footer { margin-top: 2rem; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
       footer a, .how a { color: var(--cinnabar); }
-      code { font-family: ui-monospace, monospace; font-size: 0.88em; }
+      code {
+        font-family: ui-monospace, monospace;
+        font-size: 0.88em;
+        background: #efe6d6;
+        color: var(--ink);
+        padding: 0.08em 0.32em;
+        border-radius: 0.25em;
+      }
+      pre code {
+        background: transparent;
+        color: inherit;
+        padding: 0;
+        font-size: 1em;
+      }
     </style>
   </head>
   <body>

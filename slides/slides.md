@@ -5,6 +5,7 @@ addons:
   - subtitle
 aspectRatio: 16/9
 canvasWidth: 1120
+colorSchema: light
 highlighter: shiki
 routerMode: hash
 ---

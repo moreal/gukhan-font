@@ -45,6 +45,11 @@
 .slidev-layout {
   background: #f3efe4;
   color: #1c1915;
+  /* html.dark repaints --slidev-code-background to #1b1b1b. Inline code
+     inherits this ink color, so the chip becomes dark text on a dark box.
+     The deck stays on paper in either color scheme. */
+  --slidev-code-background: #efe6d6;
+  --slidev-code-foreground: #1c1915;
 }
 
 .slidev-layout h1 {
@@ -52,10 +57,53 @@
   letter-spacing: -0.02em;
 }
 
+/* Theme default fades the line under a title to 50% opacity (~3.2:1 on this paper). */
+.slidev-layout h1 + p {
+  opacity: 1;
+  color: #4a433c;
+}
+
+.slidev-layout :not(pre) > code {
+  color: #1c1915;
+  background: #efe6d6;
+  font-weight: 500;
+  white-space: break-spaces;
+  overflow-wrap: anywhere;
+  box-decoration-break: clone;
+}
+
+.slidev-layout a {
+  color: #6e2622;
+}
+
 .slidev-layout pre,
+.slidev-layout .slidev-code,
 .slidev-layout .shiki {
-  font-size: 0.78rem;
-  line-height: 1.35;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.slidev-layout li,
+.slidev-layout p {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* Dual-theme shiki follows html.dark and would paint light tokens on the paper chip. */
+html.dark .slidev-layout .shiki,
+html.dark .slidev-layout .shiki span {
+  color: var(--shiki-light, #393a34);
+  background-color: transparent;
+}
+
+html.dark .slidev-layout .shiki {
+  background-color: #efe6d6;
 }
 
 .ruby, .replace, .kp, .plain, .addon {

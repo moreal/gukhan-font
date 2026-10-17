@@ -19,6 +19,11 @@ export function explainCss(): string {
         line-height: 2;
         margin: 0.1rem 0;
       }
+      .how .layer-body, .how .layer-ruby, .how .layer-replace, .how .layer-kp {
+        font-size: clamp(1.45rem, 2.8vw, 2.15rem);
+        line-height: 2;
+        margin: 0.2rem 0 0.8rem;
+      }
       .run { font-size: 1.35rem; line-height: 1.8; }
       .run .han { background: #f6d7c8; padding: 0 0.15rem; }
       .ch { display: inline-block; }
@@ -30,9 +35,16 @@ export function explainCss(): string {
         background: #1c1915;
         color: #f3efe4;
         padding: 0.75rem 0.9rem;
-        overflow: auto;
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
         font-size: 0.78rem;
         line-height: 1.45;
+      }
+      .how pre code {
+        white-space: inherit;
       }
       @media (max-width: 640px) {
         .how .pair { grid-template-columns: 1fr; }
