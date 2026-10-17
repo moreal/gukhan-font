@@ -21,12 +21,12 @@ function show(step: number, index: number): string {
 export function fontTables(step = 99): string {
   const rows = [
     ['cmap', '코드포인트 → 글리프 ID'],
-    ['CFF / glyf', '윤곽선. 정적은 CFF, 가변은 glyf'],
+    ['CFF / glyf', '윤곽. 정적은 CFF, 가변 폰트는 glyf'],
     ['hmtx', '진행 너비와 왼쪽 사이드베어링'],
-    ['maxp', '글리프 개수. numGlyphs 는 16비트'],
+    ['maxp', '글리프 수. numGlyphs는 16비트'],
     ['GSUB', '글리프를 다른 글리프로 바꿈'],
-    ['GPOS', '위치를 옮김. 이 글꼴의 독음은 여기 있지 않음'],
-    ['name', '가족 이름, 저작권, 설명'],
+    ['GPOS', '위치. 루비는 여기 있지 않음'],
+    ['name', '폰트 패밀리 이름, 저작권, 설명'],
   ]
   const body = rows.map((row, index) => {
     const y = 18 + index * 42
@@ -59,7 +59,7 @@ export function cmapPicture(step = 99): string {
       <text x="430" y="${y + 26}" font-family="ui-monospace, monospace" font-size="16" fill="${muted}">${row[3]}</text>
     </g>`
   }).join('')
-  const note = `<text x="24" y="232" font-family="sans-serif" font-size="14" fill="${muted}" opacity="${show(step, 3)}">독음 글리프 gkc / gki / gkw 는 cmap에 없다. GSUB가 기본 글리프를 그것으로 바꾼다.</text>`
+  const note = `<text x="24" y="232" font-family="sans-serif" font-size="14" fill="${muted}" opacity="${show(step, 3)}">독음 글리프 gkc / gki / gkw는 cmap에 없습니다. GSUB가 기본 글리프를 바꿉니다.</text>`
   return svg(920, 250, head + body + note)
 }
 
@@ -103,7 +103,7 @@ export function runs(step = 99): string {
       <text x="${x + 85}" y="86" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" fill="${muted}">${chip[1]}</text>
     </g>`
   }).join('')
-  const note = `<text x="24" y="132" font-family="sans-serif" font-size="14" fill="${muted}" opacity="${show(step, 3)}">GSUB는 색칠한 Han 런만 본다. 의 는 베이스 글꼴의 한글 글리프, 진행 너비 920.</text>`
+  const note = `<text x="24" y="132" font-family="sans-serif" font-size="14" fill="${muted}" opacity="${show(step, 3)}">GSUB는 칠한 Han 런만 봅니다. 의는 베이스 글리프이고, 진행 너비는 920입니다.</text>`
   return svg(680, 150, body + note)
 }
 
@@ -136,7 +136,7 @@ export function dueum(step = 99): string {
     <text x="24" y="24" font-family="sans-serif" font-size="14" fill="${muted}">女子 · 런의 첫 글자</text>
     <rect x="24" y="36" width="400" height="78" rx="8" fill="${wash}" stroke="${red}"/>
     <text x="40" y="64" font-family="ui-monospace, monospace" font-size="15" fill="${ink}">女 gid 26394</text>
-    <text x="40" y="88" font-family="sans-serif" font-size="14" fill="${muted}">gki5973 · 두음 적용 · 여</text>
+    <text x="40" y="88" font-family="sans-serif" font-size="14" fill="${muted}">gki5973 · 두음 법칙 · 여</text>
     <text x="230" y="64" font-family="ui-monospace, monospace" font-size="15" fill="${ink}">子 gid 26591</text>
     <text x="230" y="88" font-family="sans-serif" font-size="14" fill="${muted}">gkc5B50 · 자</text>
   </g>`
@@ -148,13 +148,13 @@ export function dueum(step = 99): string {
     <text x="680" y="64" font-family="ui-monospace, monospace" font-size="15" fill="${ink}">女 gid 26393</text>
     <text x="680" y="88" font-family="sans-serif" font-size="14" fill="${muted}">gkc5973 · 녀</text>
   </g>`
-  const note = `<text x="24" y="142" font-family="sans-serif" font-size="14" fill="${muted}" opacity="${show(step, 2)}">같은 U+5973 이 문맥에 따라 글리프 ID가 다르다. hb-shape GukhanSans-Regular.otf</text>`
+  const note = `<text x="24" y="142" font-family="sans-serif" font-size="14" fill="${muted}" opacity="${show(step, 2)}">같은 U+5973이 문맥에 따라 글리프 ID가 다릅니다.</text>`
   return svg(920, 160, left + right + note)
 }
 
 export function draw(step = 99): string {
   const ruby = `<g opacity="${show(step, 0)}">
-    <text x="24" y="24" font-family="sans-serif" font-size="14" fill="${muted}">Gukhan Sans · 윤곽 안에 독음</text>
+    <text x="24" y="24" font-family="sans-serif" font-size="14" fill="${muted}">Gukhan Sans · 윤곽 안의 루비</text>
     <rect x="24" y="36" width="200" height="250" fill="none" stroke="${line}"/>
     <line x1="24" y1="210" x2="224" y2="210" stroke="${indigo}"/>
     <text x="124" y="78" text-anchor="middle" font-family="sans-serif" font-size="16" fill="${red}">유월</text>
@@ -183,14 +183,14 @@ export function budget(step = 99): string {
   const limit = 65535
   const usedW = Math.round(width * used / limit)
   const bar = `<g opacity="${show(step, 0)}">
-    <text x="20" y="28" font-family="sans-serif" font-size="14" fill="${muted}">ko-KR 전체 41,259 / 65,535. 여유 64. 버린 합자 0.</text>
+    <text x="20" y="28" font-family="sans-serif" font-size="14" fill="${muted}">ko-KR 전체 41,259 / 65,535. 여유 64개. 버린 합자 0개.</text>
     <rect x="20" y="44" width="${width}" height="28" rx="6" fill="${paper}" stroke="${line}"/>
     <rect x="20" y="44" width="${usedW}" height="28" rx="6" fill="${wash}" stroke="${red}"/>
   </g>`
   const parts = [
     ['베이스', '24,973'],
     ['글자 독음', '8,144'],
-    ['두음 형태', '574'],
+    ['두음 법칙', '574'],
     ['단어 합자', '7,567'],
     ['프로브', '1'],
   ]
@@ -208,7 +208,7 @@ export function layerStack(step = 99): string {
   const rows = [
     ['1', 'Gukhan Sans Hanja', 'unicode-range 안의 한자만', wash, red],
     ['2', 'Gothic A1', '한글, 라틴, 그 밖의 문자', '#e7eef6', indigo],
-    ['3', 'Hanja Box', '애드온이 맡지 않은 한자 블록을 빈 상자로', paper, line],
+    ['3', 'Hanja Box', '애드온이 맡지 않은 한자를 빈 상자로', paper, line],
   ]
   const body = rows.map((row, index) => {
     const y = 24 + index * 58

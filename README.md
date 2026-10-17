@@ -1,14 +1,14 @@
 # 국한 / Gukhan
 
-한자를 그대로 둔 채, 독음을 위에 그리거나 한글로 바꿔 보여주는 글꼴입니다.
+한자는 그대로 두고, 독음을 위에 루비로 그리거나 그 한자를 한글로 바꿔 보여주는 글꼴입니다.
 
-![독음, 치환, 북한어, 굵기, 한자 애드온](docs/demo.gif)
+![루비, 치환, 북한어, 굵기, 한자 애드온](docs/demo.gif)
 
 [라이브 데모](https://morealdot.github.io/gukhan-font/) · [슬라이드](https://morealdot.github.io/gukhan-font/slides/) · [릴리스](https://github.com/morealdot/gukhan-font/releases)
 
 ## 내려받기
 
-가족마다 zip이 하나 있습니다. `GukhanSans`, `GukhanSansKP`, `GukhanHangul`, `GukhanHangulKP`. 정적 일곱 굵기, 가변, 웹 서브셋, 한자 애드온, `hanja.css`, `SHA256SUMS.txt`가 들어 있습니다.
+폰트 패밀리마다 zip이 하나 있습니다. `GukhanSans`, `GukhanSansKP`, `GukhanHangul`, `GukhanHangulKP`. 정적 일곱 굵기, 가변 폰트, 웹 서브셋, 한자 애드온, `hanja.css`, `SHA256SUMS.txt`가 들어 있습니다.
 
 ## 쓰는 법
 
@@ -24,7 +24,7 @@
 </style>
 ```
 
-한자만 다른 한글 글꼴 위에 얹을 때는 애드온을 맨 앞에 둡니다. `unicode-range` 전체는 zip 안의 `hanja.css`입니다.
+한자만 다른 한글 글꼴 위에 얹을 때는 애드온을 `font-family` 맨 앞에 둡니다. `unicode-range` 전체는 zip 안의 `hanja.css`입니다.
 
 ```html
 <p class="gukhan-hanja">女子와 男女, 平壤 冷麵.</p>
@@ -45,7 +45,7 @@
 </style>
 ```
 
-`ss01`은 독음 글꼴의 독음만 끕니다. 가변 글꼴의 기본 인스턴스는 ExtraLight라 굵기를 지정합니다.
+`ss01`은 루비 폰트의 독음만 끕니다. 가변 폰트의 기본 인스턴스는 ExtraLight라서, 굵기를 지정합니다.
 
 ## 빌드
 

@@ -154,10 +154,10 @@ export function renderHanjaCss(metrics: DemoMetrics, only?: { style: FamilyStyle
       }
     }
   }
-  return `/* 한자 애드온. unicode-range 안의 한자만 이 글꼴이 그린다. 한글과 라틴은 다음 글꼴로 넘어간다.
-   독음(Gukhan Sans Hanja)은 글줄을 키우므로 line-height: 2 를 쓴다.
-   애드온을 font-family 맨 앞에 두면 그 글꼴의 메트릭이 줄 높이를 정한다.
-   size-adjust 로 본문 한글의 크기에 맞춘다. 기본은 100% 이다. */
+  return `/* 한자 애드온. unicode-range 안의 한자만 이 글꼴이 그립니다. 한글과 라틴은 다음 글꼴로 넘어갑니다.
+   루비(Gukhan Sans Hanja)는 글줄을 키우므로 line-height: 2 를 씁니다.
+   애드온을 font-family 맨 앞에 두면 그 폰트의 메트릭이 줄 높이를 정합니다.
+   size-adjust 로 본문 한글의 크기에 맞춥니다. 기본은 100%입니다. */
 ${blocks.join('\n')}
 .gukhan-hanja {
   font-family: "Gukhan Sans Hanja", "Pretendard", sans-serif;
@@ -196,11 +196,11 @@ export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local')
   ]
   const defaultFamily = profile === 'pages' ? 'Gukhan Sans Web' : 'Gukhan Sans VF'
   const lede = profile === 'pages'
-    ? '같은 한자를 독음 글꼴, 치환 글꼴, 남한·북한 읽음, 웹 서브셋, 한자 애드온으로 바꿉니다. 복사하면 한자입니다. 이 사이트는 웹 서브셋과 Regular 한자 애드온만 올립니다.'
-    : '같은 한자를 독음 글꼴, 치환 글꼴, 남한·북한 읽음, 굵기, 웹 서브셋, 한자 애드온으로 바꿉니다. 복사하면 한자입니다.'
+    ? '같은 한자를 루비, 치환, 남한·북한 독음, 웹 서브셋, 한자 애드온으로 바꿉니다. 복사하면 한자입니다. 이 사이트는 웹 서브셋과 Regular 한자 애드온만 올립니다.'
+    : '같은 한자를 루비, 치환, 남한·북한 독음, 굵기, 웹 서브셋, 한자 애드온으로 바꿉니다. 복사하면 한자입니다.'
   const footer = profile === 'pages'
-    ? `이 페이지는 웹 서브셋(Regular)과 Regular 한자 애드온만 올립니다. 일곱 굵기와 가변 글꼴은 <a href="https://github.com/morealdot/gukhan-font/releases">GitHub Release</a>에 있습니다. 한자 애드온의 독음은 올라간 어센더(${escapeHtml(metrics.rubyAscent)})를 쓰고, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 디센더는 ${escapeHtml(metrics.descent)}입니다.`
-    : `가변 글꼴의 기본 인스턴스는 ExtraLight라, 이 페이지는 굵기 400에서 시작합니다. 웹 서브셋은 Regular 하나입니다. 한자 애드온의 독음은 올라간 어센더(${escapeHtml(metrics.rubyAscent)})를 쓰고, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 디센더는 ${escapeHtml(metrics.descent)}입니다.`
+    ? `이 페이지는 웹 서브셋(Regular)과 Regular 한자 애드온만 올립니다. 일곱 굵기와 가변 폰트는 <a href="https://github.com/morealdot/gukhan-font/releases">GitHub 릴리스</a>에 있습니다. 루비 애드온의 어센더는 ${escapeHtml(metrics.rubyAscent)}이고, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 디센더는 ${escapeHtml(metrics.descent)}입니다.`
+    : `가변 폰트의 기본 인스턴스는 ExtraLight라서, 이 페이지는 굵기 400에서 시작합니다. 웹 서브셋은 Regular 하나입니다. 루비 애드온의 어센더는 ${escapeHtml(metrics.rubyAscent)}이고, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 디센더는 ${escapeHtml(metrics.descent)}입니다.`
   const sourceInputs = profile === 'pages'
     ? `    <input id="web" name="source" type="radio" checked>
     <input id="addon" name="source" type="radio">`
@@ -210,7 +210,7 @@ export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local')
   const sourceLabels = profile === 'pages'
     ? `        <label for="web">웹 서브셋</label>
         <label for="addon">한자 애드온</label>`
-    : `        <label for="full">전체 가변</label>
+    : `        <label for="full">가변 폰트</label>
         <label for="web">웹 서브셋</label>
         <label for="addon">한자 애드온</label>`
   return `<!DOCTYPE html>
@@ -310,12 +310,12 @@ ${profile === 'local' ? `${weights}\n` : ''}    <main>
         <p class="lede">${lede}</p>
       </header>
       <fieldset>
-        <legend>판</legend>
+        <legend>구성</legend>
 ${sourceLabels}
       </fieldset>
       <fieldset>
-        <legend>독음</legend>
-        <label for="off">Gukhan Sans 독음 끄기 · ss01</label>
+        <legend>루비</legend>
+        <label for="off">루비 끄기 · ss01</label>
       </fieldset>
       <fieldset>
         <legend>지역</legend>
@@ -323,8 +323,8 @@ ${sourceLabels}
         <label for="kp">북한 ko-KP</label>
       </fieldset>
       <fieldset>
-        <legend>글꼴</legend>
-        <label for="sans">독음 Gukhan Sans</label>
+        <legend>폰트 패밀리</legend>
+        <label for="sans">루비 Gukhan Sans</label>
         <label for="hangul">치환 Gukhan Hangul</label>
       </fieldset>
 ${profile === 'local' ? `      <fieldset>
@@ -334,7 +334,7 @@ ${profile === 'local' ? `      <fieldset>
 ` : ''}      <section>
 ${cards}
         <figure>
-          <figcaption>직접 쳐 보세요. 복사하면 한자입니다.</figcaption>
+          <figcaption>직접 입력해 보세요. 복사하면 한자입니다.</figcaption>
           <textarea class="try face" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</textarea>
         </figure>
       </section>
