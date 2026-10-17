@@ -1,53 +1,73 @@
-/** Sentences the demo and the font's shaping checks both use. */
-export const SAMPLES: { text: string, reading: string, note: string }[] = [
+/** Sentences the demo and the font's shaping checks both use. `reading` is ko-KR; `kp` is ko-KP. */
+export const SAMPLES: { text: string, reading: string, kp: string, note: string, kpNote: string }[] = [
   {
     text: '國漢文混用',
     reading: '국한문혼용',
+    kp: '국한문혼용',
     note: '글자마다 한 음절. 합자가 없어도 읽힌다.',
+    kpNote: '글자마다 한 음절. 북한 표제어가 없어도 같다.',
   },
   {
     text: '大韓民國의 憲法',
     reading: '대한민국의 헌법',
+    kp: '대한민국의 헌법',
     note: '한자와 한글은 서로 다른 글자 묶음이다.',
+    kpNote: '한자와 한글은 서로 다른 글자 묶음이다.',
   },
   {
     text: '女子와 男女',
     reading: '여자와 남녀',
+    kp: '녀자와 남녀',
     note: '두음 법칙. 女는 첫소리에서만 여.',
+    kpNote: '두음 법칙을 쓰지 않는다. 女는 녀.',
   },
   {
     text: '音樂과 快樂',
     reading: '음악과 쾌락',
+    kp: '음악과 쾌락',
     note: '樂은 단어에 따라 악 또는 락. 音樂만 합자.',
+    kpNote: '音樂의 악은 락의 두음이 아니라 다른 독음이라 그대로다.',
   },
   {
     text: '平壤 冷麵',
     reading: '평양 냉면',
+    kp: '평양 랭면',
     note: '남한식 두음. 冷은 첫소리에서 냉.',
+    kpNote: '冷은 랭. 평양은 글자 읽음.',
   },
   {
     text: '來日과 未來',
     reading: '내일과 미래',
+    kp: '래일과 미래',
     note: '來는 첫소리에서 내, 그 외에는 래.',
+    kpNote: '來는 어디서나 래.',
   },
   {
     text: '困難한 問題',
     reading: '곤란한 문제',
+    kp: '곤난한 문제',
     note: '困難은 곤난이 아니라 곤란. 합자로 고친다.',
+    kpNote: '우리말샘 북한어는 곤난이다.',
   },
   {
     text: '六月과 十月, 五六',
     reading: '유월과 시월, 오륙',
+    kp: '류월과 시월, 오륙',
     note: '六月·十月은 사전 읽음. 五六은 글자 읽음.',
+    kpNote: '六月은 류월. 十月의 시는 십의 두음이 아니라 그대로다. 五六은 오륙.',
   },
   {
     text: '法律, 比率, 規律, 利率, 分裂',
     reading: '법률, 비율, 규율, 이율, 분열',
+    kp: '법률, 비률, 규률, 리률, 분렬',
     note: '률은 받침에 따라 률로 남거나 율이 된다.',
+    kpNote: '렬·률을 열·율로 바꾸지 않는다. 利率은 리률.',
   },
   {
     text: '漢字로 쓴 글',
     reading: '한자로 쓴 글',
+    kp: '한자로 쓴 글',
     note: '모르는 한자도 글자 읽음이 붙는다.',
+    kpNote: '모르는 한자도 글자 읽음이 붙는다.',
   },
 ]

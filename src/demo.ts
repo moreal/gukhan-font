@@ -1,35 +1,168 @@
+import { fileName, productName, WEIGHTS, type WeightName } from './families.ts'
+import type { FamilyStyle } from './emit.ts'
+import type { Region } from './region.ts'
 import { SAMPLES } from './samples.ts'
 
-/** Both families, from the same Hanja. The checkbox turns ruby off and leaves the replacement family alone. */
-export function renderDemo(): string {
+export interface DemoMetrics {
+  /** unicode-range of the ko-KR Hanja add-on. */
+  unicodeRange: string
+  /** unicode-range of the ko-KP Hanja add-on. Falls back to the ko-KR range when that font was not built. */
+  kpUnicodeRange: string
+  rubyAscent: string
+  replaceAscent: string
+  descent: string
+  lineGap: string
+}
+
+const REGIONS = ['ko-KR', 'ko-KP'] as const
+const STYLES = ['ruby', 'replace'] as const
+
+function escapeHtml(text: string): string {
+  return text.replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char]!)
+}
+
+function faceBlock(input: { family: string, weight: string, src: string, range?: string, ascent?: string, descent?: string, lineGap?: string }): string {
+  const extra = [
+    input.range ? `unicode-range: ${input.range};` : '',
+    input.ascent ? `ascent-override: ${input.ascent};` : '',
+    input.descent ? `descent-override: ${input.descent};` : '',
+    input.lineGap ? `line-gap-override: ${input.lineGap};` : '',
+  ].filter(Boolean)
+  return `@font-face {
+        font-family: "${input.family}";
+        src: url("${input.src}") format("woff2");
+        font-weight: ${input.weight};
+        font-style: normal;
+        font-display: swap;
+        ${extra.join('\n        ')}
+      }`
+}
+
+function fontFaces(metrics: DemoMetrics): string {
+  const blocks: string[] = []
+  for (const region of REGIONS) {
+    for (const style of STYLES) {
+      const vf = productName(style, region, 'vf')
+      blocks.push(faceBlock({ family: vf.family, weight: '250 900', src: `../dist/${fileName(style, region, 'vf')}.woff2` }))
+      const web = productName(style, region, 'web')
+      blocks.push(faceBlock({ family: web.family, weight: '400', src: `../dist/${fileName(style, region, 'web')}.woff2` }))
+      const hanja = productName(style, region, 'hanja')
+      const ascent = style === 'ruby' ? metrics.rubyAscent : metrics.replaceAscent
+      const range = region === 'ko-KP' ? metrics.kpUnicodeRange : metrics.unicodeRange
+      for (const weight of WEIGHTS) {
+        blocks.push(faceBlock({
+          family: hanja.family,
+          weight: String(weight.css),
+          src: `../dist/${fileName(style, region, 'hanja', weight.name)}.woff2`,
+          range,
+          ascent,
+          descent: metrics.descent,
+          lineGap: metrics.lineGap,
+        }))
+      }
+    }
+  }
+  blocks.push(faceBlock({ family: 'Gothic A1', weight: '400', src: 'fonts/GothicA1-Regular.woff2' }))
+  blocks.push(faceBlock({
+    family: 'Hanja Box',
+    weight: '400',
+    src: 'fonts/HanjaBox.woff2',
+    range: 'U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF',
+  }))
+  return blocks.join('\n')
+}
+
+function familyOf(source: 'full' | 'web' | 'addon', region: 'kr' | 'kp', family: 'sans' | 'hangul'): string {
+  const style: FamilyStyle = family === 'sans' ? 'ruby' : 'replace'
+  const regionId: Region = region === 'kr' ? 'ko-KR' : 'ko-KP'
+  const kind = source === 'full' ? 'vf' : source === 'web' ? 'web' : 'hanja'
+  const name = productName(style, regionId, kind).family
+  return source === 'addon' ? `"${name}", "Gothic A1", sans-serif` : `"${name}", sans-serif`
+}
+
+function selector(source: 'full' | 'web' | 'addon', region: 'kr' | 'kp', family: 'sans' | 'hangul'): string {
+  const ids = [
+    source === 'full' ? '' : `#${source}:checked`,
+    region === 'kp' ? '#kp:checked' : '',
+    family === 'hangul' ? '#hangul:checked' : '',
+  ].filter(Boolean)
+  return ids.length ? `${ids.join(' ~ ')} ~ main .face` : 'main .face'
+}
+
+function familyRules(): string {
+  const lines: string[] = []
+  for (const source of ['full', 'web', 'addon'] as const) {
+    for (const region of ['kr', 'kp'] as const) {
+      for (const family of ['sans', 'hangul'] as const) {
+        const weight = source === 'web' ? ' font-weight: 400;' : ''
+        lines.push(`      ${selector(source, region, family)} { font-family: ${familyOf(source, region, family)};${weight} }`)
+      }
+    }
+  }
+  return lines.join('\n')
+}
+
+/** Ready-to-copy stylesheet for the Hanja add-on. Paths are filenames in the same directory. */
+export function renderHanjaCss(metrics: DemoMetrics, only?: { style: FamilyStyle, region: Region }): string {
+  const blocks: string[] = []
+  for (const region of REGIONS) {
+    for (const style of STYLES) {
+      if (only && (only.style !== style || only.region !== region))
+        continue
+      const hanja = productName(style, region, 'hanja')
+      const ascent = style === 'ruby' ? metrics.rubyAscent : metrics.replaceAscent
+      const range = region === 'ko-KP' ? metrics.kpUnicodeRange : metrics.unicodeRange
+      for (const weight of WEIGHTS) {
+        blocks.push(`@font-face {
+  font-family: "${hanja.family}";
+  src: url("${fileName(style, region, 'hanja', weight.name)}.woff2") format("woff2");
+  font-weight: ${weight.css};
+  font-style: normal;
+  font-display: swap;
+  unicode-range: ${range};
+  ascent-override: ${ascent};
+  descent-override: ${metrics.descent};
+  line-gap-override: ${metrics.lineGap};
+}`)
+      }
+    }
+  }
+  return `/* 한자 애드온. unicode-range 안의 한자만 이 글꼴이 그린다. 한글과 라틴은 다음 글꼴로 넘어간다.
+   독음(Gukhan Sans Hanja)은 글줄을 키우므로 line-height: 2 를 쓴다.
+   애드온을 font-family 맨 앞에 두면 그 글꼴의 메트릭이 줄 높이를 정한다.
+   size-adjust 로 본문 한글의 크기에 맞춘다. 기본은 100% 이다. */
+${blocks.join('\n')}
+.gukhan-hanja {
+  font-family: "Gukhan Sans Hanja", "Pretendard", sans-serif;
+  line-height: 2;
+}
+.gukhan-hanja-replace {
+  font-family: "Gukhan Hangul Hanja", "Pretendard", sans-serif;
+}
+`
+}
+
+/** Region, family, weight, and source, plus a Hanja add-on layered on Gothic A1. */
+export function renderDemo(metrics: DemoMetrics): string {
   const cards = SAMPLES.map(sample => `        <figure>
-          <figcaption>${escapeHtml(sample.note)} <span>${escapeHtml(sample.reading)}</span></figcaption>
-          <div class="pair">
-            <p class="face-ruby">${escapeHtml(sample.text)}</p>
-            <p class="face-hangul">${escapeHtml(sample.text)}</p>
-          </div>
+          <figcaption>
+            <span class="kr-note">${escapeHtml(sample.note)}</span>
+            <span class="kp-note">${escapeHtml(sample.kpNote)}</span>
+            <span class="kr-read">${escapeHtml(sample.reading)}</span>
+            <span class="kp-read">${escapeHtml(sample.kp)}</span>
+          </figcaption>
+          <p class="face">${escapeHtml(sample.text)}</p>
         </figure>`).join('\n')
+  const weights = WEIGHTS.map(weight => `      <input id="w${weight.css}" name="weight" type="radio"${weight.name === 'Regular' ? ' checked' : ''}>
+      <label for="w${weight.css}">${weight.name} ${weight.css}</label>`).join('\n')
   return `<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>국한 Gukhan Sans · Gukhan Hangul</title>
+    <title>국한 Gukhan</title>
     <style>
-      @font-face {
-        font-family: "Gukhan Sans";
-        src: url("../dist/GukhanSans-Regular.woff2") format("woff2"),
-             url("../dist/GukhanSans-Regular.otf") format("opentype");
-        font-weight: 400;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: "Gukhan Hangul";
-        src: url("../dist/GukhanHangul-Regular.woff2") format("woff2"),
-             url("../dist/GukhanHangul-Regular.otf") format("opentype");
-        font-weight: 400;
-        font-display: swap;
-      }
+      ${fontFaces(metrics)}
       :root {
         color-scheme: light;
         --paper: #f3efe4;
@@ -40,91 +173,135 @@ export function renderDemo(): string {
         --indigo: #243856;
       }
       * { box-sizing: border-box; }
+      body > input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
       body {
         margin: 0;
         background: var(--paper);
         color: var(--ink);
         font-family: "Iowan Old Style", Palatino, "Palatino Linotype", "Songti SC", serif;
       }
-      main { max-width: 62rem; margin: 0 auto; padding: 3.2rem 1.4rem 5rem; }
-      header p { max-width: 44rem; }
-      .mark {
-        margin: 0 0 0.6rem;
+      main { max-width: 46rem; margin: 0 auto; padding: 2.4rem 1.4rem 5rem; }
+      h1 { font-weight: 500; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; margin: 0 0 0.6rem; }
+      .lede { font-size: 1.05rem; line-height: 1.55; }
+      fieldset { border: 1px solid var(--rule); margin: 0.8rem 0; padding: 0.7rem 0.9rem 0.8rem; }
+      legend { padding: 0 0.3rem; color: var(--muted); }
+      label { margin-right: 0.8rem; cursor: pointer; }
+      #full:checked ~ main label[for="full"],
+      #web:checked ~ main label[for="web"],
+      #addon:checked ~ main label[for="addon"],
+      #off:checked ~ main label[for="off"],
+      #kr:checked ~ main label[for="kr"],
+      #kp:checked ~ main label[for="kp"],
+      #sans:checked ~ main label[for="sans"],
+      #hangul:checked ~ main label[for="hangul"],
+      ${WEIGHTS.map(weight => `#w${weight.css}:checked ~ main label[for="w${weight.css}"]`).join(',\n      ')} {
         color: var(--cinnabar);
-        font-family: "Gukhan Sans", sans-serif;
-        font-size: 1.2rem;
-        line-height: 2;
-        letter-spacing: 0.06em;
       }
-      h1 { font-weight: 500; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; margin: 0 0 1rem; }
-      .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-      .hero p { margin: 0; }
-      .hero .face-ruby { font-size: clamp(2rem, 4.4vw, 3.1rem); line-height: 1.9; }
-      .hero .face-hangul { font-size: clamp(2rem, 4.4vw, 3.1rem); line-height: 1.9; color: var(--indigo); }
-      .lede { font-size: 1.12rem; line-height: 1.55; }
-      .toggle { display: flex; gap: 0.6rem; align-items: center; margin: 1.6rem 0 0; color: var(--muted); }
-      #off { accent-color: var(--cinnabar); }
-      #off:checked ~ .specimen .face-ruby { font-feature-settings: "ss01" 1; }
-      .specimen { margin-top: 1.4rem; border-top: 1px solid var(--rule); }
-      .heads, .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-      .heads { padding: 0.9rem 0 0.2rem; color: var(--muted); font-size: 0.84rem; letter-spacing: 0.04em; }
-      .heads span:last-child { color: var(--indigo); }
-      figure { margin: 0; padding: 1.15rem 0 1.25rem; border-bottom: 1px solid var(--rule); }
-      figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.45; margin-bottom: 0.35rem; }
-      figcaption span { display: block; margin-top: 0.15rem; color: var(--cinnabar); }
-      .face-ruby, .face-hangul, .try {
-        font-size: clamp(1.45rem, 2.6vw, 2.05rem);
+      .face, .try, .layer p {
+        font-size: clamp(1.45rem, 2.8vw, 2.15rem);
         line-height: 2;
         margin: 0;
       }
-      .face-ruby, .try.face-ruby { font-family: "Gukhan Sans", sans-serif; }
-      .face-hangul, .try.face-hangul { font-family: "Gukhan Hangul", sans-serif; color: var(--indigo); }
+      main .face { font-family: "Gukhan Sans VF", sans-serif; font-weight: 400; }
+      ${WEIGHTS.map(weight => `#w${weight.css}:checked ~ main .face { font-weight: ${weight.css}; }`).join('\n      ')}
+${familyRules()}
+      #off:checked ~ main .face { font-feature-settings: "ss01" 1; }
+      #off:checked ~ #hangul:checked ~ main .face { font-feature-settings: "ss01" 0; }
+      .kp-note, .kp-read { display: none; }
+      #kp:checked ~ main .kr-note, #kp:checked ~ main .kr-read { display: none; }
+      #kp:checked ~ main .kp-note, #kp:checked ~ main .kp-read { display: inline; }
+      figure { margin: 0; padding: 0.9rem 0; border-bottom: 1px solid var(--rule); }
+      figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.45; margin-bottom: 0.2rem; }
+      figcaption .kr-read { display: block; color: var(--cinnabar); }
+      figcaption .kp-read { display: none; color: var(--cinnabar); }
+      #kp:checked ~ main figcaption .kr-read { display: none; }
+      #kp:checked ~ main figcaption .kp-read { display: block; }
       .try {
         width: 100%;
-        min-height: 6.4rem;
+        min-height: 6rem;
         border: 0;
         padding: 0;
         resize: vertical;
         background: transparent;
-        font: inherit;
-        font-size: clamp(1.45rem, 2.6vw, 2.05rem);
-        line-height: 2;
+        color: inherit;
       }
-      .try.face-ruby { font-family: "Gukhan Sans", sans-serif; color: inherit; }
       .try:focus { outline: none; }
+      .layer { margin-top: 1.6rem; padding-top: 0.4rem; border-top: 1px solid var(--rule); }
+      .layer h2 { font-size: 1.15rem; font-weight: 500; margin: 0.8rem 0; }
+      .layer p { margin: 0.2rem 0 0.8rem; }
+      .layer-body { font-family: "Gothic A1", "Hanja Box"; color: var(--indigo); }
+      .layer-ruby { font-family: "Gukhan Sans Hanja", "Gothic A1", sans-serif; }
+      .layer-replace { font-family: "Gukhan Hangul Hanja", "Gothic A1", sans-serif; color: var(--indigo); }
+      .layer-kp { font-family: "Gukhan Sans KP Hanja", "Gothic A1", sans-serif; }
       footer { margin-top: 2rem; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
       code { font-family: ui-monospace, monospace; font-size: 0.88em; }
-      @media (max-width: 720px) {
-        .hero, .heads, .pair { grid-template-columns: 1fr; }
-      }
     </style>
   </head>
   <body>
+    <input id="full" name="source" type="radio" checked>
+    <input id="web" name="source" type="radio">
+    <input id="addon" name="source" type="radio">
+    <input id="off" type="checkbox">
+    <input id="kr" name="region" type="radio" checked>
+    <input id="kp" name="region" type="radio">
+    <input id="sans" name="family" type="radio" checked>
+    <input id="hangul" name="family" type="radio">
+${weights}
     <main>
       <header>
-        <p class="mark">國漢 · 두 글꼴</p>
-        <div class="hero">
-          <p class="face-ruby">國漢文混用</p>
-          <p class="face-hangul">國漢文混用</p>
-        </div>
-        <p class="lede">왼쪽 <strong>Gukhan Sans</strong>는 한자 위에 한글 독음을 그립니다. 오른쪽 <strong>Gukhan Hangul</strong>은 그 한자를 같은 독음의 한글로 바꿉니다. 어느 쪽이든 복사하면 한자이고, <code>&lt;ruby&gt;</code>도 스크립트도 없습니다.</p>
-        <p class="lede">Gukhan Sans draws the reading above the Hanja. Gukhan Hangul sets that reading in its place, at the same width as ordinary Hangul. The characters you copy are still the Hanja.</p>
+        <h1>國漢文混用</h1>
+        <p class="lede">같은 한자를 독음 글꼴, 치환 글꼴, 남한·북한 읽음, 굵기, 웹 서브셋, 한자 애드온으로 바꿉니다. 복사하면 한자입니다.</p>
       </header>
-      <input id="off" type="checkbox">
-      <label class="toggle" for="off">Gukhan Sans 독음 끄기 · stylistic set ss01</label>
-      <section class="specimen">
-        <div class="heads"><span>Gukhan Sans</span><span>Gukhan Hangul</span></div>
+      <fieldset>
+        <legend>판</legend>
+        <label for="full">전체 가변</label>
+        <label for="web">웹 서브셋</label>
+        <label for="addon">한자 애드온</label>
+      </fieldset>
+      <fieldset>
+        <legend>독음</legend>
+        <label for="off">Gukhan Sans 독음 끄기 · ss01</label>
+      </fieldset>
+      <fieldset>
+        <legend>지역</legend>
+        <label for="kr">남한 ko-KR</label>
+        <label for="kp">북한 ko-KP</label>
+      </fieldset>
+      <fieldset>
+        <legend>글꼴</legend>
+        <label for="sans">독음 Gukhan Sans</label>
+        <label for="hangul">치환 Gukhan Hangul</label>
+      </fieldset>
+      <fieldset>
+        <legend>굵기</legend>
+        ${WEIGHTS.map(weight => `<label for="w${weight.css}">${weight.name}</label>`).join('\n        ')}
+      </fieldset>
+      <section>
 ${cards}
         <figure>
-          <figcaption>직접 쳐 보세요. 두 칸은 따로입니다. 한자 묶음이 길수록 그 단어가 이깁니다.</figcaption>
-          <div class="pair">
-            <textarea class="try face-ruby" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</textarea>
-            <textarea class="try face-hangul" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</textarea>
-          </div>
+          <figcaption>직접 쳐 보세요. 복사하면 한자입니다.</figcaption>
+          <textarea class="try face" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</textarea>
         </figure>
       </section>
+      <section class="layer">
+        <h2>한자만 얹기</h2>
+        <p class="lede">본문은 Gothic A1입니다. 한자가 없는 글꼴이라 첫 줄의 한자는 빈칸입니다. 아래 줄은 한자 애드온이 그 한자만 그리고, 와 같은 한글은 Gothic A1이 그립니다.</p>
+        <p class="layer-body">女子와 男女, 平壤 冷麵</p>
+        <p class="layer-ruby">女子와 男女, 平壤 冷麵</p>
+        <p class="layer-replace">女子와 男女, 平壤 冷麵</p>
+        <p class="layer-kp">女子와 男女, 平壤 冷麵</p>
+      </section>
       <footer>
-        <p>둘 다 Source Han Sans KR Regular에 표준국어대사전 단어와 Unihan kHangul 글자 읽음을 올렸습니다. 빌드하기 전에는 독음이 보이지 않고, 오른쪽은 한자 그대로입니다.</p>
+        <p>가변 글꼴의 기본 인스턴스는 ExtraLight라, 이 페이지는 굵기 400에서 시작합니다. 웹 서브셋은 Regular 하나입니다. 한자 애드온의 독음은 올라간 어센더(${escapeHtml(metrics.rubyAscent)})를 쓰고, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 디센더는 ${escapeHtml(metrics.descent)}입니다.</p>
       </footer>
     </main>
   </body>
@@ -132,6 +309,4 @@ ${cards}
 `
 }
 
-function escapeHtml(text: string): string {
-  return text.replace(/[&<>]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[char]!)
-}
+export type { WeightName }

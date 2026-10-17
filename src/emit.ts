@@ -1,7 +1,7 @@
 import type { Plan } from '../vendor/furifont/plan.ts'
 import { allowsRyeolSoftening, applyInitialSoundLaw, isRyeolRyul } from './hangul.ts'
 import { GLYPH_LIMIT, GLYPH_MARGIN, selectLigatures, type Reader, type WordEntry } from './select.ts'
-import { codePoints, isHan, uniName } from './text.ts'
+import { codePoints, isHan, segment, uniName } from './text.ts'
 
 const RUBY_METRICS = {
   rubyScale: 0.4,
@@ -40,6 +40,11 @@ export interface BuildInput {
    * substitution. Omitted in tests, where every codepoint is its own glyph.
    */
   glyphOf?: ReadonlyMap<number, number>
+  /**
+   * South Korean 두음 법칙. Default on. ko-KP passes false: no word-initial
+   * alternate and no 렬/률 softening, so those glyphs are not built.
+   */
+  initialSoundLaw?: boolean
 }
 
 export interface BuildReport {
@@ -59,6 +64,7 @@ export interface BuildReport {
   hanjaWithReading: number
   /** Dictionary ligatures that share an outline with one already emitted. */
   collapsedLigatures: number
+  initialSoundLaw: boolean
 }
 
 interface CharGlyph {
@@ -127,24 +133,14 @@ export function shapeGlyphs(
   words: Map<string, WordGlyph>,
   baseOf: (cp: number) => number = cp => cp,
 ): string[] {
-  const input = [...text]
   const pieces: Piece[] = []
-  let index = 0
-  while (index < input.length) {
-    const cp = input[index]!.codePointAt(0)!
-    if (!isHan(cp)) {
-      let end = index + 1
-      while (end < input.length && !isHan(input[end]!.codePointAt(0)!))
-        end++
-      for (const char of input.slice(index, end))
+  for (const part of segment(text)) {
+    if (!part.han) {
+      for (const char of part.text)
         pieces.push({ name: uniName(char.codePointAt(0)!), ryeol: false, open: false, han: false })
-      index = end
       continue
     }
-    let end = index + 1
-    while (end < input.length && isHan(input[end]!.codePointAt(0)!))
-      end++
-    const run = input.slice(index, end)
+    const run = part.chars
     let cursor = 0
     while (cursor < run.length) {
       let matched: WordGlyph | undefined
@@ -179,7 +175,6 @@ export function shapeGlyphs(
       }
       cursor++
     }
-    index = end
   }
 
   let previous: Piece | undefined
@@ -217,6 +212,7 @@ export interface ReadingPlan {
  * OpenType rules do not depend on whether the reading is drawn above or instead.
  */
 export function planReadings(input: BuildInput): ReadingPlan {
+  const law = input.initialSoundLaw !== false
   const baseOf = (cp: number): number => input.glyphOf?.get(cp) ?? cp
   const groups = new Map<number, number[]>()
   for (const cp of input.underlying.keys()) {
@@ -240,7 +236,7 @@ export function planReadings(input: BuildInput): ReadingPlan {
         cp = other
     }
     const medial = input.underlying.get(cp) ?? input.underlying.get(cps.find(item => input.underlying.has(item))!)!
-    const initial = applyInitialSoundLaw(medial)
+    const initial = law ? applyInitialSoundLaw(medial) : medial
     const dual = initial !== medial
     const glyph: CharGlyph = {
       cp,
@@ -249,7 +245,7 @@ export function planReadings(input: BuildInput): ReadingPlan {
       medialName: `gkc${hex(cp)}`,
       initialName: dual ? `gki${hex(cp)}` : `gkc${hex(cp)}`,
       dual,
-      ryeol: isRyeolRyul(medial),
+      ryeol: law && isRyeolRyul(medial),
       open: allowsRyeolSoftening(medial),
     }
     charList.push(glyph)
@@ -261,8 +257,10 @@ export function planReadings(input: BuildInput): ReadingPlan {
 
   const probe = 1
   const reserved = input.baseGlyphCount + charList.length + charList.filter(char => char.dual).length + probe
+  if (reserved > GLYPH_LIMIT)
+    throw new Error(`character readings alone need ${reserved} glyphs, past ${GLYPH_LIMIT}`)
   const ligatureBudget = Math.max(0, GLYPH_LIMIT - GLYPH_MARGIN - reserved)
-  const reader = selectLigatures(input.entries, input.underlying, input.coverage, ligatureBudget, true)
+  const reader = selectLigatures(input.entries, input.underlying, input.coverage, ligatureBudget, law)
 
   const representative = new Map<number, number>()
   for (const glyph of charList)
@@ -407,17 +405,22 @@ export function planReadings(input: BuildInput): ReadingPlan {
     droppedForBudget: reader.stats.droppedForBudget,
     hanjaWithReading: charList.length,
     collapsedLigatures,
+    initialSoundLaw: law,
   }
 
   return { reader, report, shape, glyphs, codepoints, fea, smoke }
 }
 
 /** The same readings, drawn either as ruby or as a Hangul replacement. */
-export function emitFamily(planned: ReadingPlan, style: FamilyStyle = 'ruby'): { plan: Plan, reader: Reader, report: BuildReport, shape: (text: string) => string[] } {
+export function emitFamily(
+  planned: ReadingPlan,
+  style: FamilyStyle = 'ruby',
+  names?: { family: string, description: string },
+): { plan: Plan, reader: Reader, report: BuildReport, shape: (text: string) => string[] } {
   const family = FAMILIES[style]
   const plan: Plan = {
     version: 1,
-    names: { family: family.family, description: family.description },
+    names: names ?? { family: family.family, description: family.description },
     placement: family.placement,
     metrics: { ...family.metrics },
     codepoints: planned.codepoints,

@@ -61,6 +61,16 @@ export function underlyingSyllable(readings: Record<string, string>): string | u
   return reverted[0] ?? best
 }
 
+/** Codepoints with a KS X 1001 citation (`0`…), the web subset's Hanja. */
+export function ksx1001Codepoints(table: Record<string, Record<string, string>>): number[] {
+  const out: number[] = []
+  for (const [char, readings] of Object.entries(table)) {
+    if (Object.values(readings).some(code => code.startsWith('0')))
+      out.push(char.codePointAt(0)!)
+  }
+  return out
+}
+
 /** Codepoint to its underlying (pre-두음) Hangul syllable. */
 export function loadUnderlying(table: Record<string, Record<string, string>>): Map<number, string> {
   const out = new Map<number, string>()

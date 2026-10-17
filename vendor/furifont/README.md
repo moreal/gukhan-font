@@ -13,5 +13,6 @@ Changes from upstream:
 - `index.ts` is a trimmed entry (no browser build, no base-font catalog, no ruby simulator).
 - `node.ts` is unchanged and supplies Brotli plus the hb-subset loader.
 - `plan.ts`, `outline.ts`, and `build.ts` accept `placement: 'replace'`. That mode draws the reading on the baseline at each Hangul syllable's own advance and does not raise the ascender. `ruby` is unchanged.
+- `subset.ts` takes an optional `layoutFeatures` list. Omit it and every layout feature is kept, as before.
 
 Do not edit the drawing code to change which word gets which reading. That belongs in `src/`.

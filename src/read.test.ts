@@ -3,12 +3,17 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
+import { createHash } from 'node:crypto'
 import { emitFamily, planReadings } from './emit.ts'
+import { productName } from './families.ts'
 import { applyInitialSoundLaw, revertInitialSoundLaw } from './hangul.ts'
-import { loadUnderlying, underlyingSyllable } from './readings.ts'
+import { ksx1001Codepoints, loadUnderlying, underlyingSyllable } from './readings.ts'
+import { applyCharacterOverrides, entriesForRegion, loadNorthKorean, loadSouthKorean, undoDueum } from './region.ts'
 import { SAMPLES } from './samples.ts'
 import { readWithDictionary, selectLigatures, type WordEntry } from './select.ts'
-import { hangulOnly } from './text.ts'
+import { NORTH_KOREAN_SHA256 } from './sources.ts'
+import { hangulOnly, isHan } from './text.ts'
+import { codepointsSharingGlyph, formatUnicodeRange, webCodepoints } from './web.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -20,6 +25,9 @@ test('initial sound law rewrites only the syllables in the orthography table', (
   assert.equal(applyInitialSoundLaw('률'), '율')
   assert.equal(applyInitialSoundLaw('렬'), '열')
   assert.equal(applyInitialSoundLaw('라'), '나')
+  assert.equal(applyInitialSoundLaw('뉴'), '유')
+  assert.equal(applyInitialSoundLaw('례'), '예')
+  assert.equal(applyInitialSoundLaw('뢰'), '뇌')
   assert.equal(applyInitialSoundLaw('가'), '가')
   assert.equal(applyInitialSoundLaw('한'), '한')
   assert.deepEqual(revertInitialSoundLaw('여').sort(), ['녀', '려'])
@@ -63,7 +71,7 @@ test('dictionary readings, 두음 법칙, and ligatures', () => {
   assert.equal(readWithDictionary('男女', new Map(), underlying, true), '남녀')
   assert.equal(readWithDictionary('六月', new Map(), underlying, true), '육월')
 
-  const planned = planReadings({ underlying, entries, coverage, baseGlyphCount: 0 })
+  const planned = planReadings({ underlying, entries, coverage, baseGlyphCount: 24973 })
   const { reader, shape, report, plan } = emitFamily(planned, 'ruby')
   const hangul = emitFamily(planned, 'replace')
   assert.equal(plan.names.family, 'Gukhan Sans')
@@ -104,6 +112,7 @@ test('dictionary readings, 두음 법칙, and ligatures', () => {
   assert.equal(shape('六')[0], 'gki516D')
   assert.equal(shape('五六')[1], 'gkc516D')
   assert.equal(shape('六月').length, 1)
+  assert.equal(shape('困難').length, 1)
 
   let mismatches = 0
   for (const entry of entries) {
@@ -116,4 +125,137 @@ test('dictionary readings, 두음 법칙, and ligatures', () => {
       mismatches++
   }
   assert.equal(mismatches, 0)
+
+  const fea = plan.fea
+  const wordsAt = fea.indexOf('lookup words')
+  const medialAt = fea.indexOf('lookup medial')
+  const adjustAt = fea.indexOf('lookup adjust')
+  const rcltAt = fea.indexOf('feature rclt')
+  assert.ok(wordsAt !== -1 && wordsAt < medialAt && medialAt < adjustAt && adjustAt < rcltAt)
+  const ryeolAt = fea.indexOf("sub @open @ryeol' lookup surface;")
+  const ignoreAt = fea.indexOf("ignore sub @hanctx @dueum';")
+  const initialAt = fea.indexOf("sub @dueum' lookup surface;")
+  assert.ok(ryeolAt !== -1 && ryeolAt < ignoreAt && ignoreAt < initialAt)
+  assert.ok(fea.indexOf('lookup ruby_off') < fea.indexOf('feature ss01'))
+})
+
+function cp(text: string): number {
+  return text.codePointAt(0)!
+}
+
+test('undoDueum restores only a syllable that is the underlying reading or its law form', () => {
+  const underlying = new Map<number, string>([
+    ['音', '음'], ['樂', '락'], ['分', '분'], ['裂', '렬'],
+    ['十', '십'], ['月', '월'], ['上', '상'], ['海', '해'],
+    ['女', '녀'], ['子', '자'], ['六', '륙'], ['法', '법'], ['律', '률'],
+  ].map(([hanja, syllable]) => [cp(hanja), syllable]))
+  assert.equal(undoDueum('音樂', '음악', underlying), '음악')
+  assert.equal(undoDueum('分裂', '분열', underlying), '분렬')
+  assert.equal(undoDueum('十月', '시월', underlying), '시월')
+  assert.equal(undoDueum('上海', '상하이', underlying), '상하이')
+  assert.equal(undoDueum('女子', '여자', underlying), '녀자')
+  assert.equal(undoDueum('六月', '유월', underlying), '유월')
+  assert.equal(undoDueum('法律', '법률', underlying), '법률')
+})
+
+test('ligature budget drops a word the fallback misreads', () => {
+  const underlying = new Map([[cp('音'), '음'], [cp('樂'), '락']])
+  const coverage = new Set(underlying.keys())
+  const reader = selectLigatures([{ hanja: '音樂', reading: '음악' }], underlying, coverage, 0, true)
+  assert.equal(reader.words.size, 0)
+  assert.equal(reader.stats.droppedForBudget, 1)
+  assert.equal(reader.read('音樂'), '음락')
+  assert.equal(reader.stats.eligible, 1)
+})
+
+test('a headword with a non-Han character is not a ligature', () => {
+  const underlying = new Map([[cp('型'), '형'], [cp('鋼'), '강']])
+  const coverage = new Set([cp('ㄷ'), cp('型'), cp('鋼')])
+  const reader = selectLigatures([{ hanja: 'ㄷ型鋼', reading: 'ㄷ형강' }], underlying, coverage, 10, true)
+  assert.equal(reader.words.size, 0)
+  assert.equal(reader.stats.eligible, 0)
+  assert.equal(reader.stats.missingGlyph, 0)
+})
+
+test('north korean rows skip the header and keep the first duplicate', () => {
+  const entries = loadNorthKorean('hanja\thangul\trequire_hanja\trequire_hangul\n女子\t녀자\tfalse\tfalse\n女子\t여자\tfalse\tfalse\n')
+  assert.deepEqual(entries, [{ hanja: '女子', reading: '녀자' }])
+  const raw = readFileSync(join(root, 'data', 'ko-kp-opendict.tsv'))
+  assert.equal(createHash('sha256').update(raw).digest('hex'), NORTH_KOREAN_SHA256)
+})
+
+test('ko-KP keeps 우리말샘 readings and does not build 두음 glyphs', () => {
+  const table = JSON.parse(readFileSync(join(root, 'data', 'khangul.json'), 'utf8')) as Record<string, Record<string, string>>
+  const underlying = loadUnderlying(table)
+  const south = loadSouthKorean(readFileSync(join(root, 'data', 'ko-kr-stdict.tsv'), 'utf8'))
+  const north = loadNorthKorean(readFileSync(join(root, 'data', 'ko-kp-opendict.tsv'), 'utf8'))
+  const entries = entriesForRegion(south, north, underlying, 'ko-KP')
+  const kpUnderlying = applyCharacterOverrides(underlying, north)
+  assert.equal(kpUnderlying.get(cp('娘')), '랑')
+  assert.equal(kpUnderlying.get(cp('綠')), '녹')
+  assert.notEqual(underlying.get(cp('娘')), kpUnderlying.get(cp('娘')))
+  const coverage = new Set<number>(kpUnderlying.keys())
+  for (const entry of entries) {
+    for (const char of entry.hanja)
+      coverage.add(char.codePointAt(0)!)
+  }
+  assert.equal(readWithDictionary('平壤 冷麵', new Map(), underlying, false), '평양 랭면')
+  assert.equal(readWithDictionary('女子', new Map(), underlying, false), '녀자')
+  assert.equal(readWithDictionary('六月', new Map(), underlying, false), '륙월')
+  assert.equal(readWithDictionary('音樂', new Map(), underlying, false), '음락')
+  assert.equal(readWithDictionary('快樂', new Map(), underlying, false), '쾌락')
+
+  const planned = planReadings({ underlying: kpUnderlying, entries, coverage, baseGlyphCount: 24973, initialSoundLaw: false })
+  const { reader, shape, report, plan } = emitFamily(planned, 'ruby', productName('ruby', 'ko-KP', 'static'))
+  assert.equal(plan.names.family, 'Gukhan Sans KP')
+  assert.equal(plan.names.family.includes('Source'), false)
+  assert.equal(report.initialSoundLaw, false)
+  assert.equal(report.initialGlyphs, 0)
+  assert.equal(report.droppedForBudget, 0)
+  assert.equal(plan.fea.includes('lookup adjust'), false)
+  assert.equal(plan.fea.includes('gki'), false)
+  for (const sample of SAMPLES)
+    assert.equal(reader.read(sample.text), sample.kp, sample.text)
+  assert.equal(shape('女子')[0], 'gkc5973')
+  assert.equal(shape('男女')[1], 'gkc5973')
+  assert.equal(shape('冷')[0], 'gkc51B7')
+  assert.equal(shape('六月').length, 1)
+  assert.equal(reader.words.get('六月'), '류월')
+  assert.equal(reader.read('困難'), '곤난')
+  assert.equal(reader.words.has('困難'), false)
+  assert.equal(shape('困難').length, 2)
+  assert.equal(reader.words.has('女子'), false)
+  assert.equal(shape('比率')[1], 'gkc7387')
+  assert.equal(shape('分裂')[1], 'gkc88C2')
+  assert.deepEqual(shape('利率'), ['gkc5229', 'gkc7387'])
+  assert.equal(shape('法律')[1], 'gkc5F8B')
+
+  const byName = new Map(plan.glyphs.map(glyph => [glyph.name, glyph]))
+  assert.equal(byName.get(shape('六月')[0]!)?.ruby.map(part => part.text).join(''), '류월')
+  assert.equal(byName.get('gkc5973')?.ruby[0]?.text, '녀')
+  assert.equal(byName.has('gki5973'), false)
+
+  let mismatches = 0
+  for (const entry of entries) {
+    if ([...entry.hanja].some(char => !isHan(char.codePointAt(0)!) || !coverage.has(char.codePointAt(0)!)))
+      continue
+    const target = hangulOnly(entry.reading)
+    if (!target)
+      continue
+    if (reader.read(entry.hanja) !== target)
+      mismatches++
+  }
+  assert.equal(mismatches, 0)
+})
+
+test('web coverage keeps non-Hanja and KS X 1001, and shared outlines', () => {
+  const table = JSON.parse(readFileSync(join(root, 'data', 'khangul.json'), 'utf8')) as Record<string, Record<string, string>>
+  const ksx = ksx1001Codepoints(table)
+  assert.ok(ksx.includes(cp('國')))
+  assert.equal(formatUnicodeRange([0x4E00, 0x4E01, 0x4E02, 0xAC00]), 'U+4E00-4E02, U+AC00')
+  const font = [cp('가'), cp('A'), cp('國'), cp('樂'), cp('女')]
+  const selected = webCodepoints(font, [cp('國')], [cp('樂')])
+  assert.deepEqual(selected, [cp('A'), cp('가'), cp('國'), cp('樂')].sort((a, b) => a - b))
+  const glyphOf = new Map([[cp('女'), 7], [cp('女'), 7], [cp('가'), 3]])
+  assert.deepEqual(codepointsSharingGlyph(glyphOf, [cp('女')]), [cp('女'), cp('女')].sort((a, b) => a - b))
 })

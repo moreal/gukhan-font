@@ -1,5 +1,6 @@
 node_modules/
 dist/
 .cache/
+demo/fonts/
 src/**/*.js
 vendor/**/*.js

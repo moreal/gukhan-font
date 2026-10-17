@@ -37,11 +37,6 @@ export function uniName(cp: number): string {
   return cp > 0xFFFF ? `u${hex}` : `uni${hex.padStart(4, '0')}`
 }
 
-export interface HanRun {
-  start: number
-  chars: string[]
-}
-
 /** Split `text` into Han runs and the other characters, in order. */
 export function segment(text: string): Array<{ han: false, text: string } | { han: true, chars: string[] }> {
   const chars = [...text]

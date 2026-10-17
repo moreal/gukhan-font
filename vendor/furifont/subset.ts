@@ -43,8 +43,22 @@ async function load(wasm: SubsetWasm): Promise<SubsetModule> {
   return hb
 }
 
-/** Keeps only what `codepoints` need, with every layout feature and name. */
-export async function subsetFont(font: Uint8Array, codepoints: number[], wasm: SubsetWasm): Promise<Uint8Array> {
+export interface SubsetOptions {
+  /**
+   * Layout features to keep, as four-byte tags. Omit to keep every feature.
+   * An empty list keeps none. Name records are always kept.
+   */
+  layoutFeatures?: readonly string[]
+}
+
+function featureTag(tag: string): number {
+  if (!/^[A-Za-z0-9 ]{4}$/.test(tag))
+    throw new Error(`bad feature tag ${tag}`)
+  return (tag.charCodeAt(0) << 24) | (tag.charCodeAt(1) << 16) | (tag.charCodeAt(2) << 8) | tag.charCodeAt(3)
+}
+
+/** Keeps only what `codepoints` need, with every layout feature and name unless `options` says otherwise. */
+export async function subsetFont(font: Uint8Array, codepoints: number[], wasm: SubsetWasm, options?: SubsetOptions): Promise<Uint8Array> {
   let loading = instances.get(wasm)
   if (!loading)
     instances.set(wasm, loading = load(wasm))
@@ -59,7 +73,13 @@ export async function subsetFont(font: Uint8Array, codepoints: number[], wasm: S
     const unicodes = hb.hb_subset_input_unicode_set(input)
     for (const cp of codepoints)
       hb.hb_set_add(unicodes, cp)
-    for (const which of [HB_SUBSET_SETS_LAYOUT_FEATURE_TAG, HB_SUBSET_SETS_NAME_ID, HB_SUBSET_SETS_NAME_LANG_ID]) {
+    const features = hb.hb_subset_input_set(input, HB_SUBSET_SETS_LAYOUT_FEATURE_TAG)
+    hb.hb_set_clear(features)
+    if (options?.layoutFeatures)
+      options.layoutFeatures.forEach(tag => hb.hb_set_add(features, featureTag(tag)))
+    else
+      hb.hb_set_invert(features)
+    for (const which of [HB_SUBSET_SETS_NAME_ID, HB_SUBSET_SETS_NAME_LANG_ID]) {
       const set = hb.hb_subset_input_set(input, which)
       hb.hb_set_clear(set)
       hb.hb_set_invert(set)

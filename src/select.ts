@@ -178,6 +178,11 @@ export function selectLigatures(
     const chars = [...entry.hanja]
     if (chars.length < 2)
       continue
+    // A non-Han character (ㄷ型鋼) is not a Han run the font can ligate. Counting
+    // it as missing would spend nothing, but it must not become a ligature via
+    // a Hangul syllable that happens to be in the font.
+    if (chars.some(char => !isHan(char.codePointAt(0)!)))
+      continue
     if (chars.some(char => !coverage.has(char.codePointAt(0)!))) {
       missingGlyph++
       continue
