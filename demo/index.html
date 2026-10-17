@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>국한 Gukhan Sans</title>
+    <style>
+      @font-face {
+        font-family: "Gukhan Sans";
+        src: url("../dist/GukhanSans-Regular.woff2") format("woff2"),
+             url("../dist/GukhanSans-Regular.otf") format("opentype");
+        font-weight: 400;
+        font-display: swap;
+      }
+      :root {
+        color-scheme: light;
+        --paper: #f3efe4;
+        --ink: #1c1915;
+        --muted: #6b645b;
+        --rule: #ddd4c4;
+        --cinnabar: #8c2f2b;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Iowan Old Style", Palatino, "Palatino Linotype", "Songti SC", serif;
+      }
+      main { max-width: 46rem; margin: 0 auto; padding: 3.5rem 1.4rem 5rem; }
+      header p { max-width: 38rem; }
+      .mark {
+        margin: 0 0 0.4rem;
+        color: var(--cinnabar);
+        font-family: "Gukhan Sans", sans-serif;
+        font-size: 1.35rem;
+        line-height: 2;
+        letter-spacing: 0.08em;
+      }
+      h1 { font-weight: 500; font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.9; margin: 0 0 0.4rem; }
+      h1 span { font-family: "Gukhan Sans", sans-serif; }
+      .lede { font-size: 1.15rem; line-height: 1.55; }
+      .toggle { display: flex; gap: 0.6rem; align-items: center; margin: 1.6rem 0 0; color: var(--muted); }
+      #off { accent-color: var(--cinnabar); }
+      #off:checked ~ .specimen { font-feature-settings: "ss01" 1; }
+      .specimen { margin-top: 1.4rem; border-top: 1px solid var(--rule); }
+      figure { margin: 0; padding: 1.35rem 0 1.5rem; border-bottom: 1px solid var(--rule); }
+      figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.45; }
+      figcaption span { display: block; margin-top: 0.15rem; color: var(--cinnabar); }
+      figure p, .try {
+        font-family: "Gukhan Sans", sans-serif;
+        font-size: clamp(1.8rem, 4vw, 2.55rem);
+        line-height: 2;
+        margin: 0.55rem 0 0;
+      }
+      .try {
+        width: 100%;
+        min-height: 6.2rem;
+        border: 0;
+        padding: 0;
+        resize: vertical;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+      }
+      .try:focus { outline: none; }
+      footer { margin-top: 2rem; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+      code { font-family: ui-monospace, monospace; font-size: 0.88em; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="mark">國漢 · GUKHAN SANS</p>
+        <h1><span>國漢文混用</span></h1>
+        <p class="lede">한글 독음이 글꼴 안에 있습니다. <code>&lt;ruby&gt;</code>도 스크립트도 쓰지 않습니다. 선택한 글자는 그대로 한자입니다. 줄 간격은 독음이 잘리지 않도록 넉넉히 잡혀 있습니다.</p>
+        <p class="lede">The Hangul reading is set by the font. The characters you copy are still the Hanja.</p>
+      </header>
+      <input id="off" type="checkbox">
+      <label class="toggle" for="off">독음 끄기 · stylistic set ss01</label>
+      <section class="specimen">
+        <figure>
+          <figcaption>글자마다 한 음절. 합자가 없어도 읽힌다. <span>국한문혼용</span></figcaption>
+          <p>國漢文混用</p>
+        </figure>
+        <figure>
+          <figcaption>한자와 한글은 서로 다른 글자 묶음이다. <span>대한민국의 헌법</span></figcaption>
+          <p>大韓民國의 憲法</p>
+        </figure>
+        <figure>
+          <figcaption>두음 법칙. 女는 첫소리에서만 여. <span>여자와 남녀</span></figcaption>
+          <p>女子와 男女</p>
+        </figure>
+        <figure>
+          <figcaption>樂은 단어에 따라 악 또는 락. 音樂만 합자. <span>음악과 쾌락</span></figcaption>
+          <p>音樂과 快樂</p>
+        </figure>
+        <figure>
+          <figcaption>남한식 두음. 冷은 첫소리에서 냉. <span>평양 냉면</span></figcaption>
+          <p>平壤 冷麵</p>
+        </figure>
+        <figure>
+          <figcaption>來는 첫소리에서 내, 그 외에는 래. <span>내일과 미래</span></figcaption>
+          <p>來日과 未來</p>
+        </figure>
+        <figure>
+          <figcaption>困難은 곤난이 아니라 곤란. 합자로 고친다. <span>곤란한 문제</span></figcaption>
+          <p>困難한 問題</p>
+        </figure>
+        <figure>
+          <figcaption>六月·十月은 사전 읽음. 五六은 글자 읽음. <span>유월과 시월, 오륙</span></figcaption>
+          <p>六月과 十月, 五六</p>
+        </figure>
+        <figure>
+          <figcaption>률은 받침에 따라 률로 남거나 율이 된다. <span>법률, 비율, 규율, 이율, 분열</span></figcaption>
+          <p>法律, 比率, 規律, 利率, 分裂</p>
+        </figure>
+        <figure>
+          <figcaption>모르는 한자도 글자 읽음이 붙는다. <span>한자로 쓴 글</span></figcaption>
+          <p>漢字로 쓴 글</p>
+        </figure>
+        <figure>
+          <figcaption>직접 쳐 보세요. 한자 묶음이 길수록 그 단어가 이깁니다.</figcaption>
+          <textarea class="try" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</textarea>
+        </figure>
+      </section>
+      <footer>
+        <p>Gukhan Sans Regular. Source Han Sans KR에 표준국어대사전 단어와 Unihan kHangul 글자 읽음을 올렸습니다. 빌드하기 전에는 독음이 보이지 않습니다.</p>
+      </footer>
+    </main>
+  </body>
+</html>

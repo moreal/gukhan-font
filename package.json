@@ -1,0 +1,23 @@
+{
+  "name": "gukhan-font",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A Korean font that shows the Hangul reading above Hanja.",
+  "engines": {
+    "node": ">=22.14"
+  },
+  "scripts": {
+    "test": "node --import tsx --test src/read.test.ts",
+    "build": "tsx src/cli.ts",
+    "demo": "python3 -m http.server 4173"
+  },
+  "dependencies": {
+    "harfbuzzjs": "1.6.3",
+    "valibot": "1.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.1",
+    "tsx": "4.20.6"
+  }
+}
