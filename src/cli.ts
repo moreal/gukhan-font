@@ -418,7 +418,9 @@ function jobsFor(planned: PlannedRegion[], weights: Map<WeightName, Uint8Array>,
     }
   }
   if (PAGES) {
-    return out.filter(job => job.kind === 'web' || (job.kind === 'static' && job.weight === 'Regular'))
+    // The site ships web Regular, the Regular Hanja add-on, and the four variable fonts.
+    // The weight slider and waterfall load a variable font only when they need it.
+    return out.filter(job => job.kind === 'web' || job.kind === 'vf' || (job.kind === 'static' && job.weight === 'Regular'))
   }
   if (!CHECK)
     return out
