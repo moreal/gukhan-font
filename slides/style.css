@@ -25,6 +25,9 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  ascent-override: 133%;
+  descent-override: 28.8%;
+  line-gap-override: 0%;
 }
 @font-face {
   font-family: "Gothic A1";
@@ -32,6 +35,16 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+}
+@font-face {
+  font-family: "Gothic A1 Ruby";
+  src: url("/gukhan-font/fonts/GothicA1-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 133%;
+  descent-override: 28.8%;
+  line-gap-override: 0%;
 }
 @font-face {
   font-family: "Hanja Box";
@@ -116,7 +129,7 @@ html.dark .slidev-layout .shiki {
 .replace { font-family: "Gukhan Hangul Web", sans-serif; color: #243856; }
 .kp { font-family: "Gukhan Sans KP Web", sans-serif; }
 .plain { font-family: "Gothic A1", "Hanja Box", sans-serif; color: #243856; }
-.addon { font-family: "Gukhan Sans Hanja", "Gothic A1", sans-serif; }
+.addon { font-family: "Gukhan Sans Hanja", "Gothic A1 Ruby", sans-serif; }
 
 .cols {
   display: grid;

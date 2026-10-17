@@ -45,6 +45,8 @@
 </style>
 ```
 
+한글 글꼴에도 애드온과 같은 `ascent-override`, `descent-override`, `line-gap-override`를 주세요. 루비는 133%, 치환은 116%라서 폰트 패밀리를 둘로 나눕니다. 예는 [안내](docs/guide.md)의 「본문 글꼴의 메트릭」에 있습니다.
+
 `ss01`은 루비 폰트의 독음만 끕니다. 가변 폰트의 기본 인스턴스는 ExtraLight라서, 굵기를 지정합니다.
 
 ## 빌드

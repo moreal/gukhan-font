@@ -183,7 +183,7 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
         <p>한자 애드온은 그 정적 글꼴에서 한자 cmap만 남긴 것입니다. 글리프는 ko-KR 24,438개, ko-KP 24,492개이고, cmap은 둘 다 8,497자입니다. 독음이 없는 한자 155자는 빼서 본문 글꼴에 맡깁니다.</p>
 
         <h3>한자만 얹기</h3>
-        <p>애드온의 cmap은 한자뿐입니다. <code>unicode-range</code>를 그 8,497자와 같게 적어야, 글꼴에 없는 한자가 빈 칸이 되지 않고 다음 글꼴로 넘어갑니다. 블록 전체를 적으면, 없는 한자까지 이 글꼴이 맡아 빈 칸이 됩니다. 루비 애드온은 <code>ascent-override: 133%</code>, 치환은 <code>116%</code>, 디센더는 <code>28.8%</code>입니다. 애드온을 <code>font-family</code> 맨 앞에 두면 그 메트릭이 줄 높이를 정합니다.</p>
+        <p>애드온의 cmap은 한자뿐입니다. <code>unicode-range</code>를 그 8,497자와 같게 적어야, 글꼴에 없는 한자가 빈 칸이 되지 않고 다음 글꼴로 넘어갑니다. 블록 전체를 적으면, 없는 한자까지 이 글꼴이 맡아 빈 칸이 됩니다. 루비 애드온은 <code>ascent-override: 133%</code>, 치환은 <code>116%</code>, 디센더는 <code>28.8%</code>입니다. 한글을 그리는 글꼴에도 같은 어센더, 디센더, 라인갭을 줘야 한자가 있는 줄과 없는 줄의 높이가 같습니다. 데모의 Gothic A1은 그 값으로 폰트 패밀리를 둘 나눴습니다.</p>
         <div class="diagram">${layerStack(99)}</div>
         <p>본문은 Gothic A1입니다. 한자가 없는 글꼴이라 첫 줄은 빈 상자입니다. 브라우저에 다른 한자 글꼴이 있으면 그 글자로 빈칸을 채우므로, 데모는 <code>Hanja Box</code>를 뒤에 둡니다. 아래 줄은 애드온이 한자만 그리고, <code>와</code> 같은 한글은 Gothic A1이 그립니다. 넷째 줄의 冷은 북한 독음 랭입니다.</p>
         <p class="layer-body">女子와 男女, 平壤 冷麵</p>

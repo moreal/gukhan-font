@@ -100,6 +100,40 @@ CSS로 줄 상자를 그 값에 맞춥니다. 퍼센트는 em 기준입니다.
 - 둘 다: `descent-override: 28.8%`, `line-gap-override: 0%`
 - 루비는 `line-height: 2`. 133% + 28.8%보다 줄이 커야 루비가 줄 안에 남습니다.
 
+### 본문 글꼴의 메트릭
+
+애드온과 본문 한글의 메트릭이 다르면, 한 줄 안에서 인라인 상자가 어긋납니다. 줄 높이가 `line-height`보다 커지고, 한자가 있는 줄과 없는 줄의 높이도 달라집니다. 한글 글꼴에 애드온과 같은 `ascent-override`, `descent-override`, `line-gap-override`를 줍니다. 루비와 치환의 어센더가 다르므로, 같은 파일로 폰트 패밀리를 둘 만듭니다.
+
+```css
+@font-face {
+  font-family: "Gothic A1 Ruby";
+  src: url("GothicA1-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  ascent-override: 133%;
+  descent-override: 28.8%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Gothic A1 Replace";
+  src: url("GothicA1-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  ascent-override: 116%;
+  descent-override: 28.8%;
+  line-gap-override: 0%;
+}
+.gukhan-hanja {
+  font-family: "Gukhan Sans Hanja", "Gothic A1 Ruby", sans-serif;
+  line-height: 2;
+}
+.gukhan-hangul {
+  font-family: "Gukhan Hangul Hanja", "Gothic A1 Replace", sans-serif;
+}
+```
+
+Gothic A1은 OFL이라 데모가 파일을 직접 둡니다. 다른 한글 글꼴을 쓰면 그 글꼴의 `@font-face`에 같은 세 값을 적습니다. 루비 애드온 앞에는 133% 패밀리, 치환 애드온 앞에는 116% 패밀리를 둡니다.
+
 `size-adjust`의 기본은 100%입니다. 본문 한글의 키에 맞출 때는 다음을 씁니다.
 
 ```
@@ -112,7 +146,7 @@ size-adjust = (본문 한글 높이 / 본문 upem) / (904 / 1000)
 
 브라우저는 텍스트를 스크립트마다 나누어 셰이핑합니다. 한자 뒤에 한글이 와도, 한자만 이어진 런이 한 번의 셰이핑입니다. 애드온의 cmap이 그 런을 맡고, 한글은 다음 글꼴로 넘어갑니다. 그래서 `音樂`, `六月`, `國漢文混用` 같은 단어 합자는 애드온 안에서도 그대로입니다. 한자 중간에 한글이나 라틴을 끼우면 런이 갈라지고 합자가 풀립니다.
 
-The add-on cmap is Hanja only: 8,497 codepoints, listed exactly in `dist/hanja.css`. Over-approximating a block would make a missing character tofu instead of falling through. Reading outlines are Source Han, at 920 units per Hangul syllable on a 1,000-unit em. `ascent-override` is 133% for ruby and 116% for replacement, with a 28.8% descent. Use `line-height: 2` for ruby. `size-adjust` stays 100% until you match the body face; Gothic A1's syllable is 912/1024 tall and 984 wide, against 904/1000 and 920 here. Word ligatures still form because the browser shapes each Han run on its own.
+The add-on cmap is Hanja only: 8,497 codepoints, listed exactly in `dist/hanja.css`. Over-approximating a block would make a missing character tofu instead of falling through. Reading outlines are Source Han, at 920 units per Hangul syllable on a 1,000-unit em. `ascent-override` is 133% for ruby and 116% for replacement, with a 28.8% descent. Give the Hangul face those same three overrides. Ruby and replacement need two family names on that file, because the ascenders differ. Use `line-height: 2` for ruby. `size-adjust` stays 100% until you match the body face; Gothic A1's syllable is 912/1024 tall and 984 wide, against 904/1000 and 920 here. Word ligatures still form because the browser shapes each Han run on its own.
 
 ## 웹 서브셋
 
