@@ -3,12 +3,30 @@ import { allowsRyeolSoftening, applyInitialSoundLaw, isRyeolRyul } from './hangu
 import { GLYPH_LIMIT, GLYPH_MARGIN, selectLigatures, type Reader, type WordEntry } from './select.ts'
 import { codePoints, isHan, uniName } from './text.ts'
 
-const METRICS = {
+const RUBY_METRICS = {
   rubyScale: 0.4,
   rubyGap: 0.05,
   compressionFloor: 0.6,
   maxRubyWidth: 1.6,
 } as const
+
+/** `ruby` draws the reading above the Hanja. `replace` sets the reading in its place. */
+export type FamilyStyle = 'ruby' | 'replace'
+
+const FAMILIES: Record<FamilyStyle, { family: string, description: string, placement: FamilyStyle, metrics: Plan['metrics'] }> = {
+  ruby: {
+    family: 'Gukhan Sans',
+    description: 'Hangul readings above Hanja. Outlines from Adobe Source Han Sans KR; the reserved name Source is not a name of this font. Word readings: NIKL Standard Korean Language Dictionary (CC BY-SA) via seonbi. Character readings: Unicode Unihan kHangul.',
+    placement: 'ruby',
+    metrics: RUBY_METRICS,
+  },
+  replace: {
+    family: 'Gukhan Hangul',
+    description: 'Hanja replaced by Hangul readings, each syllable at its own advance. Outlines from Adobe Source Han Sans KR; the reserved name Source is not a name of this font. Word readings: NIKL Standard Korean Language Dictionary (CC BY-SA) via seonbi. Character readings: Unicode Unihan kHangul.',
+    placement: 'replace',
+    metrics: { rubyScale: 1, rubyGap: 0, compressionFloor: 1, maxRubyWidth: 1 },
+  },
+}
 
 export interface BuildInput {
   underlying: Map<number, string>
@@ -184,7 +202,21 @@ function rankBefore(a: [number, number, number], b: [number, number, number]): b
   return a[0] !== b[0] ? a[0] < b[0] : a[1] !== b[1] ? a[1] < b[1] : a[2] < b[2]
 }
 
-export function buildPlan(input: BuildInput): { plan: Plan, reader: Reader, report: BuildReport, shape: (text: string) => string[] } {
+export interface ReadingPlan {
+  reader: Reader
+  report: BuildReport
+  shape: (text: string) => string[]
+  glyphs: Plan['glyphs']
+  codepoints: number[]
+  fea: string
+  smoke: Plan['smoke']
+}
+
+/**
+ * One reading plan for every family. Ligatures, fallback glyphs, and the
+ * OpenType rules do not depend on whether the reading is drawn above or instead.
+ */
+export function planReadings(input: BuildInput): ReadingPlan {
   const baseOf = (cp: number): number => input.glyphOf?.get(cp) ?? cp
   const groups = new Map<number, number[]>()
   for (const cp of input.underlying.keys()) {
@@ -377,18 +409,26 @@ export function buildPlan(input: BuildInput): { plan: Plan, reader: Reader, repo
     collapsedLigatures,
   }
 
+  return { reader, report, shape, glyphs, codepoints, fea, smoke }
+}
+
+/** The same readings, drawn either as ruby or as a Hangul replacement. */
+export function emitFamily(planned: ReadingPlan, style: FamilyStyle = 'ruby'): { plan: Plan, reader: Reader, report: BuildReport, shape: (text: string) => string[] } {
+  const family = FAMILIES[style]
   const plan: Plan = {
     version: 1,
-    names: {
-      family: 'Gukhan Sans',
-      description: 'Hangul readings above Hanja. Outlines from Adobe Source Han Sans KR; the reserved name Source is not a name of this font. Word readings: NIKL Standard Korean Language Dictionary (CC BY-SA) via seonbi. Character readings: Unicode Unihan kHangul.',
-    },
-    metrics: { ...METRICS },
-    codepoints,
+    names: { family: family.family, description: family.description },
+    placement: family.placement,
+    metrics: { ...family.metrics },
+    codepoints: planned.codepoints,
     variants: [],
-    glyphs,
-    fea,
-    smoke,
+    glyphs: planned.glyphs,
+    fea: planned.fea,
+    smoke: planned.smoke,
   }
-  return { plan, reader, report, shape }
+  return { plan, reader: planned.reader, report: planned.report, shape: planned.shape }
+}
+
+export function buildPlan(input: BuildInput, style: FamilyStyle = 'ruby'): { plan: Plan, reader: Reader, report: BuildReport, shape: (text: string) => string[] } {
+  return emitFamily(planReadings(input), style)
 }

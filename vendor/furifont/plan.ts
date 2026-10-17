@@ -25,6 +25,11 @@ export const PlanSchema = v.object({
     compressionFloor: v.number(),
     maxRubyWidth: v.number(),
   }),
+  /**
+   * `ruby` draws the reading above the Hanja. `replace` draws only the Hangul,
+   * each syllable at its own advance, and leaves the Hanja out.
+   */
+  placement: v.optional(v.picklist(['ruby', 'replace']), 'ruby'),
   codepoints: v.array(Codepoint),
   variants: v.array(v.object({
     name: v.pipe(v.string(), v.regex(/^[A-Z_][\w.]{0,62}$/i)),

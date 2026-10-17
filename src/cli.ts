@@ -7,10 +7,11 @@ import { promisify } from 'node:util'
 import * as hb from 'harfbuzzjs'
 import { brotli, compileFont, readFontInfo, subsetWasm, toWoff2 } from '../vendor/furifont/index.ts'
 import { renderDemo } from './demo.ts'
-import { buildPlan } from './emit.ts'
+import { emitFamily, planReadings, type FamilyStyle } from './emit.ts'
 import { loadUnderlying } from './readings.ts'
 import { SAMPLES } from './samples.ts'
 import type { WordEntry } from './select.ts'
+import { segment } from './text.ts'
 
 const exec = promisify(execFile)
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
@@ -79,6 +80,66 @@ function loadEntries(tsv: string): WordEntry[] {
   return entries
 }
 
+const FAMILIES: { style: FamilyStyle, file: string }[] = [
+  { style: 'ruby', file: 'GukhanSans-Regular' },
+  { style: 'replace', file: 'GukhanHangul-Regular' },
+]
+
+function totalAdvance(font: hb.Font, text: string): { advance: number, glyphs: number } {
+  const buffer = new hb.Buffer()
+  buffer.addText(text)
+  buffer.guessSegmentProperties()
+  hb.shape(font, buffer)
+  const positions = buffer.getGlyphPositions()
+  return {
+    advance: positions.reduce((sum, position) => sum + position.xAdvance, 0),
+    glyphs: positions.length,
+  }
+}
+
+function hanRuns(text: string): string[] {
+  return segment(text).flatMap(part => part.han ? [part.chars.join('')] : [])
+}
+
+/**
+ * Each Han run must occupy the same width as the Hangul it stands for.
+ * A word ligature is one glyph whose advance is the sum of its syllables,
+ * including when the reading has more syllables than characters (上海 → 상하이).
+ */
+function verifyReplacement(built: Uint8Array, base: Uint8Array, read: (text: string) => string): void {
+  const font = new hb.Font(new hb.Face(new hb.Blob(built)))
+  const reference = new hb.Font(new hb.Face(new hb.Blob(base)))
+  const expectWidth = (hanja: string, hangul: string, glyphs?: number): void => {
+    const got = totalAdvance(font, hanja)
+    const expect = totalAdvance(reference, hangul)
+    if (got.advance !== expect.advance)
+      throw new Error(`${hanja} advances ${got.advance}, ${hangul} advances ${expect.advance}`)
+    if (glyphs !== undefined && got.glyphs !== glyphs)
+      throw new Error(`${hanja} is ${got.glyphs} glyphs, expected ${glyphs}`)
+  }
+  for (const sample of SAMPLES) {
+    for (const run of hanRuns(sample.text))
+      expectWidth(run, read(run))
+  }
+  expectWidth('音樂', '음악', 1)
+  expectWidth('六月', '유월', 1)
+  expectWidth('困難', '곤란', 1)
+  expectWidth('上海', '상하이', 1)
+  expectWidth('國漢文混用', '국한문혼용', 5)
+  expectWidth('女子', '여자', 2)
+  expectWidth('男女', '남녀', 2)
+  const shaped = new hb.Buffer()
+  shaped.addText('女')
+  shaped.guessSegmentProperties()
+  hb.shape(font, shaped)
+  const extents = font.glyphExtents(shaped.getGlyphInfos()[0]!.codepoint)
+  const hangul = reference.glyphExtents(reference.nominalGlyph('여'.codePointAt(0)!)!)
+  if (!extents || !hangul)
+    throw new Error('missing extents for 女 / 여')
+  if (Math.abs(extents.yBearing - hangul.yBearing) > 1 || Math.abs(extents.height - hangul.height) > 1)
+    throw new Error(`女 sits at y ${extents.yBearing} h ${extents.height}, 여 is y ${hangul.yBearing} h ${hangul.height}`)
+}
+
 async function main(): Promise<void> {
   const dist = join(root, 'dist')
   await mkdir(dist, { recursive: true })
@@ -100,7 +161,7 @@ async function main(): Promise<void> {
   }
   const underlying = loadUnderlying(JSON.parse(khangul) as Record<string, Record<string, string>>)
   const entries = loadEntries(tsv)
-  const { plan, reader, report } = buildPlan({
+  const planned = planReadings({
     underlying,
     entries,
     coverage: new Set(info.codepoints),
@@ -108,43 +169,56 @@ async function main(): Promise<void> {
     glyphOf,
   })
   for (const sample of SAMPLES) {
-    const got = reader.read(sample.text)
+    const got = planned.reader.read(sample.text)
     if (got !== sample.reading)
       throw new Error(`${sample.text} reads ${got}, expected ${sample.reading}`)
   }
-  console.log(report)
-  await writeFile(join(dist, 'report.json'), `${JSON.stringify(report, null, 2)}\n`)
+  console.log(planned.report)
 
-  console.log(`planning ${plan.glyphs.length} glyphs`)
-  const started = Date.now()
-  let built
-  try {
-    built = await compileFont({
-      plan,
-      base: font,
-      version: '0.1.0',
-      date: new Date('2026-10-17T00:00:00Z'),
-      subsetWasm,
-      onProgress: (progress) => {
-        if (progress.done == null || progress.done === progress.total || progress.done % 2000 === 0)
-          console.log(`  ${progress.step}${progress.total == null ? '' : ` ${progress.done}/${progress.total}`}`)
-      },
+  const families: { family: string, placement: FamilyStyle, file: string, otfBytes: number, woff2Bytes: number }[] = []
+  for (const family of FAMILIES) {
+    const { plan } = emitFamily(planned, family.style)
+    console.log(`planning ${plan.names.family}: ${plan.glyphs.length} glyphs`)
+    const started = Date.now()
+    let built
+    try {
+      built = await compileFont({
+        plan,
+        base: font,
+        version: '0.1.0',
+        date: new Date('2026-10-17T00:00:00Z'),
+        subsetWasm,
+        onProgress: (progress) => {
+          if (progress.done == null || progress.done === progress.total || progress.done % 2000 === 0)
+            console.log(`  ${progress.step}${progress.total == null ? '' : ` ${progress.done}/${progress.total}`}`)
+        },
+      })
+    }
+    catch (error) {
+      await writeFile(join(dist, `${family.file}.failed.fea`), plan.fea)
+      throw error
+    }
+    if (family.style === 'replace')
+      verifyReplacement(built.font, font, planned.reader.read.bind(planned.reader))
+    const otf = join(dist, `${family.file}.otf`)
+    const woff2 = join(dist, `${family.file}.woff2`)
+    await writeFile(otf, built.font)
+    console.log(`opentype ${built.font.byteLength} bytes in ${((Date.now() - started) / 1000).toFixed(1)}s`)
+    console.log('compressing woff2')
+    const web = await toWoff2(built.font, data => brotli(data, 11))
+    await writeFile(woff2, web)
+    console.log(`woff2 ${web.byteLength} bytes`)
+    console.log(`wrote ${otf}`)
+    console.log(`wrote ${woff2}`)
+    families.push({
+      family: plan.names.family,
+      placement: family.style,
+      file: family.file,
+      otfBytes: built.font.byteLength,
+      woff2Bytes: web.byteLength,
     })
   }
-  catch (error) {
-    await writeFile(join(dist, 'failed.fea'), plan.fea)
-    throw error
-  }
-  const otf = join(dist, 'GukhanSans-Regular.otf')
-  const woff2 = join(dist, 'GukhanSans-Regular.woff2')
-  await writeFile(otf, built.font)
-  console.log(`opentype ${built.font.byteLength} bytes in ${((Date.now() - started) / 1000).toFixed(1)}s`)
-  console.log('compressing woff2')
-  const web = await toWoff2(built.font, data => brotli(data, 11))
-  await writeFile(woff2, web)
-  console.log(`woff2 ${web.byteLength} bytes`)
-  console.log(`wrote ${otf}`)
-  console.log(`wrote ${woff2}`)
+  await writeFile(join(dist, 'report.json'), `${JSON.stringify({ ...planned.report, families }, null, 2)}\n`)
 }
 
 await main()

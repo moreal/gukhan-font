@@ -1,22 +1,32 @@
 import { SAMPLES } from './samples.ts'
 
-/** The specimen page. Readings are drawn by the font; the caption is only a check. */
+/** Both families, from the same Hanja. The checkbox turns ruby off and leaves the replacement family alone. */
 export function renderDemo(): string {
   const cards = SAMPLES.map(sample => `        <figure>
           <figcaption>${escapeHtml(sample.note)} <span>${escapeHtml(sample.reading)}</span></figcaption>
-          <p>${escapeHtml(sample.text)}</p>
+          <div class="pair">
+            <p class="face-ruby">${escapeHtml(sample.text)}</p>
+            <p class="face-hangul">${escapeHtml(sample.text)}</p>
+          </div>
         </figure>`).join('\n')
   return `<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>국한 Gukhan Sans</title>
+    <title>국한 Gukhan Sans · Gukhan Hangul</title>
     <style>
       @font-face {
         font-family: "Gukhan Sans";
         src: url("../dist/GukhanSans-Regular.woff2") format("woff2"),
              url("../dist/GukhanSans-Regular.otf") format("opentype");
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Gukhan Hangul";
+        src: url("../dist/GukhanHangul-Regular.woff2") format("woff2"),
+             url("../dist/GukhanHangul-Regular.otf") format("opentype");
         font-weight: 400;
         font-display: swap;
       }
@@ -27,6 +37,7 @@ export function renderDemo(): string {
         --muted: #6b645b;
         --rule: #ddd4c4;
         --cinnabar: #8c2f2b;
+        --indigo: #243856;
       }
       * { box-sizing: border-box; }
       body {
@@ -35,66 +46,85 @@ export function renderDemo(): string {
         color: var(--ink);
         font-family: "Iowan Old Style", Palatino, "Palatino Linotype", "Songti SC", serif;
       }
-      main { max-width: 46rem; margin: 0 auto; padding: 3.5rem 1.4rem 5rem; }
-      header p { max-width: 38rem; }
+      main { max-width: 62rem; margin: 0 auto; padding: 3.2rem 1.4rem 5rem; }
+      header p { max-width: 44rem; }
       .mark {
-        margin: 0 0 0.4rem;
+        margin: 0 0 0.6rem;
         color: var(--cinnabar);
         font-family: "Gukhan Sans", sans-serif;
-        font-size: 1.35rem;
+        font-size: 1.2rem;
         line-height: 2;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.06em;
       }
-      h1 { font-weight: 500; font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.9; margin: 0 0 0.4rem; }
-      h1 span { font-family: "Gukhan Sans", sans-serif; }
-      .lede { font-size: 1.15rem; line-height: 1.55; }
+      h1 { font-weight: 500; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; margin: 0 0 1rem; }
+      .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+      .hero p { margin: 0; }
+      .hero .face-ruby { font-size: clamp(2rem, 4.4vw, 3.1rem); line-height: 1.9; }
+      .hero .face-hangul { font-size: clamp(2rem, 4.4vw, 3.1rem); line-height: 1.9; color: var(--indigo); }
+      .lede { font-size: 1.12rem; line-height: 1.55; }
       .toggle { display: flex; gap: 0.6rem; align-items: center; margin: 1.6rem 0 0; color: var(--muted); }
       #off { accent-color: var(--cinnabar); }
-      #off:checked ~ .specimen { font-feature-settings: "ss01" 1; }
+      #off:checked ~ .specimen .face-ruby { font-feature-settings: "ss01" 1; }
       .specimen { margin-top: 1.4rem; border-top: 1px solid var(--rule); }
-      figure { margin: 0; padding: 1.35rem 0 1.5rem; border-bottom: 1px solid var(--rule); }
-      figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.45; }
+      .heads, .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+      .heads { padding: 0.9rem 0 0.2rem; color: var(--muted); font-size: 0.84rem; letter-spacing: 0.04em; }
+      .heads span:last-child { color: var(--indigo); }
+      figure { margin: 0; padding: 1.15rem 0 1.25rem; border-bottom: 1px solid var(--rule); }
+      figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.45; margin-bottom: 0.35rem; }
       figcaption span { display: block; margin-top: 0.15rem; color: var(--cinnabar); }
-      figure p, .try {
-        font-family: "Gukhan Sans", sans-serif;
-        font-size: clamp(1.8rem, 4vw, 2.55rem);
+      .face-ruby, .face-hangul, .try {
+        font-size: clamp(1.45rem, 2.6vw, 2.05rem);
         line-height: 2;
-        margin: 0.55rem 0 0;
+        margin: 0;
       }
+      .face-ruby, .try.face-ruby { font-family: "Gukhan Sans", sans-serif; }
+      .face-hangul, .try.face-hangul { font-family: "Gukhan Hangul", sans-serif; color: var(--indigo); }
       .try {
         width: 100%;
-        min-height: 6.2rem;
+        min-height: 6.4rem;
         border: 0;
         padding: 0;
         resize: vertical;
         background: transparent;
-        color: inherit;
         font: inherit;
+        font-size: clamp(1.45rem, 2.6vw, 2.05rem);
+        line-height: 2;
       }
+      .try.face-ruby { font-family: "Gukhan Sans", sans-serif; color: inherit; }
       .try:focus { outline: none; }
       footer { margin-top: 2rem; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
       code { font-family: ui-monospace, monospace; font-size: 0.88em; }
+      @media (max-width: 720px) {
+        .hero, .heads, .pair { grid-template-columns: 1fr; }
+      }
     </style>
   </head>
   <body>
     <main>
       <header>
-        <p class="mark">國漢 · GUKHAN SANS</p>
-        <h1><span>國漢文混用</span></h1>
-        <p class="lede">한글 독음이 글꼴 안에 있습니다. <code>&lt;ruby&gt;</code>도 스크립트도 쓰지 않습니다. 선택한 글자는 그대로 한자입니다. 줄 간격은 독음이 잘리지 않도록 넉넉히 잡혀 있습니다.</p>
-        <p class="lede">The Hangul reading is set by the font. The characters you copy are still the Hanja.</p>
+        <p class="mark">國漢 · 두 글꼴</p>
+        <div class="hero">
+          <p class="face-ruby">國漢文混用</p>
+          <p class="face-hangul">國漢文混用</p>
+        </div>
+        <p class="lede">왼쪽 <strong>Gukhan Sans</strong>는 한자 위에 한글 독음을 그립니다. 오른쪽 <strong>Gukhan Hangul</strong>은 그 한자를 같은 독음의 한글로 바꿉니다. 어느 쪽이든 복사하면 한자이고, <code>&lt;ruby&gt;</code>도 스크립트도 없습니다.</p>
+        <p class="lede">Gukhan Sans draws the reading above the Hanja. Gukhan Hangul sets that reading in its place, at the same width as ordinary Hangul. The characters you copy are still the Hanja.</p>
       </header>
       <input id="off" type="checkbox">
-      <label class="toggle" for="off">독음 끄기 · stylistic set ss01</label>
+      <label class="toggle" for="off">Gukhan Sans 독음 끄기 · stylistic set ss01</label>
       <section class="specimen">
+        <div class="heads"><span>Gukhan Sans</span><span>Gukhan Hangul</span></div>
 ${cards}
         <figure>
-          <figcaption>직접 쳐 보세요. 한자 묶음이 길수록 그 단어가 이깁니다.</figcaption>
-          <textarea class="try" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</textarea>
+          <figcaption>직접 쳐 보세요. 두 칸은 따로입니다. 한자 묶음이 길수록 그 단어가 이깁니다.</figcaption>
+          <div class="pair">
+            <textarea class="try face-ruby" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</textarea>
+            <textarea class="try face-hangul" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</textarea>
+          </div>
         </figure>
       </section>
       <footer>
-        <p>Gukhan Sans Regular. Source Han Sans KR에 표준국어대사전 단어와 Unihan kHangul 글자 읽음을 올렸습니다. 빌드하기 전에는 독음이 보이지 않습니다.</p>
+        <p>둘 다 Source Han Sans KR Regular에 표준국어대사전 단어와 Unihan kHangul 글자 읽음을 올렸습니다. 빌드하기 전에는 독음이 보이지 않고, 오른쪽은 한자 그대로입니다.</p>
       </footer>
     </main>
   </body>

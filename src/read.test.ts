@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { buildPlan } from './emit.ts'
+import { emitFamily, planReadings } from './emit.ts'
 import { applyInitialSoundLaw, revertInitialSoundLaw } from './hangul.ts'
 import { loadUnderlying, underlyingSyllable } from './readings.ts'
 import { SAMPLES } from './samples.ts'
@@ -63,7 +63,20 @@ test('dictionary readings, 두음 법칙, and ligatures', () => {
   assert.equal(readWithDictionary('男女', new Map(), underlying, true), '남녀')
   assert.equal(readWithDictionary('六月', new Map(), underlying, true), '육월')
 
-  const { reader, shape, report } = buildPlan({ underlying, entries, coverage, baseGlyphCount: 0 })
+  const planned = planReadings({ underlying, entries, coverage, baseGlyphCount: 0 })
+  const { reader, shape, report, plan } = emitFamily(planned, 'ruby')
+  const hangul = emitFamily(planned, 'replace')
+  assert.equal(plan.names.family, 'Gukhan Sans')
+  assert.equal(plan.placement, 'ruby')
+  assert.equal(hangul.plan.names.family, 'Gukhan Hangul')
+  assert.equal(hangul.plan.placement, 'replace')
+  assert.deepEqual(hangul.shape('音樂'), shape('音樂'))
+  assert.deepEqual(hangul.shape('女子'), shape('女子'))
+  const music = hangul.plan.glyphs.find(glyph => glyph.name === shape('音樂')[0])
+  assert.equal(music?.ruby.map(part => part.text).join(''), '음악')
+  const byName = new Map(hangul.plan.glyphs.map(glyph => [glyph.name, glyph]))
+  assert.equal(byName.get('gkc5973')?.ruby[0]?.text, '녀')
+  assert.equal(byName.get('gki5973')?.ruby[0]?.text, '여')
   assert.equal(report.droppedForBudget, 0)
   assert.ok(report.wordLigatures > 5000)
   assert.ok(reader.words.has('音樂'))

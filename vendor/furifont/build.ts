@@ -300,11 +300,16 @@ export async function buildFont(options: CompileOptions): Promise<BuiltFont> {
 
   const em = emBox(tables, upm)
   const glyphOf = (cp: number): number | undefined => font.nominalGlyph(cp)
-  const ctx = { font, masters: masters.map(m => m.font), unitsPerEm: upm, metrics: plan.metrics, em, glyphOf }
+  const placement = plan.placement ?? 'ruby'
+  const ctx = { font, masters: masters.map(m => m.font), unitsPerEm: upm, metrics: plan.metrics, em, glyphOf, placement }
   for (const [i, spec] of plan.glyphs.entries()) {
     if (i % 500 === 0)
       await progress('draw', i, plan.glyphs.length)
-    glyphs.add(spec.name, drawGlyph(spec, ctx), glyphOf(spec.bases[0]!)!)
+    // A replaced Hanja is a Hangul outline, so it takes that syllable's hint set.
+    const like = placement === 'replace'
+      ? glyphOf(spec.ruby[0]!.text.codePointAt(0)!) ?? glyphOf(spec.bases[0]!)!
+      : glyphOf(spec.bases[0]!)!
+    glyphs.add(spec.name, drawGlyph(spec, ctx), like)
   }
   await progress('draw', plan.glyphs.length, plan.glyphs.length)
   // Empty glyphs for base + selector sequences: the rules always replace them.
@@ -324,7 +329,8 @@ export async function buildFont(options: CompileOptions): Promise<BuiltFont> {
   const fvar = tables.get('fvar')
   tables.set('name', renameFont(tables.get('name')!, fontName, revision, plan.names.description, fvar ? instancePostScriptNames(fvar, tables.get('name')!, fontName) : []))
   glyphs.write(fontName, names, masters.map(m => m.peak), revision, options.date)
-  raiseAscender(tables, Math.ceil(em[1] + (plan.metrics.rubyGap + plan.metrics.rubyScale) * upm))
+  if (placement === 'ruby')
+    raiseAscender(tables, Math.ceil(em[1] + (plan.metrics.rubyGap + plan.metrics.rubyScale) * upm))
 
   await progress('save')
   const built = writeSfnt(sfnt)

@@ -70,6 +70,8 @@ export interface DrawContext {
   /** Bottom and top of the ideographic em box, which ruby sits on. */
   em: [number, number]
   glyphOf: (codepoint: number) => number | undefined
+  /** `replace` draws the reading in place of the bases, at each syllable's own advance. */
+  placement: 'ruby' | 'replace'
 }
 
 interface Placement {
@@ -79,8 +81,31 @@ interface Placement {
   squeezes: number[]
 }
 
+/**
+ * The reading alone, on the baseline. Syllables keep the advance they have as
+ * Hangul, so an N-syllable word occupies the same width as those N syllables.
+ */
+function placeReplacement(spec: PlanGlyph, ctx: DrawContext, font: hb.Font): Placement {
+  const components: Component[] = []
+  const stops = [0]
+  let x = 0
+  for (const ruby of spec.ruby) {
+    for (const char of ruby.text) {
+      const glyph = ctx.glyphOf(char.codePointAt(0)!)
+      if (glyph === undefined)
+        throw new Error(`the base font has no glyph for reading ${char}`)
+      components.push({ glyph, transform: [1, 1, x, 0] })
+      x += Math.round(font.glyphHAdvance(glyph))
+      stops.push(x)
+    }
+  }
+  return { components, stops, squeezes: spec.ruby.map(() => 1) }
+}
+
 /** Bases side by side at `font`'s advances, each ruby centred over its span: squeezed to fit, then overhanging. */
 function place(spec: PlanGlyph, ctx: DrawContext, font: hb.Font, squeezes?: number[]): Placement {
+  if (ctx.placement === 'replace')
+    return placeReplacement(spec, ctx, font)
   const { unitsPerEm: upm, metrics, em } = ctx
   const components: Component[] = []
   const stops = [0]
