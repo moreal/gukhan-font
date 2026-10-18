@@ -6,8 +6,6 @@
 
 [라이브 데모](https://morealdot.github.io/gukhanmun-font/) · [슬라이드](https://morealdot.github.io/gukhanmun-font/slides/) · [릴리스](https://github.com/morealdot/gukhanmun-font/releases)
 
-이 주소는 저장소 이름이 `gukhanmun-font`가 된 뒤에 열립니다. 그 전까지 데모는 [https://morealdot.github.io/gukhan-font/](https://morealdot.github.io/gukhan-font/)입니다. Pages 경로는 빌드할 때 저장소 이름을 따릅니다.
-
 ## 내려받기
 
 폰트 패밀리마다 zip이 하나 있습니다. `GukhanmunSans`, `GukhanmunSansKP`, `GukhanmunHangul`, `GukhanmunHangulKP`. 정적 일곱 굵기, 가변 폰트, 웹 서브셋, 한자 애드온, `hanja.css`, `SHA256SUMS.txt`가 들어 있습니다.

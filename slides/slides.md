@@ -584,16 +584,16 @@ size-adjust 기본은 100퍼센트입니다.
 
 # 데모
 
-[morealdot.github.io/gukhanmun-font](../)
+[morealdot.github.io/gukhanmun-font](https://morealdot.github.io/gukhanmun-font/)
 
-페이지에는 웹 서브셋, Regular 한자 애드온, Gothic A1, 그리고 굵기 슬라이더용 가변 폰트가 있습니다. 가변 폰트는 슬라이더를 움직이거나 굵기 목록이 보일 때 받습니다. 일곱 굵기의 정적 파일은 [릴리스](https://github.com/morealdot/gukhanmun-font/releases)에 있습니다. 저장소 이름이 바뀌기 전에는 같은 사이트가 `/gukhan-font/`에 있습니다.
+페이지에는 웹 서브셋, Regular 한자 애드온, Gothic A1, 그리고 굵기 슬라이더용 가변 폰트가 있습니다. 가변 폰트는 슬라이더를 움직이거나 굵기 목록이 보일 때 받습니다. 일곱 굵기의 정적 파일은 [릴리스](https://github.com/morealdot/gukhanmun-font/releases)에 있습니다.
 
 <p class="ruby">音樂과 快樂, 女子와 男女</p>
 <p class="replace">音樂과 快樂, 女子와 男女</p>
 
 <!--
 라이브 데모는 GitHub Pages입니다.
-경로는 저장소 이름을 따릅니다. 목표는 /gukhanmun-font/ 이고, 이름이 바뀌기 전에는 /gukhan-font/ 입니다.
+경로는 /gukhanmun-font/ 아래입니다.
 페이지의 가변 폰트는 굵기 슬라이더와 굵기 목록에서 받습니다.
 일곱 굵기의 정적 파일은 릴리스 zip에 있습니다.
 화면의 문장을 복사하면 한자가 나옵니다.

@@ -1,28 +1,27 @@
-/* /__REPO_BASE__/ is the repository name. The slide build substitutes it so the font URLs follow a rename. */
 @font-face {
   font-family: "Gukhanmun Sans Web";
-  src: url("/__REPO_BASE__/fonts/GukhanmunSans-Web.woff2") format("woff2");
+  src: url("/gukhanmun-font/fonts/GukhanmunSans-Web.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Gukhanmun Hangul Web";
-  src: url("/__REPO_BASE__/fonts/GukhanmunHangul-Web.woff2") format("woff2");
+  src: url("/gukhanmun-font/fonts/GukhanmunHangul-Web.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Gukhanmun Sans KP Web";
-  src: url("/__REPO_BASE__/fonts/GukhanmunSansKP-Web.woff2") format("woff2");
+  src: url("/gukhanmun-font/fonts/GukhanmunSansKP-Web.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Gukhanmun Sans Hanja";
-  src: url("/__REPO_BASE__/fonts/GukhanmunSansHanja-Regular.woff2") format("woff2");
+  src: url("/gukhanmun-font/fonts/GukhanmunSansHanja-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -32,14 +31,14 @@
 }
 @font-face {
   font-family: "Gothic A1";
-  src: url("/__REPO_BASE__/fonts/GothicA1-Regular.woff2") format("woff2");
+  src: url("/gukhanmun-font/fonts/GothicA1-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Gothic A1 Ruby";
-  src: url("/__REPO_BASE__/fonts/GothicA1-Regular.woff2") format("woff2");
+  src: url("/gukhanmun-font/fonts/GothicA1-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -49,7 +48,7 @@
 }
 @font-face {
   font-family: "Hanja Box";
-  src: url("/__REPO_BASE__/fonts/HanjaBox.woff") format("woff");
+  src: url("/gukhanmun-font/fonts/HanjaBox.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;

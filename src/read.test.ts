@@ -262,17 +262,13 @@ test('web coverage keeps non-Hanja and KS X 1001, and shared outlines', () => {
   assert.deepEqual(codepointsSharingGlyph(glyphOf, [cp('女')]), [cp('女'), cp('女')].sort((a, b) => a - b))
 })
 
-test('pages paths follow the repository name', () => {
-  assert.equal(pagesBase('morealdot/gukhan-font'), '/gukhan-font/')
-  assert.equal(pagesOrigin('morealdot/gukhan-font'), 'https://morealdot.github.io/gukhan-font')
-  assert.equal(githubOrigin('morealdot/gukhan-font'), 'https://github.com/morealdot/gukhan-font')
-  assert.equal(pagesBase('morealdot/gukhanmun-font'), '/gukhanmun-font/')
-  assert.equal(pagesOrigin('morealdot/gukhanmun-font'), 'https://morealdot.github.io/gukhanmun-font')
-  assert.equal(githubOrigin('morealdot/gukhanmun-font'), 'https://github.com/morealdot/gukhanmun-font')
-  assert.equal(pagesBase(), `/${(process.env.GITHUB_REPOSITORY ?? 'morealdot/gukhan-font').split('/').pop()}/`)
+test('pages paths are the gukhanmun-font site', () => {
+  assert.equal(pagesBase(), '/gukhanmun-font/')
+  assert.equal(pagesOrigin(), 'https://morealdot.github.io/gukhanmun-font')
+  assert.equal(githubOrigin(), 'https://github.com/morealdot/gukhanmun-font')
 })
 
-test('the pages demo follows the repository name and ships the light font set', () => {
+test('the pages demo is rooted at /gukhanmun-font/ and ships the light font set', () => {
   const metrics = {
     unicodeRange: 'U+4E00',
     kpUnicodeRange: 'U+4E01',
@@ -282,8 +278,10 @@ test('the pages demo follows the repository name and ships the light font set', 
     lineGap: '0%',
   }
   const pages = renderDemo(metrics, 'pages')
-  const base = pagesBase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  assert.match(pages, new RegExp(`<base href="${base}">`))
+  assert.match(pages, /<base href="\/gukhanmun-font\/">/)
+  assert.equal(pages.includes('gukhan-font'), false)
+  assert.equal(pages.includes('Gukhan Sans'), false)
+  assert.equal(pages.includes('Gukhan Hangul'), false)
   assert.match(pages, /국한문/)
   assert.match(pages, /Gukhanmun Mark/)
   assert.equal(pages.includes('국한문문'), false)
@@ -336,6 +334,6 @@ test('the pages demo follows the repository name and ships the light font set', 
   assert.match(pages, /gid34500/)
   assert.match(pages, /<svg /)
   assert.match(pages, /가장 긴 단어가 이깁니다/)
-  assert.match(pages, new RegExp(`href="${base}slides/"`))
+  assert.match(pages, /href="\/gukhanmun-font\/slides\/"/)
   assert.match(local, /id="how"/)
 })

@@ -323,7 +323,7 @@ function sectionHead(numeral: string, title: string): string {
   return `<header class="sec-head"><h2><span class="sec-no">${numeral}</span> ${escapeHtml(title)}</h2></header>`
 }
 
-/** Landing page. The Pages profile is served under `pagesBase()`, which follows the repository name. Variable fonts load when the slider or the waterfall asks for them. */
+/** Landing page. The Pages profile is served under `/gukhanmun-font/`. Variable fonts load when the slider or the waterfall asks for them. */
 export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local'): string {
   const snippet = cssSnippet(metrics)
   const releases = `${githubOrigin()}/releases`
