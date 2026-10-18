@@ -8,7 +8,7 @@ Sino-Korean word list used by [선비 (seonbi)](https://github.com/dahlia/seonbi
 
 - Source dictionary: [표준국어대사전](https://stdict.korean.go.kr/).
 - Rights holder: 국립국어원 (National Institute of Korean Language).
-- License: [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/) (Creative Commons Attribution-ShareAlike 2.0 Korea). 국립국어원 states this for text on the dictionary site: [표준국어대사전 저작권 정책](https://stdict.korean.go.kr/join/copyrightPolicy.do). Share-alike applies to the table itself. This repository used to label the extract CC BY-SA 4.0; that label does not match the institute’s copyright policy.
+- License: [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/) (Creative Commons Attribution-ShareAlike 2.0 Korea). 국립국어원 states this for text on the dictionary site: [표준국어대사전 저작권 정책](https://stdict.korean.go.kr/join/copyrightPolicy.do). Share-alike applies to the table itself. A pointer to that license is in [LICENSES/CC-BY-SA-2.0-KR.txt](../LICENSES/CC-BY-SA-2.0-KR.txt). This repository used to label the extract CC BY-SA 4.0; that label does not match the institute’s copyright policy, and the 4.0 text is no longer in the tree.
 - Intermediate project: packaged by Hong Minhee (홍민희), dahlia, in 선비 0.2.2. 선비’s code is [LGPL-2.1](https://github.com/dahlia/seonbi/blob/main/LICENSE). That code license does not replace the dictionary license. This repository does not copy 선비’s Haskell or Rust source.
 
 The file is the South Korean (ko-KR) reading, so 두음 법칙 is already applied inside multi-character entries (女子 여자, 男女 남녀, 六月 유월).

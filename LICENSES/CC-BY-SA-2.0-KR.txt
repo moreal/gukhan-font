@@ -1,0 +1,21 @@
+Creative Commons Attribution-ShareAlike 2.0 Korea (CC BY-SA 2.0 KR)
+
+The dictionary tables data/ko-kr-stdict.tsv (표준국어대사전) and
+data/ko-kp-opendict.tsv (우리말샘) are used under this license. The rights
+holder stated by 국립국어원 is 국립국어원. This file does not relicense the
+font files: those stay under the SIL Open Font License 1.1 (../OFL.txt).
+
+The official license, which is the text to follow:
+
+https://creativecommons.org/licenses/by-sa/2.0/kr/
+
+Legal code:
+
+https://creativecommons.org/licenses/by-sa/2.0/kr/legalcode
+
+국립국어원 copyright policies for the two dictionaries:
+
+https://stdict.korean.go.kr/join/copyrightPolicy.do
+https://opendict.korean.go.kr/service/copyrightPolicy
+
+The legal code is not copied here. The pages above are the official source.
