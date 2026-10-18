@@ -328,7 +328,6 @@ export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local')
   const snippet = installSnippets(metrics)
   const releases = `${githubOrigin()}/releases`
   const repo = githubOrigin()
-  const slides = `${pagesBase()}slides/`
   const ofl = `${githubOrigin()}/blob/main/OFL.txt`
   const cards = SAMPLES.map((sample, index) => {
     const notes = sample.note === sample.kpNote
@@ -962,7 +961,6 @@ ${explainCss()}
             <a href="#specimens">예문</a>
             <a href="#how">동작</a>
             <a href="#license">라이선스</a>
-            <a href="${slides}">슬라이드</a>
           </nav>
         </div>
       </header>
@@ -979,7 +977,6 @@ ${explainCss()}
           <p class="sub">OpenType 셰이핑으로 독음을 붙입니다. <code>&lt;ruby&gt;</code>도 자바스크립트도 필요 없고, 복사하면 한자입니다.</p>
           <div class="actions">
             <a class="btn" href="${releases}">다운로드</a>
-            <a class="btn text" href="${slides}">슬라이드</a>
             <a class="btn text" href="${repo}">저장소</a>
           </div>
         </div>
@@ -1084,7 +1081,6 @@ ${explainHtml()}
               <p class="foot-label"><span class="fn">3</span> 더 보기</p>
               <nav aria-label="바깥 링크">
                 <a href="${pagesBase()}playground/">놀이터</a>
-                <a href="${slides}">슬라이드</a>
                 <a href="${repo}">저장소</a>
                 <a href="${releases}">릴리스</a>
               </nav>

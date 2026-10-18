@@ -3,7 +3,6 @@ dist/
 .cache/
 demo/fonts/
 site/
-slides/dist/
 __pycache__/
 src/**/*.js
 vendor/**/*.js

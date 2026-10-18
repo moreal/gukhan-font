@@ -12,7 +12,6 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
   const font = (file: string) => profile === 'pages' ? `${root}fonts/${file}` : `../dist/${file}`
   const releases = `${githubOrigin()}/releases`
   const repo = githubOrigin()
-  const slides = `${root}slides/`
   const play = `${root}playground/`
   const ofl = `${githubOrigin()}/blob/main/OFL.txt`
   return `<!DOCTYPE html>
@@ -354,7 +353,6 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
     <nav aria-label="페이지">
       <a href="${play}">놀이터</a>
       <a href="#install">받는 법</a>
-      <a href="${slides}">슬라이드</a>
     </nav>
   </header>
   <h1 class="visually-hidden">국한문. 한자는 그대로 두고, 독음만 그립니다.</h1>
@@ -464,7 +462,6 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
       <p class="lead">독음과 한글을 바꾸고, 글자 위에서 굵기를 움직입니다.</p>
       <div class="actions">
         <a class="btn" href="${play}">놀이터 열기</a>
-        <a class="btn quiet" href="${slides}">슬라이드로 보기</a>
       </div>
     </section>
 

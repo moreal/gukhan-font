@@ -1,5 +1,5 @@
 import { budget, cmapPicture, draw, dueum, fontTables, layerStack, liga, pipeline, runs } from '../shared/diagrams.ts'
-import { githubOrigin, pagesBase } from './site.ts'
+import { githubOrigin } from './site.ts'
 
 /** Korean explanation of the shaping model. The examples use fixed families so they stay put while the specimen radios move. */
 export function explainCss(): string {
@@ -196,6 +196,6 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
         <p class="layer-label">북한 독음 <span class="loc">ko-KP</span></p>
         <p class="layer-kp">女子와 男女, 平壤 冷麵</p>
         <p>일곱 굵기와 가변 폰트는 <a href="${githubOrigin()}/releases">릴리스</a>에 있습니다. 가변 폰트의 독음 획은 굵기 축을 따라가고, 기본 인스턴스는 ExtraLight입니다. 한자 사이의 공백은 한글 사이보다 좁습니다. Regular에서 224이고, 한글 사이는 280입니다. 가로쓰기만 됩니다.</p>
-        <p>빌드는 <code>planReadings</code>로 규칙을 한 번 고르고, <code>emitFamily</code>가 독음과 치환을 나눈 뒤, furifont <code>compileFont</code>가 윤곽과 GSUB를 씁니다. 한자 애드온은 그 정적 글꼴을 fontTools로 자릅니다. <a href="${pagesBase()}slides/">슬라이드</a>가 이 과정을 코드와 함께 설명합니다.</p>
+        <p>빌드는 <code>planReadings</code>로 규칙을 한 번 고르고, <code>emitFamily</code>가 독음과 치환을 나눈 뒤, furifont <code>compileFont</code>가 윤곽과 GSUB를 씁니다. 한자 애드온은 그 정적 글꼴을 fontTools로 자릅니다.</p>
       </section>`
 }

@@ -1,6 +1,6 @@
 # 국한문 안내
 
-이 문서는 측정값, 메트릭, 빌드, 라이선스 출처를 담습니다. 짧은 사용법은 저장소 [README](../README.md)에 있고, 동작은 [라이브 페이지](https://morealdot.github.io/gukhanmun-font/)와 [놀이터](https://morealdot.github.io/gukhanmun-font/playground/), [슬라이드](https://morealdot.github.io/gukhanmun-font/slides/)가 설명합니다.
+이 문서는 측정값, 메트릭, 빌드, 라이선스 출처를 담습니다. 짧은 사용법은 저장소 [README](../README.md)에 있고, 동작은 [라이브 페이지](https://morealdot.github.io/gukhanmun-font/)와 [놀이터](https://morealdot.github.io/gukhanmun-font/playground/)가 설명합니다.
 
 한자는 그대로 두고 독음을 붙이는 글꼴입니다. `國漢文混用`이라고만 적습니다. `<ruby>`도, 자바스크립트도 필요 없고, 복사하면 한자 그대로입니다.
 

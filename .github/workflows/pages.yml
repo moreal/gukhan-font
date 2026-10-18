@@ -41,10 +41,6 @@ jobs:
         run: pnpm test
       - name: Build the Pages demo
         run: pnpm build:pages
-      - name: Build the slides
-        run: pnpm slides:build
-      - name: Place the slides on the site
-        run: mkdir -p site/slides && cp -a slides/dist/. site/slides/
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

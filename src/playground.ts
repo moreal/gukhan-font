@@ -187,7 +187,6 @@ export function renderPlayground(): string {
     <nav aria-label="페이지">
       <a href="${root}">본문</a>
       <a href="${root}playground/" aria-current="page">놀이터</a>
-      <a href="${root}slides/">슬라이드</a>
     </nav>
   </header>
   <h1 class="visually-hidden">놀이터. 한자를 치면 독음이 붙습니다.</h1>
