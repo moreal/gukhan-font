@@ -8,7 +8,7 @@ import { promisify } from 'node:util'
 import * as hb from 'harfbuzzjs'
 import { brotli, compileFont, readFontInfo, subsetWasm, toWoff2 } from '../vendor/furifont/index.ts'
 import { subsetFont } from '../vendor/furifont/subset.ts'
-import { pagesDistFonts, renderDemo, renderHanjaCss, type DemoMetrics } from './demo.ts'
+import { displayCodepoints, pagesDistFonts, renderDemo, renderHanjaCss, type DemoMetrics } from './demo.ts'
 import { emitFamily, planReadings, type BuildReport, type FamilyStyle, type ReadingPlan } from './emit.ts'
 import { fileName, productName, WEIGHTS, type ProductKind, type WeightName } from './families.ts'
 import { cssPercent, faceMetrics, rubyAscender } from './metrics.ts'
@@ -19,6 +19,8 @@ import type { WordEntry } from './select.ts'
 import {
   GOTHIC_A1_SHA256,
   GOTHIC_A1_URL,
+  GOWUN_BATANG_SHA256,
+  GOWUN_BATANG_URL,
   NORTH_KOREAN_SHA256,
   SOURCE_HAN_VF_SHA256,
   SOURCE_HAN_VF_URL,
@@ -276,6 +278,8 @@ async function ensureAssets(): Promise<{ weights: Map<WeightName, Uint8Array>, v
   return { weights, vf }
 }
 
+const DEMO_FACE_FILES = ['GothicA1-Regular.woff2', 'GowunBatang-Regular.woff2', 'HanjaBox.woff']
+
 async function ensureGothic(): Promise<void> {
   const cache = join(root, '.cache', 'GothicA1-Regular.ttf')
   const ttf = await hashedFile(cache, GOTHIC_A1_URL, GOTHIC_A1_SHA256)
@@ -291,6 +295,27 @@ async function ensureGothic(): Promise<void> {
     console.log('building the demo Hanja box')
     await exec('python3', [join(root, 'scripts', 'hanja_box.py'), box])
   }
+}
+
+/** Subsets Gowun Batang to the landing page's display text. The full face is about 8 MB and has no Hanja. */
+async function ensureDisplayFace(): Promise<void> {
+  const cache = join(root, '.cache', 'GowunBatang-Regular.ttf')
+  const ttf = await hashedFile(cache, GOWUN_BATANG_URL, GOWUN_BATANG_SHA256)
+  const dir = join(root, 'demo', 'fonts')
+  await mkdir(dir, { recursive: true })
+  const woff2 = join(dir, 'GowunBatang-Regular.woff2')
+  if (await exists(woff2))
+    return
+  const codepoints = displayCodepoints()
+  const have = new Set(readFontInfo(ttf).codepoints)
+  const missing = codepoints.filter(cp => !have.has(cp))
+  if (missing.length)
+    throw new Error(`Gowun Batang lacks ${missing.map(cp => `U+${cp.toString(16).toUpperCase()}`).join(' ')}`)
+  console.log(`subsetting Gowun Batang to ${codepoints.length} codepoints`)
+  const subset = await subsetFont(ttf, codepoints, subsetWasm)
+  const web = await toWoff2(subset, data => brotli(data, 11))
+  await writeFile(woff2, web)
+  console.log(`wrote GowunBatang-Regular.woff2 ${web.byteLength} bytes`)
 }
 
 function sampleHan(): number[] {
@@ -558,11 +583,11 @@ async function publishSite(dist: string, metrics: DemoMetrics): Promise<void> {
   await mkdir(fonts, { recursive: true })
   for (const name of pagesDistFonts())
     await writeFile(join(fonts, name), await readFile(join(dist, name)))
-  for (const name of ['GothicA1-Regular.woff2', 'HanjaBox.woff'])
+  for (const name of DEMO_FACE_FILES)
     await writeFile(join(fonts, name), await readFile(join(root, 'demo', 'fonts', name)))
   await writeFile(join(site, 'index.html'), renderDemo(metrics, 'pages'))
   await writeFile(join(site, '.nojekyll'), '')
-  console.log(`wrote site/ with ${pagesDistFonts().length + 2} fonts`)
+  console.log(`wrote site/ with ${pagesDistFonts().length + DEMO_FACE_FILES.length} fonts`)
 }
 
 async function mkdirTemp(): Promise<string> {
@@ -571,6 +596,13 @@ async function mkdirTemp(): Promise<string> {
 }
 
 async function main(): Promise<void> {
+  if (process.argv.includes('--demo-html')) {
+    await ensureGothic()
+    await ensureDisplayFace()
+    const report = JSON.parse(await readFile(join(root, 'dist', 'report.json'), 'utf8')) as { metrics: DemoMetrics }
+    await writeFile(join(root, 'demo', 'index.html'), renderDemo(report.metrics))
+    return
+  }
   const dist = join(root, 'dist')
   if (!CHECK)
     await rm(dist, { recursive: true, force: true })
@@ -582,6 +614,7 @@ async function main(): Promise<void> {
     readFile(join(root, 'data', 'ko-kp-opendict.tsv')),
     readFile(join(root, 'data', 'khangul.json'), 'utf8'),
     ensureGothic(),
+    ensureDisplayFace(),
   ])
   const northSum = sha256(new Uint8Array(northBytes))
   if (northSum !== NORTH_KOREAN_SHA256)

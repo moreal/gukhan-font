@@ -4,7 +4,7 @@ import { dirname, join } from 'node:path'
 import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { createHash } from 'node:crypto'
-import { pagesDistFonts, renderDemo } from './demo.ts'
+import { displayCodepoints, pagesDistFonts, renderDemo } from './demo.ts'
 import { emitFamily, planReadings } from './emit.ts'
 import { productName } from './families.ts'
 import { applyInitialSoundLaw, revertInitialSoundLaw } from './hangul.ts'
@@ -288,7 +288,25 @@ test('the pages demo is rooted at /gukhan-font/ and ships the light font set', (
   for (const name of pagesDistFonts())
     assert.ok(pages.includes(`fonts/${name}`), name)
   assert.match(pages, /fonts\/GothicA1-Regular\.woff2/)
+  assert.match(pages, /fonts\/GowunBatang-Regular\.woff2/)
+  assert.match(pages, /font-family: "Gowun Batang"/)
   assert.match(pages, /fonts\/HanjaBox\.woff"/)
+  assert.match(pages, /No\. 01/)
+  assert.match(pages, /남한 <span class="loc">ko-KR<\/span>/)
+  assert.match(pages, /북한 <span class="loc">ko-KP<\/span>/)
+  assert.match(pages, /남한 · 북한/)
+  assert.match(pages, /녀자와 남녀/)
+  assert.equal(pages.includes('kp-read'), false)
+  assert.match(pages, /본문 <span class="loc">Gothic A1<\/span>/)
+  assert.match(pages, /루비 애드온/)
+  assert.match(pages, /치환 애드온/)
+  assert.match(pages, /북한 루비/)
+  const display = displayCodepoints()
+  assert.ok(display.length < 400)
+  assert.ok(display.includes('국'.codePointAt(0)!))
+  assert.ok(display.includes('Ⅰ'.codePointAt(0)!))
+  assert.equal(display.includes('國'.codePointAt(0)!), false)
+  assert.equal(display.includes('第'.codePointAt(0)!), false)
   assert.match(pages, /unicode-range: U\+4E00;/)
   assert.match(pages, /unicode-range: U\+4E01;/)
   const local = renderDemo(metrics)

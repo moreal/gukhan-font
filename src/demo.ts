@@ -18,6 +18,52 @@ export interface DemoMetrics {
 const REGIONS = ['ko-KR', 'ko-KP'] as const
 const STYLES = ['ruby', 'replace'] as const
 
+/**
+ * Text set in Gowun Batang. The build subsets that face to these characters plus printable ASCII.
+ * The face has no Hanja, so section numbers are Roman numerals rather than 第一.
+ */
+export const DISPLAY_COPY = [
+  '국한',
+  'Ⅰ', '넣는 법',
+  'Ⅱ', '써 보기',
+  'Ⅲ', '굵기',
+  'Ⅳ', '예문',
+  'Ⅴ', '동작 방식',
+  '글자',
+  '라이선스',
+  '바탕',
+  '더 보기',
+  '남한',
+  '북한',
+  '남한 · 북한',
+  'ko-KR',
+  'ko-KP',
+  'ko-KR · ko-KP',
+  '본문',
+  '루비 애드온',
+  '치환 애드온',
+  '북한 루비',
+  '폰트 패밀리',
+  '지역',
+  '파일',
+  '루비',
+  '웹 서브셋',
+  '한자 애드온',
+  'Gukhan Sans · OFL',
+  'Gothic A1',
+  'No. 01',
+].join('')
+
+/** Codepoints the landing page's display serif is allowed to contain. */
+export function displayCodepoints(): number[] {
+  const set = new Set<number>()
+  for (let cp = 0x20; cp <= 0x7e; cp++)
+    set.add(cp)
+  for (const char of DISPLAY_COPY)
+    set.add(char.codePointAt(0)!)
+  return [...set].sort((a, b) => a - b)
+}
+
 function escapeHtml(text: string): string {
   return text.replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char]!)
 }
@@ -80,6 +126,7 @@ function fontFaces(metrics: DemoMetrics, profile: DemoProfile): string {
   }
   const gothic = 'fonts/GothicA1-Regular.woff2'
   blocks.push(faceBlock({ family: 'Gothic A1', weight: '400', src: gothic }))
+  blocks.push(faceBlock({ family: 'Gowun Batang', weight: '400', src: 'fonts/GowunBatang-Regular.woff2' }))
   blocks.push(faceBlock({
     family: hangulCompanion('ruby'),
     weight: '400',
@@ -106,7 +153,7 @@ function fontFaces(metrics: DemoMetrics, profile: DemoProfile): string {
   return blocks.join('\n')
 }
 
-/** WOFF2 files the Pages site copies from `dist/`. Gothic A1 and the Hanja box are copied beside them.
+/** WOFF2 files the Pages site copies from `dist/`. Gothic A1, Gowun Batang, and the Hanja box are copied beside them.
  *  Variable fonts are referenced only after the weight slider moves or the waterfall scrolls in. */
 export function pagesDistFonts(): string[] {
   const names: string[] = []
@@ -154,10 +201,10 @@ function familyRules(target: string): string {
 /** Web-font specimens follow region and family. They do not pull the variable font. */
 function specimenRules(): string {
   const lines = [
-    '      .page .spec p, .page .glyphs span { font-family: "Gukhan Sans Web", sans-serif; }',
-    '      .page:has(#kp:checked) .spec p, .page:has(#kp:checked) .glyphs span { font-family: "Gukhan Sans KP Web", sans-serif; }',
-    '      .page:has(#hangul:checked) .spec p, .page:has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul Web", sans-serif; }',
-    '      .page:has(#kp:checked):has(#hangul:checked) .spec p, .page:has(#kp:checked):has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul KP Web", sans-serif; }',
+    '      .page .spec .sample, .page .glyphs span { font-family: "Gukhan Sans Web", sans-serif; }',
+    '      .page:has(#kp:checked) .spec .sample, .page:has(#kp:checked) .glyphs span { font-family: "Gukhan Sans KP Web", sans-serif; }',
+    '      .page:has(#hangul:checked) .spec .sample, .page:has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul Web", sans-serif; }',
+    '      .page:has(#kp:checked):has(#hangul:checked) .spec .sample, .page:has(#kp:checked):has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul KP Web", sans-serif; }',
     '      .wsample { font-family: "Gukhan Sans Web", sans-serif; }',
     '      #weights.live .wsample { font-family: "Gukhan Sans VF", sans-serif; }',
     '      .page:has(#kp:checked) #weights.live .wsample { font-family: "Gukhan Sans KP VF", sans-serif; }',
@@ -260,18 +307,38 @@ function cssSnippet(metrics: DemoMetrics): { web: string, addon: string } {
 const RELEASES = 'https://github.com/morealdot/gukhan-font/releases'
 const REPO = 'https://github.com/morealdot/gukhan-font'
 
+function readRow(label: string, loc: string, reading: string): string {
+  return `<div class="read-row"><dt>${label} <span class="loc">${loc}</span></dt><dd>${escapeHtml(reading)}</dd></div>`
+}
+
+function sectionHead(numeral: string, title: string): string {
+  return `<header class="sec-head"><h2><span class="sec-no">${numeral}</span> ${escapeHtml(title)}</h2></header>`
+}
+
 /** Landing page. `pages` is served under `/gukhan-font/`. Variable fonts load when the slider or the waterfall asks for them. */
 export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local'): string {
   const snippet = cssSnippet(metrics)
-  const cards = SAMPLES.map(sample => `          <figure class="spec">
-            <figcaption>
-              <span class="kr-note">${escapeHtml(sample.note)}</span>
-              <span class="kp-note">${escapeHtml(sample.kpNote)}</span>
-              <span class="read kr-read">${escapeHtml(sample.reading)}</span>
-              <span class="read kp-read">${escapeHtml(sample.kp)}</span>
-            </figcaption>
-            <p>${escapeHtml(sample.text)}</p>
-          </figure>`).join('\n')
+  const cards = SAMPLES.map((sample, index) => {
+    const notes = sample.note === sample.kpNote
+      ? `<p class="note">${escapeHtml(sample.note)}</p>`
+      : `<p class="note"><span class="where">남한</span> ${escapeHtml(sample.note)}</p><p class="note"><span class="where">북한</span> ${escapeHtml(sample.kpNote)}</p>`
+    const rows = sample.reading === sample.kp
+      ? readRow('남한 · 북한', 'ko-KR · ko-KP', sample.reading)
+      : `${readRow('남한', 'ko-KR', sample.reading)}${readRow('북한', 'ko-KP', sample.kp)}`
+    const number = String(index + 1).padStart(2, '0')
+    return `          <figure class="spec">
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes">${notes}</div>
+                  <p class="cat">No. ${number}</p>
+                </div>
+                <dl class="reads">${rows}</dl>
+              </figcaption>
+              <p class="sample">${escapeHtml(sample.text)}</p>
+            </div>
+          </figure>`
+  }).join('\n')
   const waterfall = WEIGHTS.map(weight => `          <div class="wrow">
             <p class="wmeta">${weight.name} <span class="wnum">${weight.css}</span></p>
             <p class="wsample" style="--w:${weight.css}">國漢文混用으로 쓴 大韓民國</p>
@@ -286,6 +353,7 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
     <meta name="description" content="한자는 그대로 두고, 독음만 그립니다. 루비와 치환, 남한·북한 독음, 가변 폰트.">
     <link rel="preload" href="${preload}" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/GothicA1-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/GowunBatang-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <style>
       ${fontFaces(metrics, profile)}
       :root {
@@ -298,6 +366,7 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
         --indigo: #243856;
         --chip: #efe6d6;
         --ui: "Gothic A1", sans-serif;
+        --display: "Gowun Batang", "Gothic A1", serif;
       }
       * { box-sizing: border-box; }
       html { background: var(--paper); color: var(--ink); }
@@ -335,8 +404,9 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
       .mark {
         color: var(--cinnabar);
         text-decoration: none;
-        font-size: 1.05rem;
-        letter-spacing: 0.14em;
+        font-family: var(--display);
+        font-size: 1.12rem;
+        letter-spacing: 0.18em;
       }
       .nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.15rem; }
       .nav a {
@@ -377,8 +447,9 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
       .kicker {
         margin: 0;
         color: var(--muted);
+        font-family: var(--display);
         font-size: 0.78rem;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.22em;
         text-transform: uppercase;
       }
       .hero-lockup {
@@ -423,15 +494,35 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
       }
       .btn.text:hover { color: var(--cinnabar); text-decoration-color: var(--cinnabar); background: transparent; }
       .block { padding: clamp(4.2rem, 9vw, 7rem) 0; border-top: 1px solid var(--rule); scroll-margin-top: 4.5rem; }
+      .sec-head {
+        margin: 0 0 1.35rem;
+        padding-bottom: 0.55rem;
+        border-bottom: 3px double var(--ink);
+      }
+      .sec-head h2, .how .sec-head h2 {
+        margin: 0;
+        font-family: var(--display);
+        font-size: clamp(1.85rem, 3.1vw, 2.6rem);
+        font-weight: 400;
+        line-height: 1.25;
+        letter-spacing: 0;
+      }
+      .sec-no {
+        color: var(--cinnabar);
+        font-size: 0.62em;
+        letter-spacing: 0.14em;
+        margin-right: 0.35rem;
+      }
       h2 {
         margin: 0 0 0.85rem;
-        font-size: clamp(1.75rem, 3vw, 2.45rem);
+        font-family: var(--display);
+        font-size: clamp(1.85rem, 3.1vw, 2.6rem);
         font-weight: 400;
-        line-height: 1.3;
-        letter-spacing: -0.02em;
+        line-height: 1.25;
+        letter-spacing: 0;
       }
       .lead { margin: 0 0 1.5rem; max-width: 38em; color: var(--muted); }
-      .glyph-title { margin: 2.6rem 0 0.4rem; font-size: 1.2rem; font-weight: 400; }
+      .glyph-title { margin: 2.8rem 0 0.4rem; font-family: var(--display); font-size: 1.35rem; font-weight: 400; letter-spacing: 0.04em; }
       .snippet { margin: 1.4rem 0 0; }
       .snippet-head {
         display: flex;
@@ -440,7 +531,7 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
         gap: 0.8rem;
         margin-bottom: 0.4rem;
       }
-      .snippet h3 { margin: 0; font-size: 1.02rem; font-weight: 500; }
+      .snippet h3 { margin: 0; font-family: var(--display); font-size: 1.15rem; font-weight: 400; letter-spacing: 0.03em; }
       button.copy {
         font: inherit;
         font-size: 0.88rem;
@@ -521,7 +612,7 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
       }
       .slider output { color: var(--ink); min-width: 2.2rem; text-align: right; font-variant-numeric: tabular-nums; }
       fieldset { border: 0; padding: 0; min-width: 0; }
-      legend { padding: 0; margin-bottom: 0.5rem; color: var(--muted); font-size: 0.88rem; }
+      legend { padding: 0; margin-bottom: 0.5rem; color: var(--muted); font-family: var(--display); font-size: 0.92rem; letter-spacing: 0.04em; }
       .choice {
         display: flex;
         flex-wrap: wrap;
@@ -591,8 +682,9 @@ ${familyRules('.stage')}
         border-top: 1px solid var(--rule);
         padding: 0.85rem 0 0.35rem;
       }
-      .wrow:last-child { border-bottom: 1px solid var(--rule); }
-      .wmeta { margin: 0; color: var(--muted); font-size: 0.84rem; font-weight: 400; line-height: 1.4; letter-spacing: 0.04em; }
+      .wrow:first-child { border-top: 3px double var(--ink); }
+      .wrow:last-child { border-bottom: 3px double var(--ink); }
+      .wmeta { margin: 0; color: var(--muted); font-family: var(--display); font-size: 0.84rem; font-weight: 400; line-height: 1.4; letter-spacing: 0.08em; }
       .wnum { display: block; color: var(--ink); letter-spacing: 0; font-variant-numeric: tabular-nums; }
       .wsample {
         margin: 0;
@@ -606,17 +698,71 @@ ${specimenRules()}
       .specs {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.85rem;
+        gap: 1.15rem;
       }
       .spec {
         margin: 0;
-        padding: 1.15rem 1.25rem 1.35rem;
-        border: 1px solid var(--rule);
+        padding: 0.32rem;
+        border: 1px solid var(--ink);
       }
-      .spec figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
-      .spec .read { display: block; color: var(--cinnabar); margin-top: 0.2rem; }
-      .spec p {
-        margin: 0.45rem 0 0;
+      .sheet {
+        border: 1px solid var(--rule);
+        padding: 0.95rem 1.05rem 1.15rem;
+      }
+      .spec figcaption { margin: 0; }
+      .sheet-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.75rem 1rem;
+      }
+      .notes { min-width: 0; }
+      .note {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.55;
+      }
+      .note + .note { margin-top: 0.2rem; }
+      .where {
+        font-family: var(--display);
+        color: var(--cinnabar);
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+        margin-right: 0.2rem;
+      }
+      .cat {
+        margin: 0.15rem 0 0;
+        flex: 0 0 auto;
+        color: var(--muted);
+        font-family: var(--display);
+        font-size: 0.72rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .reads { margin: 0.7rem 0 0; }
+      .read-row { margin-top: 0.35rem; }
+      .reads dt {
+        margin: 0;
+        color: var(--muted);
+        font-family: var(--display);
+        font-size: 0.75rem;
+        font-weight: 400;
+        letter-spacing: 0.04em;
+      }
+      .reads .loc { letter-spacing: 0.08em; }
+      .reads dd {
+        margin: 0.05rem 0 0;
+        color: var(--cinnabar);
+        font-size: 0.98rem;
+        line-height: 1.45;
+      }
+      .spec .sample {
+        margin: 0.75rem 0 0;
+        padding-top: 0.45rem;
+        border-top: 1px solid var(--rule);
         font-size: clamp(1.65rem, 2.5vw, 2.35rem);
         line-height: 2.05;
         font-weight: 400;
@@ -642,11 +788,14 @@ ${specimenRules()}
         line-height: 2.05;
         text-align: center;
       }
-      .kp-note, .kp-read { display: none; }
-      .page:has(#kp:checked) .kr-note,
-      .page:has(#kp:checked) .kr-read { display: none; }
-      .page:has(#kp:checked) .kp-note { display: inline; }
-      .page:has(#kp:checked) .kp-read { display: block; }
+      .layer-label {
+        margin: 0.85rem 0 0;
+        color: var(--muted);
+        font-family: var(--display);
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+      }
+      .layer-label .loc { letter-spacing: 0.1em; }
       .layer-body { font-family: "Gothic A1", "Hanja Box"; color: var(--indigo); }
       .layer-ruby { font-family: "Gukhan Sans Hanja", "${hangulCompanion('ruby')}", sans-serif; }
       .layer-replace { font-family: "Gukhan Hangul Hanja", "${hangulCompanion('replace')}", sans-serif; color: var(--indigo); }
@@ -662,15 +811,16 @@ ${explainCss()}
       .credit { margin: 0.35rem 0; }
       .how a, .foot a, .lead a { color: var(--cinnabar); }
       .how h2 {
-        font-size: clamp(1.75rem, 3vw, 2.45rem);
+        font-family: var(--display);
+        font-size: clamp(1.85rem, 3.1vw, 2.6rem);
         font-weight: 400;
-        letter-spacing: -0.02em;
-        line-height: 1.3;
+        letter-spacing: 0;
+        line-height: 1.25;
         margin: 0 0 0.85rem;
       }
       .foot {
         padding: clamp(3.2rem, 7vw, 5rem) 0 clamp(2.6rem, 5vw, 3.5rem);
-        border-top: 1px solid var(--rule);
+        border-top: 3px double var(--ink);
         scroll-margin-top: 4.5rem;
       }
       .foot-grid {
@@ -679,11 +829,16 @@ ${explainCss()}
         gap: 1.5rem 2.5rem;
       }
       .foot-label {
-        margin: 0 0 0.45rem;
+        margin: 0 0 0.55rem;
         color: var(--muted);
+        font-family: var(--display);
         font-size: 0.78rem;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
+        letter-spacing: 0.14em;
+      }
+      .fn {
+        color: var(--cinnabar);
+        margin-right: 0.15rem;
+        letter-spacing: 0.08em;
       }
       .foot p { margin: 0.3rem 0; max-width: 38em; }
       .foot nav { display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem; }
@@ -762,7 +917,7 @@ ${explainCss()}
       </section>
       <div class="wrap">
         <section class="block" id="use">
-          <h2>넣는 법</h2>
+          ${sectionHead('Ⅰ', '넣는 법')}
           <p class="lead">파일은 <a href="${RELEASES}">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 루비는 <code>line-height</code>를 2로 둡니다.</p>
           <div class="snippet">
             <div class="snippet-head">
@@ -782,7 +937,7 @@ ${explainCss()}
         </section>
 
         <section class="block" id="try">
-          <h2>써 보기</h2>
+          ${sectionHead('Ⅱ', '써 보기')}
           <p class="lead">문장을 고쳐 보세요. 크기, 굵기, 남한·북한 독음, 루비와 치환, 한자 애드온을 바꿉니다. 굵기 슬라이더는 가변 폰트를 받습니다. 이 페이지의 애드온은 Regular입니다. 복사하면 한자입니다.</p>
           <label class="visually-hidden" for="stage">시험할 문장</label>
           <textarea id="stage" class="stage" spellcheck="false" autocomplete="off">大韓民國의 音樂과 平壤 冷麵.</textarea>
@@ -825,14 +980,14 @@ ${explainCss()}
         </section>
 
         <section class="block" id="weights">
-          <h2>굵기</h2>
+          ${sectionHead('Ⅲ', '굵기')}
           <p class="lead">ExtraLight부터 Heavy까지입니다. 이 목록이 화면에 들어올 때 가변 폰트를 받습니다. 지금은 고른 폰트 패밀리와 지역을 따릅니다.</p>
 ${waterfall}
         </section>
 
         <section class="block" id="specimens">
-          <h2>예문</h2>
-          <p class="lead">국한문혼용 문장입니다. 웹 서브셋으로 그립니다. 지역과 폰트 패밀리를 바꾸면 독음이 바뀝니다.</p>
+          ${sectionHead('Ⅳ', '예문')}
+          <p class="lead">국한문혼용 문장입니다. 웹 서브셋으로 그립니다. 작은 글은 남한 ko-KR과 북한 ko-KP 독음이고, 같으면 한 줄입니다. 지역과 폰트 패밀리를 바꾸면 큰 글자의 독음이 바뀝니다.</p>
           <div class="specs">
 ${cards}
           </div>
@@ -848,16 +1003,16 @@ ${explainHtml()}
         <footer class="foot" id="license">
           <div class="foot-grid">
             <div>
-              <p class="foot-label">라이선스</p>
+              <p class="foot-label"><span class="fn">1</span> 라이선스</p>
               <p>글꼴은 <a href="https://github.com/morealdot/gukhan-font/blob/main/OFL.txt">SIL OFL 1.1</a>입니다. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. 저장소 코드는 MIT입니다.</p>
             </div>
             <div>
-              <p class="foot-label">바탕</p>
+              <p class="foot-label"><span class="fn">2</span> 바탕</p>
               <p>윤곽은 Adobe <a href="https://github.com/adobe-fonts/source-han-sans">Source Han Sans</a> KR에서 왔습니다. 단어 독음 표는 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서 왔습니다. 글꼴 컴파일은 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>입니다.</p>
-              <p>화면의 한글 본문은 Gothic A1(OFL)입니다. 애드온과 짝이 되는 폰트 패밀리에는 같은 메트릭 오버라이드를 얹었습니다.</p>
+              <p>본문은 Gothic A1(OFL)이고, 제목은 류양희의 <a href="https://github.com/yangheeryu/Gowun-Batang">고운바탕</a>(OFL)입니다. 애드온과 짝이 되는 폰트 패밀리에는 같은 메트릭 오버라이드를 얹었습니다.</p>
             </div>
             <div>
-              <p class="foot-label">더 보기</p>
+              <p class="foot-label"><span class="fn">3</span> 더 보기</p>
               <nav aria-label="바깥 링크">
                 <a href="/gukhan-font/slides/">슬라이드</a>
                 <a href="${REPO}">저장소</a>

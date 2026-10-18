@@ -7,6 +7,7 @@
     <meta name="description" content="한자는 그대로 두고, 독음만 그립니다. 루비와 치환, 남한·북한 독음, 가변 폰트.">
     <link rel="preload" href="../dist/GukhanSans-Web.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/GothicA1-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/GowunBatang-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <style>
       @font-face {
         font-family: "Gukhan Sans VF";
@@ -389,6 +390,14 @@
         
       }
 @font-face {
+        font-family: "Gowun Batang";
+        src: url("fonts/GowunBatang-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+        
+      }
+@font-face {
         font-family: "Gothic A1 Ruby";
         src: url("fonts/GothicA1-Regular.woff2") format("woff2");
         font-weight: 400;
@@ -426,6 +435,7 @@
         --indigo: #243856;
         --chip: #efe6d6;
         --ui: "Gothic A1", sans-serif;
+        --display: "Gowun Batang", "Gothic A1", serif;
       }
       * { box-sizing: border-box; }
       html { background: var(--paper); color: var(--ink); }
@@ -463,8 +473,9 @@
       .mark {
         color: var(--cinnabar);
         text-decoration: none;
-        font-size: 1.05rem;
-        letter-spacing: 0.14em;
+        font-family: var(--display);
+        font-size: 1.12rem;
+        letter-spacing: 0.18em;
       }
       .nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.15rem; }
       .nav a {
@@ -505,8 +516,9 @@
       .kicker {
         margin: 0;
         color: var(--muted);
+        font-family: var(--display);
         font-size: 0.78rem;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.22em;
         text-transform: uppercase;
       }
       .hero-lockup {
@@ -551,15 +563,35 @@
       }
       .btn.text:hover { color: var(--cinnabar); text-decoration-color: var(--cinnabar); background: transparent; }
       .block { padding: clamp(4.2rem, 9vw, 7rem) 0; border-top: 1px solid var(--rule); scroll-margin-top: 4.5rem; }
+      .sec-head {
+        margin: 0 0 1.35rem;
+        padding-bottom: 0.55rem;
+        border-bottom: 3px double var(--ink);
+      }
+      .sec-head h2, .how .sec-head h2 {
+        margin: 0;
+        font-family: var(--display);
+        font-size: clamp(1.85rem, 3.1vw, 2.6rem);
+        font-weight: 400;
+        line-height: 1.25;
+        letter-spacing: 0;
+      }
+      .sec-no {
+        color: var(--cinnabar);
+        font-size: 0.62em;
+        letter-spacing: 0.14em;
+        margin-right: 0.35rem;
+      }
       h2 {
         margin: 0 0 0.85rem;
-        font-size: clamp(1.75rem, 3vw, 2.45rem);
+        font-family: var(--display);
+        font-size: clamp(1.85rem, 3.1vw, 2.6rem);
         font-weight: 400;
-        line-height: 1.3;
-        letter-spacing: -0.02em;
+        line-height: 1.25;
+        letter-spacing: 0;
       }
       .lead { margin: 0 0 1.5rem; max-width: 38em; color: var(--muted); }
-      .glyph-title { margin: 2.6rem 0 0.4rem; font-size: 1.2rem; font-weight: 400; }
+      .glyph-title { margin: 2.8rem 0 0.4rem; font-family: var(--display); font-size: 1.35rem; font-weight: 400; letter-spacing: 0.04em; }
       .snippet { margin: 1.4rem 0 0; }
       .snippet-head {
         display: flex;
@@ -568,7 +600,7 @@
         gap: 0.8rem;
         margin-bottom: 0.4rem;
       }
-      .snippet h3 { margin: 0; font-size: 1.02rem; font-weight: 500; }
+      .snippet h3 { margin: 0; font-family: var(--display); font-size: 1.15rem; font-weight: 400; letter-spacing: 0.03em; }
       button.copy {
         font: inherit;
         font-size: 0.88rem;
@@ -649,7 +681,7 @@
       }
       .slider output { color: var(--ink); min-width: 2.2rem; text-align: right; font-variant-numeric: tabular-nums; }
       fieldset { border: 0; padding: 0; min-width: 0; }
-      legend { padding: 0; margin-bottom: 0.5rem; color: var(--muted); font-size: 0.88rem; }
+      legend { padding: 0; margin-bottom: 0.5rem; color: var(--muted); font-family: var(--display); font-size: 0.92rem; letter-spacing: 0.04em; }
       .choice {
         display: flex;
         flex-wrap: wrap;
@@ -730,8 +762,9 @@
         border-top: 1px solid var(--rule);
         padding: 0.85rem 0 0.35rem;
       }
-      .wrow:last-child { border-bottom: 1px solid var(--rule); }
-      .wmeta { margin: 0; color: var(--muted); font-size: 0.84rem; font-weight: 400; line-height: 1.4; letter-spacing: 0.04em; }
+      .wrow:first-child { border-top: 3px double var(--ink); }
+      .wrow:last-child { border-bottom: 3px double var(--ink); }
+      .wmeta { margin: 0; color: var(--muted); font-family: var(--display); font-size: 0.84rem; font-weight: 400; line-height: 1.4; letter-spacing: 0.08em; }
       .wnum { display: block; color: var(--ink); letter-spacing: 0; font-variant-numeric: tabular-nums; }
       .wsample {
         margin: 0;
@@ -741,10 +774,10 @@
         overflow-wrap: anywhere;
       }
       #weights.live .wsample { font-weight: var(--w); font-synthesis: none; }
-      .page .spec p, .page .glyphs span { font-family: "Gukhan Sans Web", sans-serif; }
-      .page:has(#kp:checked) .spec p, .page:has(#kp:checked) .glyphs span { font-family: "Gukhan Sans KP Web", sans-serif; }
-      .page:has(#hangul:checked) .spec p, .page:has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul Web", sans-serif; }
-      .page:has(#kp:checked):has(#hangul:checked) .spec p, .page:has(#kp:checked):has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul KP Web", sans-serif; }
+      .page .spec .sample, .page .glyphs span { font-family: "Gukhan Sans Web", sans-serif; }
+      .page:has(#kp:checked) .spec .sample, .page:has(#kp:checked) .glyphs span { font-family: "Gukhan Sans KP Web", sans-serif; }
+      .page:has(#hangul:checked) .spec .sample, .page:has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul Web", sans-serif; }
+      .page:has(#kp:checked):has(#hangul:checked) .spec .sample, .page:has(#kp:checked):has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul KP Web", sans-serif; }
       .wsample { font-family: "Gukhan Sans Web", sans-serif; }
       #weights.live .wsample { font-family: "Gukhan Sans VF", sans-serif; }
       .page:has(#kp:checked) #weights.live .wsample { font-family: "Gukhan Sans KP VF", sans-serif; }
@@ -753,17 +786,71 @@
       .specs {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.85rem;
+        gap: 1.15rem;
       }
       .spec {
         margin: 0;
-        padding: 1.15rem 1.25rem 1.35rem;
-        border: 1px solid var(--rule);
+        padding: 0.32rem;
+        border: 1px solid var(--ink);
       }
-      .spec figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
-      .spec .read { display: block; color: var(--cinnabar); margin-top: 0.2rem; }
-      .spec p {
-        margin: 0.45rem 0 0;
+      .sheet {
+        border: 1px solid var(--rule);
+        padding: 0.95rem 1.05rem 1.15rem;
+      }
+      .spec figcaption { margin: 0; }
+      .sheet-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.75rem 1rem;
+      }
+      .notes { min-width: 0; }
+      .note {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.55;
+      }
+      .note + .note { margin-top: 0.2rem; }
+      .where {
+        font-family: var(--display);
+        color: var(--cinnabar);
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+        margin-right: 0.2rem;
+      }
+      .cat {
+        margin: 0.15rem 0 0;
+        flex: 0 0 auto;
+        color: var(--muted);
+        font-family: var(--display);
+        font-size: 0.72rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .reads { margin: 0.7rem 0 0; }
+      .read-row { margin-top: 0.35rem; }
+      .reads dt {
+        margin: 0;
+        color: var(--muted);
+        font-family: var(--display);
+        font-size: 0.75rem;
+        font-weight: 400;
+        letter-spacing: 0.04em;
+      }
+      .reads .loc { letter-spacing: 0.08em; }
+      .reads dd {
+        margin: 0.05rem 0 0;
+        color: var(--cinnabar);
+        font-size: 0.98rem;
+        line-height: 1.45;
+      }
+      .spec .sample {
+        margin: 0.75rem 0 0;
+        padding-top: 0.45rem;
+        border-top: 1px solid var(--rule);
         font-size: clamp(1.65rem, 2.5vw, 2.35rem);
         line-height: 2.05;
         font-weight: 400;
@@ -789,11 +876,14 @@
         line-height: 2.05;
         text-align: center;
       }
-      .kp-note, .kp-read { display: none; }
-      .page:has(#kp:checked) .kr-note,
-      .page:has(#kp:checked) .kr-read { display: none; }
-      .page:has(#kp:checked) .kp-note { display: inline; }
-      .page:has(#kp:checked) .kp-read { display: block; }
+      .layer-label {
+        margin: 0.85rem 0 0;
+        color: var(--muted);
+        font-family: var(--display);
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+      }
+      .layer-label .loc { letter-spacing: 0.1em; }
       .layer-body { font-family: "Gothic A1", "Hanja Box"; color: var(--indigo); }
       .layer-ruby { font-family: "Gukhan Sans Hanja", "Gothic A1 Ruby", sans-serif; }
       .layer-replace { font-family: "Gukhan Hangul Hanja", "Gothic A1 Replace", sans-serif; color: var(--indigo); }
@@ -818,7 +908,7 @@
       .how .layer-body, .how .layer-ruby, .how .layer-replace, .how .layer-kp {
         font-size: clamp(1.45rem, 2.8vw, 2.15rem);
         line-height: 2;
-        margin: 0.2rem 0 0.8rem;
+        margin: 0.15rem 0 0.35rem;
       }
       .run { font-size: 1.35rem; line-height: 1.8; }
       .run .han { background: #f6d7c8; padding: 0 0.15rem; }
@@ -856,15 +946,16 @@
       .credit { margin: 0.35rem 0; }
       .how a, .foot a, .lead a { color: var(--cinnabar); }
       .how h2 {
-        font-size: clamp(1.75rem, 3vw, 2.45rem);
+        font-family: var(--display);
+        font-size: clamp(1.85rem, 3.1vw, 2.6rem);
         font-weight: 400;
-        letter-spacing: -0.02em;
-        line-height: 1.3;
+        letter-spacing: 0;
+        line-height: 1.25;
         margin: 0 0 0.85rem;
       }
       .foot {
         padding: clamp(3.2rem, 7vw, 5rem) 0 clamp(2.6rem, 5vw, 3.5rem);
-        border-top: 1px solid var(--rule);
+        border-top: 3px double var(--ink);
         scroll-margin-top: 4.5rem;
       }
       .foot-grid {
@@ -873,11 +964,16 @@
         gap: 1.5rem 2.5rem;
       }
       .foot-label {
-        margin: 0 0 0.45rem;
+        margin: 0 0 0.55rem;
         color: var(--muted);
+        font-family: var(--display);
         font-size: 0.78rem;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
+        letter-spacing: 0.14em;
+      }
+      .fn {
+        color: var(--cinnabar);
+        margin-right: 0.15rem;
+        letter-spacing: 0.08em;
       }
       .foot p { margin: 0.3rem 0; max-width: 38em; }
       .foot nav { display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem; }
@@ -956,7 +1052,7 @@
       </section>
       <div class="wrap">
         <section class="block" id="use">
-          <h2>넣는 법</h2>
+          <header class="sec-head"><h2><span class="sec-no">Ⅰ</span> 넣는 법</h2></header>
           <p class="lead">파일은 <a href="https://github.com/morealdot/gukhan-font/releases">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 루비는 <code>line-height</code>를 2로 둡니다.</p>
           <div class="snippet">
             <div class="snippet-head">
@@ -1019,7 +1115,7 @@
         </section>
 
         <section class="block" id="try">
-          <h2>써 보기</h2>
+          <header class="sec-head"><h2><span class="sec-no">Ⅱ</span> 써 보기</h2></header>
           <p class="lead">문장을 고쳐 보세요. 크기, 굵기, 남한·북한 독음, 루비와 치환, 한자 애드온을 바꿉니다. 굵기 슬라이더는 가변 폰트를 받습니다. 이 페이지의 애드온은 Regular입니다. 복사하면 한자입니다.</p>
           <label class="visually-hidden" for="stage">시험할 문장</label>
           <textarea id="stage" class="stage" spellcheck="false" autocomplete="off">大韓民國의 音樂과 平壤 冷麵.</textarea>
@@ -1062,7 +1158,7 @@
         </section>
 
         <section class="block" id="weights">
-          <h2>굵기</h2>
+          <header class="sec-head"><h2><span class="sec-no">Ⅲ</span> 굵기</h2></header>
           <p class="lead">ExtraLight부터 Heavy까지입니다. 이 목록이 화면에 들어올 때 가변 폰트를 받습니다. 지금은 고른 폰트 패밀리와 지역을 따릅니다.</p>
           <div class="wrow">
             <p class="wmeta">ExtraLight <span class="wnum">250</span></p>
@@ -1095,98 +1191,128 @@
         </section>
 
         <section class="block" id="specimens">
-          <h2>예문</h2>
-          <p class="lead">국한문혼용 문장입니다. 웹 서브셋으로 그립니다. 지역과 폰트 패밀리를 바꾸면 독음이 바뀝니다.</p>
+          <header class="sec-head"><h2><span class="sec-no">Ⅳ</span> 예문</h2></header>
+          <p class="lead">국한문혼용 문장입니다. 웹 서브셋으로 그립니다. 작은 글은 남한 ko-KR과 북한 ko-KP 독음이고, 같으면 한 줄입니다. 지역과 폰트 패밀리를 바꾸면 큰 글자의 독음이 바뀝니다.</p>
           <div class="specs">
           <figure class="spec">
-            <figcaption>
-              <span class="kr-note">글자마다 한 음절입니다. 합자가 없어도 읽습니다.</span>
-              <span class="kp-note">글자마다 한 음절입니다. 북한 표제어가 없어도 같습니다.</span>
-              <span class="read kr-read">국한문혼용</span>
-              <span class="read kp-read">국한문혼용</span>
-            </figcaption>
-            <p>國漢文混用</p>
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes"><p class="note"><span class="where">남한</span> 글자마다 한 음절입니다. 합자가 없어도 읽습니다.</p><p class="note"><span class="where">북한</span> 글자마다 한 음절입니다. 북한 표제어가 없어도 같습니다.</p></div>
+                  <p class="cat">No. 01</p>
+                </div>
+                <dl class="reads"><div class="read-row"><dt>남한 · 북한 <span class="loc">ko-KR · ko-KP</span></dt><dd>국한문혼용</dd></div></dl>
+              </figcaption>
+              <p class="sample">國漢文混用</p>
+            </div>
           </figure>
           <figure class="spec">
-            <figcaption>
-              <span class="kr-note">한자와 한글은 서로 다른 스크립트 런입니다.</span>
-              <span class="kp-note">한자와 한글은 서로 다른 스크립트 런입니다.</span>
-              <span class="read kr-read">대한민국의 헌법</span>
-              <span class="read kp-read">대한민국의 헌법</span>
-            </figcaption>
-            <p>大韓民國의 憲法</p>
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes"><p class="note">한자와 한글은 서로 다른 스크립트 런입니다.</p></div>
+                  <p class="cat">No. 02</p>
+                </div>
+                <dl class="reads"><div class="read-row"><dt>남한 · 북한 <span class="loc">ko-KR · ko-KP</span></dt><dd>대한민국의 헌법</dd></div></dl>
+              </figcaption>
+              <p class="sample">大韓民國의 憲法</p>
+            </div>
           </figure>
           <figure class="spec">
-            <figcaption>
-              <span class="kr-note">두음 법칙. 女는 런의 첫 글자에서만 여입니다.</span>
-              <span class="kp-note">두음 법칙을 쓰지 않습니다. 女는 녀입니다.</span>
-              <span class="read kr-read">여자와 남녀</span>
-              <span class="read kp-read">녀자와 남녀</span>
-            </figcaption>
-            <p>女子와 男女</p>
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes"><p class="note"><span class="where">남한</span> 두음 법칙. 女는 런의 첫 글자에서만 여입니다.</p><p class="note"><span class="where">북한</span> 두음 법칙을 쓰지 않습니다. 女는 녀입니다.</p></div>
+                  <p class="cat">No. 03</p>
+                </div>
+                <dl class="reads"><div class="read-row"><dt>남한 <span class="loc">ko-KR</span></dt><dd>여자와 남녀</dd></div><div class="read-row"><dt>북한 <span class="loc">ko-KP</span></dt><dd>녀자와 남녀</dd></div></dl>
+              </figcaption>
+              <p class="sample">女子와 男女</p>
+            </div>
           </figure>
           <figure class="spec">
-            <figcaption>
-              <span class="kr-note">樂은 단어에 따라 악 또는 락입니다. 音樂만 합자입니다.</span>
-              <span class="kp-note">音樂의 악은 락의 두음이 아니라 다른 독음이라 그대로입니다.</span>
-              <span class="read kr-read">음악과 쾌락</span>
-              <span class="read kp-read">음악과 쾌락</span>
-            </figcaption>
-            <p>音樂과 快樂</p>
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes"><p class="note"><span class="where">남한</span> 樂은 단어에 따라 악 또는 락입니다. 音樂만 합자입니다.</p><p class="note"><span class="where">북한</span> 音樂의 악은 락의 두음이 아니라 다른 독음이라 그대로입니다.</p></div>
+                  <p class="cat">No. 04</p>
+                </div>
+                <dl class="reads"><div class="read-row"><dt>남한 · 북한 <span class="loc">ko-KR · ko-KP</span></dt><dd>음악과 쾌락</dd></div></dl>
+              </figcaption>
+              <p class="sample">音樂과 快樂</p>
+            </div>
           </figure>
           <figure class="spec">
-            <figcaption>
-              <span class="kr-note">남한의 두음 법칙. 冷은 어두에서 냉입니다.</span>
-              <span class="kp-note">冷은 랭입니다. 평양은 글자 독음입니다.</span>
-              <span class="read kr-read">평양 냉면</span>
-              <span class="read kp-read">평양 랭면</span>
-            </figcaption>
-            <p>平壤 冷麵</p>
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes"><p class="note"><span class="where">남한</span> 남한의 두음 법칙. 冷은 어두에서 냉입니다.</p><p class="note"><span class="where">북한</span> 冷은 랭입니다. 평양은 글자 독음입니다.</p></div>
+                  <p class="cat">No. 05</p>
+                </div>
+                <dl class="reads"><div class="read-row"><dt>남한 <span class="loc">ko-KR</span></dt><dd>평양 냉면</dd></div><div class="read-row"><dt>북한 <span class="loc">ko-KP</span></dt><dd>평양 랭면</dd></div></dl>
+              </figcaption>
+              <p class="sample">平壤 冷麵</p>
+            </div>
           </figure>
           <figure class="spec">
-            <figcaption>
-              <span class="kr-note">來는 어두에서 내, 그 밖에는 래입니다.</span>
-              <span class="kp-note">來는 어디서나 래입니다.</span>
-              <span class="read kr-read">내일과 미래</span>
-              <span class="read kp-read">래일과 미래</span>
-            </figcaption>
-            <p>來日과 未來</p>
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes"><p class="note"><span class="where">남한</span> 來는 어두에서 내, 그 밖에는 래입니다.</p><p class="note"><span class="where">북한</span> 來는 어디서나 래입니다.</p></div>
+                  <p class="cat">No. 06</p>
+                </div>
+                <dl class="reads"><div class="read-row"><dt>남한 <span class="loc">ko-KR</span></dt><dd>내일과 미래</dd></div><div class="read-row"><dt>북한 <span class="loc">ko-KP</span></dt><dd>래일과 미래</dd></div></dl>
+              </figcaption>
+              <p class="sample">來日과 未來</p>
+            </div>
           </figure>
           <figure class="spec">
-            <figcaption>
-              <span class="kr-note">困難은 곤난이 아니라 곤란입니다. 합자로 고칩니다.</span>
-              <span class="kp-note">우리말샘 북한어는 곤난입니다.</span>
-              <span class="read kr-read">곤란한 문제</span>
-              <span class="read kp-read">곤난한 문제</span>
-            </figcaption>
-            <p>困難한 問題</p>
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes"><p class="note"><span class="where">남한</span> 困難은 곤난이 아니라 곤란입니다. 합자로 고칩니다.</p><p class="note"><span class="where">북한</span> 우리말샘 북한어는 곤난입니다.</p></div>
+                  <p class="cat">No. 07</p>
+                </div>
+                <dl class="reads"><div class="read-row"><dt>남한 <span class="loc">ko-KR</span></dt><dd>곤란한 문제</dd></div><div class="read-row"><dt>북한 <span class="loc">ko-KP</span></dt><dd>곤난한 문제</dd></div></dl>
+              </figcaption>
+              <p class="sample">困難한 問題</p>
+            </div>
           </figure>
           <figure class="spec">
-            <figcaption>
-              <span class="kr-note">六月·十月은 사전 독음입니다. 五六은 글자 독음입니다.</span>
-              <span class="kp-note">六月은 류월입니다. 十月의 시는 십의 두음이 아니라 그대로입니다. 五六은 오륙입니다.</span>
-              <span class="read kr-read">유월과 시월, 오륙</span>
-              <span class="read kp-read">류월과 시월, 오륙</span>
-            </figcaption>
-            <p>六月과 十月, 五六</p>
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes"><p class="note"><span class="where">남한</span> 六月·十月은 사전 독음입니다. 五六은 글자 독음입니다.</p><p class="note"><span class="where">북한</span> 六月은 류월입니다. 十月의 시는 십의 두음이 아니라 그대로입니다. 五六은 오륙입니다.</p></div>
+                  <p class="cat">No. 08</p>
+                </div>
+                <dl class="reads"><div class="read-row"><dt>남한 <span class="loc">ko-KR</span></dt><dd>유월과 시월, 오륙</dd></div><div class="read-row"><dt>북한 <span class="loc">ko-KP</span></dt><dd>류월과 시월, 오륙</dd></div></dl>
+              </figcaption>
+              <p class="sample">六月과 十月, 五六</p>
+            </div>
           </figure>
           <figure class="spec">
-            <figcaption>
-              <span class="kr-note">률은 앞 음절이 모음이나 ㄴ이면 율이 됩니다.</span>
-              <span class="kp-note">렬·률을 열·율로 바꾸지 않습니다. 利率은 리률입니다.</span>
-              <span class="read kr-read">법률, 비율, 규율, 이율, 분열</span>
-              <span class="read kp-read">법률, 비률, 규률, 리률, 분렬</span>
-            </figcaption>
-            <p>法律, 比率, 規律, 利率, 分裂</p>
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes"><p class="note"><span class="where">남한</span> 률은 앞 음절이 모음이나 ㄴ이면 율이 됩니다.</p><p class="note"><span class="where">북한</span> 렬·률을 열·율로 바꾸지 않습니다. 利率은 리률입니다.</p></div>
+                  <p class="cat">No. 09</p>
+                </div>
+                <dl class="reads"><div class="read-row"><dt>남한 <span class="loc">ko-KR</span></dt><dd>법률, 비율, 규율, 이율, 분열</dd></div><div class="read-row"><dt>북한 <span class="loc">ko-KP</span></dt><dd>법률, 비률, 규률, 리률, 분렬</dd></div></dl>
+              </figcaption>
+              <p class="sample">法律, 比率, 規律, 利率, 分裂</p>
+            </div>
           </figure>
           <figure class="spec">
-            <figcaption>
-              <span class="kr-note">사전에 없는 한자도 글자 독음이 붙습니다.</span>
-              <span class="kp-note">사전에 없는 한자도 글자 독음이 붙습니다.</span>
-              <span class="read kr-read">한자로 쓴 글</span>
-              <span class="read kp-read">한자로 쓴 글</span>
-            </figcaption>
-            <p>漢字로 쓴 글</p>
+            <div class="sheet">
+              <figcaption>
+                <div class="sheet-top">
+                  <div class="notes"><p class="note">사전에 없는 한자도 글자 독음이 붙습니다.</p></div>
+                  <p class="cat">No. 10</p>
+                </div>
+                <dl class="reads"><div class="read-row"><dt>남한 · 북한 <span class="loc">ko-KR · ko-KP</span></dt><dd>한자로 쓴 글</dd></div></dl>
+              </figcaption>
+              <p class="sample">漢字로 쓴 글</p>
+            </div>
           </figure>
           </div>
           <h3 class="glyph-title">글자</h3>
@@ -1197,7 +1323,7 @@
         </section>
 
       <section class="how" id="how">
-        <h2>동작 방식</h2>
+        <header class="sec-head"><h2><span class="sec-no">Ⅴ</span> 동작 방식</h2></header>
         <p>자바스크립트는 쓰지 않습니다. 브라우저가 셰이핑할 때 텍스트를 스크립트 런으로 나누고, 한자가 이어진 런만 이 글꼴의 OpenType <code>rclt</code>가 바꿉니다. 한글과 라틴은 다른 런이라 다음 글꼴이 그립니다. 숫자는 <code>GukhanSans-Regular.otf</code>를 HarfBuzz로 셰이핑한 값입니다. 아래 큰 예시는 웹 서브셋으로 고정했습니다. 복사하면 한자입니다.</p>
 
         <h3>글꼴 파일은 표의 묶음입니다</h3>
@@ -1498,9 +1624,13 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
       <text x="430" y="170" font-family="sans-serif" font-size="15" fill="#6b645b">애드온이 맡지 않은 한자를 빈 상자로</text>
     </g></svg></div>
         <p>본문은 Gothic A1입니다. 한자가 없는 글꼴이라 첫 줄은 빈 상자입니다. 브라우저에 다른 한자 글꼴이 있으면 그 글자로 빈칸을 채우므로, 데모는 <code>Hanja Box</code>를 뒤에 둡니다. 아래 줄은 애드온이 한자만 그리고, <code>와</code> 같은 한글은 Gothic A1이 그립니다. 넷째 줄의 冷은 북한 독음 랭입니다.</p>
+        <p class="layer-label">본문 <span class="loc">Gothic A1</span></p>
         <p class="layer-body">女子와 男女, 平壤 冷麵</p>
+        <p class="layer-label">루비 애드온</p>
         <p class="layer-ruby">女子와 男女, 平壤 冷麵</p>
+        <p class="layer-label">치환 애드온</p>
         <p class="layer-replace">女子와 男女, 平壤 冷麵</p>
+        <p class="layer-label">북한 루비 <span class="loc">ko-KP</span></p>
         <p class="layer-kp">女子와 男女, 平壤 冷麵</p>
         <p>일곱 굵기와 가변 폰트는 <a href="https://github.com/morealdot/gukhan-font/releases">릴리스</a>에 있습니다. 가변 폰트의 루비 획은 굵기 축을 따라가고, 기본 인스턴스는 ExtraLight입니다. 한자 사이의 공백은 한글 사이보다 좁습니다. Regular에서 224이고, 한글 사이는 280입니다. 가로쓰기만 됩니다.</p>
         <p>빌드는 <code>planReadings</code>로 규칙을 한 번 고르고, <code>emitFamily</code>가 루비와 치환을 나눈 뒤, furifont <code>compileFont</code>가 윤곽과 GSUB를 씁니다. 한자 애드온은 그 정적 글꼴을 fontTools로 자릅니다. <a href="/gukhan-font/slides/">슬라이드</a>가 이 과정을 코드와 함께 설명합니다.</p>
@@ -1509,16 +1639,16 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
         <footer class="foot" id="license">
           <div class="foot-grid">
             <div>
-              <p class="foot-label">라이선스</p>
+              <p class="foot-label"><span class="fn">1</span> 라이선스</p>
               <p>글꼴은 <a href="https://github.com/morealdot/gukhan-font/blob/main/OFL.txt">SIL OFL 1.1</a>입니다. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. 저장소 코드는 MIT입니다.</p>
             </div>
             <div>
-              <p class="foot-label">바탕</p>
+              <p class="foot-label"><span class="fn">2</span> 바탕</p>
               <p>윤곽은 Adobe <a href="https://github.com/adobe-fonts/source-han-sans">Source Han Sans</a> KR에서 왔습니다. 단어 독음 표는 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서 왔습니다. 글꼴 컴파일은 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>입니다.</p>
-              <p>화면의 한글 본문은 Gothic A1(OFL)입니다. 애드온과 짝이 되는 폰트 패밀리에는 같은 메트릭 오버라이드를 얹었습니다.</p>
+              <p>본문은 Gothic A1(OFL)이고, 제목은 류양희의 <a href="https://github.com/yangheeryu/Gowun-Batang">고운바탕</a>(OFL)입니다. 애드온과 짝이 되는 폰트 패밀리에는 같은 메트릭 오버라이드를 얹었습니다.</p>
             </div>
             <div>
-              <p class="foot-label">더 보기</p>
+              <p class="foot-label"><span class="fn">3</span> 더 보기</p>
               <nav aria-label="바깥 링크">
                 <a href="/gukhan-font/slides/">슬라이드</a>
                 <a href="https://github.com/morealdot/gukhan-font">저장소</a>
