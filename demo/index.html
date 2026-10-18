@@ -1216,7 +1216,7 @@
             </fieldset>
             <fieldset>
               <legend>독음</legend>
-              <label class="switch"><input id="ss01" type="checkbox"><i aria-hidden="true"></i>독음 끄기 · ss01</label>
+              <label class="switch"><input id="ss01" type="checkbox"><i aria-hidden="true"></i>독음 끄기 (<code>ss01</code>)</label>
             </fieldset>
           </div>
         </section>
@@ -1476,7 +1476,7 @@
       <text x="838" y="96" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6b645b">픽셀</text>
       
     </g></svg></div>
-        <p>아이템화 다음에 cmap, 그다음 GSUB 치환, 그다음 위치, 그다음 래스터입니다. 이 글꼴이 추가하는 규칙은 GSUB <code>rclt</code>와 <code>ss01</code>입니다.</p>
+        <p>아이템화 다음에 cmap, 그다음 GSUB 치환, 그다음 위치, 그다음 래스터입니다. 이 글꼴이 추가하는 규칙은 GSUB <code>rclt</code>와 독음 끄기(<code>ss01</code>)입니다.</p>
 
         <h3>한자 런</h3>
         <div class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 150" width="100%" style="display:block;width:100%;height:auto;aspect-ratio:680/150" role="img"><g opacity="1">
@@ -1629,7 +1629,7 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
             <p class="label">Gukhanmun Sans · 한자 위의 독음</p>
             <p class="ex-ruby">國漢文混用</p>
             <p class="ex-ruby">音樂</p>
-            <p>배율은 0.68이고, 간격은 em의 0.02입니다. <code>ss01</code>을 켜면 이 폰트 패밀리의 독음만 꺼집니다. 줄 높이는 2가 필요합니다.</p>
+            <p>배율은 0.68이고, 간격은 em의 0.02입니다. 독음 끄기(<code>ss01</code>)를 켜면 이 폰트 패밀리의 독음만 꺼집니다. CSS에서는 <code>font-feature-settings: "ss01"</code>입니다. 줄 높이는 2가 필요합니다.</p>
           </div>
           <div class="card">
             <p class="label">Gukhanmun Hangul · 한자를 한글로</p>
@@ -1704,12 +1704,14 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
           <div class="foot-grid">
             <div>
               <p class="foot-label"><span class="fn">1</span> 라이선스</p>
-              <p>글꼴은 <a href="https://github.com/morealdot/gukhanmun-font/blob/main/OFL.txt">SIL OFL 1.1</a>입니다. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. 저장소 코드는 MIT입니다.</p>
+              <p>글꼴은 <a href="https://github.com/morealdot/gukhanmun-font/blob/main/OFL.txt">SIL OFL 1.1</a>로 배포합니다. <a href="https://github.com/adobe-fonts/source-han-sans">본고딕(Source Han Sans)</a>을 바탕으로 만들었지만, OFL 조건에 따라 원본의 예약 글꼴 이름인 Source는 쓰지 않습니다. 저장소 코드는 MIT 라이선스입니다.</p>
             </div>
             <div>
-              <p class="foot-label"><span class="fn">2</span> 바탕</p>
-              <p>윤곽은 Adobe <a href="https://github.com/adobe-fonts/source-han-sans">Source Han Sans</a> KR에서 왔습니다. 남한 단어 표는 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서 왔습니다. 북한 단어 표는 <a href="https://gukhanmun.org/">dahlia의 gukhanmun</a>이 2026-06-03에 우리말샘에서 뽑은 것입니다. gukhanmun은 국한문혼용을 한글 문자열로 바꾸는 라이브러리이고, 이 글꼴과 다른 프로젝트입니다. 글꼴 컴파일은 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>입니다.</p>
-              <p>본문은 Gothic A1(OFL)이고, 제목은 류양희의 <a href="https://github.com/yangheeryu/Gowun-Batang">고운바탕</a>(OFL)입니다. 애드온과 짝이 되는 폰트 패밀리에는 같은 메트릭 오버라이드를 얹었습니다.</p>
+              <p class="foot-label"><span class="fn">2</span> 출처</p>
+              <p>글자 모양은 Adobe의 <a href="https://github.com/adobe-fonts/source-han-sans">본고딕(Source Han Sans KR)</a>을 바탕으로 했습니다.</p>
+              <p>남한 독음은 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서, 북한 독음은 <a href="https://gukhanmun.org/">dahlia의 gukhanmun</a>이 2026년 6월 3일 <a href="https://opendict.korean.go.kr/">우리말샘</a>에서 추린 단어 목록에서 가져왔습니다. gukhanmun은 국한문혼용 글을 한글로 바꿔 주는 라이브러리로, 이 글꼴과는 별개의 프로젝트입니다.</p>
+              <p>글꼴 빌드에는 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>를 썼습니다.</p>
+              <p>이 페이지의 본문 서체는 <a href="https://fonts.google.com/specimen/Gothic+A1">Gothic A1</a>(OFL)이며, 한자 애드온과 함께 쓸 때 줄 높이가 맞도록 메트릭을 조정했습니다. 제목은 류양희의 <a href="https://github.com/yangheeryu/Gowun-Batang">고운바탕</a>(OFL)입니다.</p>
             </div>
             <div>
               <p class="foot-label"><span class="fn">3</span> 더 보기</p>

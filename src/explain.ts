@@ -68,7 +68,7 @@ export function explainHtml(): string {
 
         <h3>셰이핑</h3>
         <div class="diagram">${pipeline(99)}</div>
-        <p>아이템화 다음에 cmap, 그다음 GSUB 치환, 그다음 위치, 그다음 래스터입니다. 이 글꼴이 추가하는 규칙은 GSUB <code>rclt</code>와 <code>ss01</code>입니다.</p>
+        <p>아이템화 다음에 cmap, 그다음 GSUB 치환, 그다음 위치, 그다음 래스터입니다. 이 글꼴이 추가하는 규칙은 GSUB <code>rclt</code>와 독음 끄기(<code>ss01</code>)입니다.</p>
 
         <h3>한자 런</h3>
         <div class="diagram">${runs(99)}</div>
@@ -159,7 +159,7 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
             <p class="label">Gukhanmun Sans · 한자 위의 독음</p>
             <p class="ex-ruby">國漢文混用</p>
             <p class="ex-ruby">音樂</p>
-            <p>배율은 0.68이고, 간격은 em의 0.02입니다. <code>ss01</code>을 켜면 이 폰트 패밀리의 독음만 꺼집니다. 줄 높이는 2가 필요합니다.</p>
+            <p>배율은 0.68이고, 간격은 em의 0.02입니다. 독음 끄기(<code>ss01</code>)를 켜면 이 폰트 패밀리의 독음만 꺼집니다. CSS에서는 <code>font-feature-settings: "ss01"</code>입니다. 줄 높이는 2가 필요합니다.</p>
           </div>
           <div class="card">
             <p class="label">Gukhanmun Hangul · 한자를 한글로</p>

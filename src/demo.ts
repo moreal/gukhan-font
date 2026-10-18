@@ -3,6 +3,7 @@ import { fileName, productName, WEIGHTS, type WeightName } from './families.ts'
 import type { FamilyStyle } from './emit.ts'
 import type { Region } from './region.ts'
 import { SAMPLES } from './samples.ts'
+import { codeBlockCss, copyScript, cssBlock } from './codeblock.ts'
 import { githubOrigin, pagesBase, pagesOrigin } from './site.ts'
 
 export interface DemoMetrics {
@@ -902,6 +903,7 @@ ${explainCss()}
         line-height: 1.5;
       }
       pre code { background: transparent; color: inherit; padding: 0; font-size: 1em; }
+      ${codeBlockCss()}
       :focus-visible { outline: 2px solid var(--cinnabar); outline-offset: 2px; }
       @media (prefers-reduced-motion: reduce) {
         .btn, .nav a, .choice label { transition: none; }
@@ -988,17 +990,15 @@ ${explainCss()}
           <div class="snippet">
             <div class="snippet-head">
               <h3>웹 서브셋</h3>
-              <button class="copy" type="button" data-copy="css-web">복사</button>
             </div>
-            <pre id="css-web"><code>${escapeHtml(snippet.web)}</code></pre>
+            ${cssBlock('css-web', snippet.web)}
           </div>
           <div class="snippet">
             <div class="snippet-head">
               <h3>한자 애드온</h3>
-              <button class="copy" type="button" data-copy="css-addon">복사</button>
             </div>
             <p class="lead">애드온은 한글 글꼴 앞에 둡니다. 그 한글 글꼴에도 같은 어센더, 디센더, 라인갭을 주세요. 독음은 ${escapeHtml(metrics.rubyAscent)}, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 값이 다르면 한자가 있는 줄과 없는 줄의 높이가 달라집니다. <code>unicode-range</code> 전체는 릴리스의 <code>hanja.css</code>에 있습니다.</p>
-            <pre id="css-addon"><code>${escapeHtml(snippet.addon)}</code></pre>
+            ${cssBlock('css-addon', snippet.addon)}
           </div>
         </section>
 
@@ -1040,7 +1040,7 @@ ${explainCss()}
             </fieldset>
             <fieldset>
               <legend>독음</legend>
-              <label class="switch"><input id="ss01" type="checkbox"><i aria-hidden="true"></i>독음 끄기 · ss01</label>
+              <label class="switch"><input id="ss01" type="checkbox"><i aria-hidden="true"></i>독음 끄기 (<code>ss01</code>)</label>
             </fieldset>
           </div>
         </section>
@@ -1070,12 +1070,14 @@ ${explainHtml()}
           <div class="foot-grid">
             <div>
               <p class="foot-label"><span class="fn">1</span> 라이선스</p>
-              <p>글꼴은 <a href="${ofl}">SIL OFL 1.1</a>입니다. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. 저장소 코드는 MIT입니다.</p>
+              <p>글꼴은 <a href="${ofl}">SIL OFL 1.1</a>로 배포합니다. <a href="https://github.com/adobe-fonts/source-han-sans">본고딕(Source Han Sans)</a>을 바탕으로 만들었지만, OFL 조건에 따라 원본의 예약 글꼴 이름인 Source는 쓰지 않습니다. 저장소 코드는 MIT 라이선스입니다.</p>
             </div>
             <div>
-              <p class="foot-label"><span class="fn">2</span> 바탕</p>
-              <p>윤곽은 Adobe <a href="https://github.com/adobe-fonts/source-han-sans">Source Han Sans</a> KR에서 왔습니다. 남한 단어 표는 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서 왔습니다. 북한 단어 표는 <a href="https://gukhanmun.org/">dahlia의 gukhanmun</a>이 2026-06-03에 우리말샘에서 뽑은 것입니다. gukhanmun은 국한문혼용을 한글 문자열로 바꾸는 라이브러리이고, 이 글꼴과 다른 프로젝트입니다. 글꼴 컴파일은 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>입니다.</p>
-              <p>본문은 Gothic A1(OFL)이고, 제목은 류양희의 <a href="https://github.com/yangheeryu/Gowun-Batang">고운바탕</a>(OFL)입니다. 애드온과 짝이 되는 폰트 패밀리에는 같은 메트릭 오버라이드를 얹었습니다.</p>
+              <p class="foot-label"><span class="fn">2</span> 출처</p>
+              <p>글자 모양은 Adobe의 <a href="https://github.com/adobe-fonts/source-han-sans">본고딕(Source Han Sans KR)</a>을 바탕으로 했습니다.</p>
+              <p>남한 독음은 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서, 북한 독음은 <a href="https://gukhanmun.org/">dahlia의 gukhanmun</a>이 2026년 6월 3일 <a href="https://opendict.korean.go.kr/">우리말샘</a>에서 추린 단어 목록에서 가져왔습니다. gukhanmun은 국한문혼용 글을 한글로 바꿔 주는 라이브러리로, 이 글꼴과는 별개의 프로젝트입니다.</p>
+              <p>글꼴 빌드에는 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>를 썼습니다.</p>
+              <p>이 페이지의 본문 서체는 <a href="https://fonts.google.com/specimen/Gothic+A1">Gothic A1</a>(OFL)이며, 한자 애드온과 함께 쓸 때 줄 높이가 맞도록 메트릭을 조정했습니다. 제목은 류양희의 <a href="https://github.com/yangheeryu/Gowun-Batang">고운바탕</a>(OFL)입니다.</p>
             </div>
             <div>
               <p class="foot-label"><span class="fn">3</span> 더 보기</p>
@@ -1138,19 +1140,7 @@ ${explainHtml()}
         } else if (weights) {
           weights.classList.add('live')
         }
-        document.querySelectorAll('[data-copy]').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            var node = document.getElementById(btn.getAttribute('data-copy'))
-            var text = node.innerText
-            var done = function () {
-              var prev = btn.textContent
-              btn.textContent = '복사했습니다'
-              setTimeout(function () { btn.textContent = prev }, 1400)
-            }
-            if (navigator.clipboard && navigator.clipboard.writeText)
-              navigator.clipboard.writeText(text).then(done).catch(function () {})
-          })
-        })
+        ${copyScript()}
       })()
     </script>
   </body>

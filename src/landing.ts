@@ -1,3 +1,4 @@
+import { codeBlockCss, copyScript, cssBlock } from './codeblock.ts'
 import { installSnippets, type DemoMetrics } from './demo.ts'
 import { githubOrigin, pagesBase, pagesOrigin } from './site.ts'
 
@@ -282,33 +283,13 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
       max-width: 40em;
     }
     .points strong { font-weight: 400; }
-    .snippet { margin-top: 1.3rem; border-top: 1px solid var(--line); }
-    .snippet-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-top: 0.8rem;
+    .snippet { margin-top: 1.5rem; }
+    .snippet h3 {
+      margin: 0 0 0.15rem;
+      font-size: 1rem;
+      font-weight: 400;
     }
-    .snippet h3 { margin: 0; font-size: 1rem; font-weight: 400; }
-    .copy {
-      font: inherit;
-      font-size: 0.86rem;
-      color: var(--cinnabar);
-      background: transparent;
-      border: 0;
-      padding: 0;
-      cursor: pointer;
-    }
-    pre {
-      margin: 0.45rem 0 0;
-      padding: 0.9rem 1rem;
-      background: #1c1915;
-      color: #f3efe4;
-      overflow-x: auto;
-      font-size: 0.78rem;
-      line-height: 1.5;
-    }
+    ${codeBlockCss()}
     .note { margin: 0.7rem 0 0; color: var(--muted); font-size: 0.95rem; }
     .foot {
       display: grid;
@@ -352,7 +333,6 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
     <a class="brand" href="${root}">국한문</a>
     <nav aria-label="페이지">
       <a href="${play}">놀이터</a>
-      <a href="#install">받는 법</a>
     </nav>
   </header>
   <h1 class="visually-hidden">국한문. 한자는 그대로 두고, 독음만 그립니다.</h1>
@@ -370,7 +350,7 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
         </div>
       </div>
       <p class="cap" id="read-cap">
-        <span class="off" id="read-off">한자만 보입니다. 스타일 세트 ss01이 독음을 끄고 있습니다.</span>
+        <span class="off" id="read-off">한자만 보입니다. 독음 끄기 기능(<code>ss01</code>)을 켠 상태입니다.</span>
         <span class="on" id="read-on">같은 글꼴이 독음을 글자 안에 그립니다. 덧붙인 주석이 아닙니다.</span>
       </p>
     </div>
@@ -411,19 +391,13 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
         <a class="btn quiet" href="${repo}">저장소</a>
       </div>
       <div class="snippet">
-        <div class="snippet-head">
-          <h3>웹 서브셋</h3>
-          <button class="copy" type="button" data-copy="css-web">복사</button>
-        </div>
-        <pre id="css-web"><code>${escapeHtml(snippet.web)}</code></pre>
+        <h3>웹 서브셋</h3>
+        ${cssBlock('css-web', snippet.web)}
       </div>
       <div class="snippet">
-        <div class="snippet-head">
-          <h3>한자 애드온</h3>
-          <button class="copy" type="button" data-copy="css-addon">복사</button>
-        </div>
+        <h3>한자 애드온</h3>
         <p class="note">애드온은 한글 글꼴 앞에 둡니다. 그 한글 글꼴에도 같은 어센더, 디센더, 라인갭을 주세요. 독음은 ${escapeHtml(metrics.rubyAscent)}, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 값이 다르면 한자가 있는 줄과 없는 줄의 높이가 달라집니다. <code>unicode-range</code> 전체는 릴리스의 <code>hanja.css</code>에 있습니다.</p>
-        <pre id="css-addon"><code>${escapeHtml(snippet.addon)}</code></pre>
+        ${cssBlock('css-addon', snippet.addon)}
       </div>
     </section>
 
@@ -449,7 +423,7 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
       <p class="kicker">특징</p>
       <h2>글꼴이 읽습니다.</h2>
       <ul class="points">
-        <li><strong>독음.</strong> 기본은 독음이 켜져 있습니다. 스타일 세트 ss01이 그 획만 끕니다.</li>
+        <li>독음은 기본으로 켜져 있습니다. CSS에서 <code>font-feature-settings: "ss01"</code>을 켜면 독음만 사라지고 한자는 그대로 남습니다.</li>
         <li><strong>합자.</strong> 붙어 있는 音樂은 음악이 됩니다. 글자 사이가 떨어지면 음, 낙입니다.</li>
         <li><strong>굵기.</strong> 가변 폰트는 250에서 900까지입니다. 한자와 독음이 함께 굵어집니다.</li>
         <li><strong>본문.</strong> 자바스크립트는 필요 없습니다. 선택한 글자는 한자입니다.</li>
@@ -468,12 +442,14 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
     <footer class="sheet foot" id="license">
       <div>
         <h2>라이선스</h2>
-        <p>글꼴은 <a href="${ofl}">SIL OFL 1.1</a>입니다. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. 저장소 코드는 MIT입니다.</p>
+        <p>글꼴은 <a href="${ofl}">SIL OFL 1.1</a>로 배포합니다. <a href="https://github.com/adobe-fonts/source-han-sans">본고딕(Source Han Sans)</a>을 바탕으로 만들었지만, OFL 조건에 따라 원본의 예약 글꼴 이름인 Source는 쓰지 않습니다. 저장소 코드는 MIT 라이선스입니다.</p>
       </div>
       <div>
-        <h2>바탕</h2>
-        <p>윤곽은 Adobe <a href="https://github.com/adobe-fonts/source-han-sans">Source Han Sans</a> KR에서 왔습니다. 남한 단어 표는 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서 왔습니다. 북한 단어 표는 <a href="https://gukhanmun.org/">dahlia의 gukhanmun</a>이 2026-06-03에 우리말샘에서 뽑은 것입니다. gukhanmun은 국한문혼용을 한글 문자열로 바꾸는 라이브러리이고, 이 글꼴과 다른 프로젝트입니다. 글꼴 컴파일은 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>입니다.</p>
-        <p>본문은 Gothic A1(OFL)입니다. 애드온과 짝이 되는 폰트 패밀리에는 같은 메트릭 오버라이드를 얹었습니다.</p>
+        <h2>출처</h2>
+        <p>글자 모양은 Adobe의 <a href="https://github.com/adobe-fonts/source-han-sans">본고딕(Source Han Sans KR)</a>을 바탕으로 했습니다.</p>
+        <p>남한 독음은 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서, 북한 독음은 <a href="https://gukhanmun.org/">dahlia의 gukhanmun</a>이 2026년 6월 3일 <a href="https://opendict.korean.go.kr/">우리말샘</a>에서 추린 단어 목록에서 가져왔습니다. gukhanmun은 국한문혼용 글을 한글로 바꿔 주는 라이브러리로, 이 글꼴과는 별개의 프로젝트입니다.</p>
+        <p>글꼴 빌드에는 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>를 썼습니다.</p>
+        <p>이 페이지의 본문 서체는 <a href="https://fonts.google.com/specimen/Gothic+A1">Gothic A1</a>(OFL)이며, 한자 애드온과 함께 쓸 때 줄 높이가 맞도록 메트릭을 조정했습니다.</p>
       </div>
     </footer>
   </div>
@@ -499,19 +475,7 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
         document.fonts.load('250 64px "Gukhanmun Sans VF"'),
         document.fonts.load('900 64px "Gukhanmun Sans VF"')
       ]).then(show, show)
-      document.querySelectorAll('[data-copy]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var node = document.getElementById(btn.getAttribute('data-copy'))
-          var text = node.innerText
-          var done = function () {
-            var prev = btn.textContent
-            btn.textContent = '복사했습니다'
-            setTimeout(function () { btn.textContent = prev }, 1400)
-          }
-          if (navigator.clipboard && navigator.clipboard.writeText)
-            navigator.clipboard.writeText(text).then(done).catch(function () {})
-        })
-      })
+      ${copyScript()}
       if (reduce) {
         var held = document.getElementById('wght')
         if (held) held.textContent = '560'

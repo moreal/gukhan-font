@@ -47,7 +47,7 @@
 
 한글 글꼴에도 애드온과 같은 `ascent-override`, `descent-override`, `line-gap-override`를 주세요. 독음은 158%, 치환은 116%라서 폰트 패밀리를 둘로 나눕니다. 예는 [안내](docs/guide.md)의 「본문 글꼴의 메트릭」에 있습니다.
 
-`ss01`은 독음을 다는 폰트의 독음만 끕니다. 가변 폰트의 기본 인스턴스는 ExtraLight라서, 굵기를 지정합니다.
+독음 끄기(`ss01`)는 독음을 다는 폰트의 독음만 끕니다. CSS에서는 `font-feature-settings: "ss01"`입니다. 가변 폰트의 기본 인스턴스는 ExtraLight라서, 굵기를 지정합니다.
 
 ## 빌드
 
@@ -69,7 +69,7 @@ pnpm demo
 | | |
 | --- | --- |
 | 코드 | [MIT](LICENSE) |
-| 글꼴 | [SIL OFL 1.1](OFL.txt). Adobe Source Han Sans KR에서 파생. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. |
+| 글꼴 | [SIL OFL 1.1](OFL.txt). [본고딕(Adobe Source Han Sans KR)](https://github.com/adobe-fonts/source-han-sans)을 바탕으로 만들었지만, OFL 조건에 따라 원본의 예약 글꼴 이름인 Source는 쓰지 않습니다. |
 | `vendor/furifont/` | [MIT](vendor/furifont/LICENSE.md), Anthony Fu, furifont 0.5.1 |
 | 남한 사전 표 | [CC BY-SA 4.0](LICENSES/CC-BY-SA-4.0.txt) |
 | 북한 사전 표 | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/) |

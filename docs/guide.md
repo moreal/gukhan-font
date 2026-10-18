@@ -40,11 +40,11 @@ Two families, two regions. Gukhanmun Sans draws the Hangul above the Hanja. Gukh
 </style>
 ```
 
-Gukhanmun Sans는 `line-height`를 2로 둡니다. 독음은 전각 상자 위에 그려지므로, 줄 간격이 좁으면 잘립니다. `font-feature-settings: "ss01" 1`이면 그 폰트의 독음이 꺼지고 원래 한자만 남습니다. Gukhanmun Hangul에는 그 스위치가 없습니다. 한자가 이미 한글로 바뀌어 있습니다.
+Gukhanmun Sans는 `line-height`를 2로 둡니다. 독음은 전각 상자 위에 그려지므로, 줄 간격이 좁으면 잘립니다. 독음은 기본으로 켜져 있습니다. 독음 끄기(`ss01`)를 CSS에서 `font-feature-settings: "ss01" 1`로 켜면 독음만 사라지고 한자는 그대로 남습니다. Gukhanmun Hangul에는 그 스위치가 없습니다. 한자가 이미 한글로 바뀌어 있습니다.
 
 굵기 파일은 `GukhanmunSans-ExtraLight.woff2`부터 `GukhanmunSans-Heavy.woff2`까지입니다. CSS `font-weight`는 250, 300, 350, 400, 500, 700, 900입니다. 가변 폰트의 폰트 패밀리는 `Gukhanmun Sans VF`이고 `font-weight: 250 900`입니다. 기본 인스턴스가 ExtraLight라서, 페이지에서는 굵기 400을 지정합니다. 웹 서브셋의 폰트 패밀리는 `Gukhanmun Sans Web`이고 Regular 하나입니다. 북한 글꼴은 이름에 `KP`가 붙습니다. `Gukhanmun Sans KP`, `Gukhanmun Sans KP VF`, `Gukhanmun Sans KP Web`.
 
-Set `line-height: 2` for Gukhanmun Sans so the reading is not clipped. Stylistic set `ss01` turns that family's readings off. Variable families are named `Gukhanmun Sans VF` (and `Gukhanmun Hangul VF`, plus `KP` for the north). The default instance is ExtraLight, so set an explicit weight.
+Set `line-height: 2` for Gukhanmun Sans so the reading is not clipped. 독음 끄기 (`ss01`) turns that family's readings off with `font-feature-settings: "ss01" 1`. Variable families are named `Gukhanmun Sans VF` (and `Gukhanmun Hangul VF`, plus `KP` for the north). The default instance is ExtraLight, so set an explicit weight.
 
 ## 한자 애드온
 
@@ -301,9 +301,9 @@ OpenType 글꼴 하나의 글리프 수는 65,535개가 한계입니다. Source 
 | --- | --- |
 | 이 저장소의 코드 | [MIT](LICENSE) |
 | `vendor/furifont/` | [MIT](vendor/furifont/LICENSE.md), Anthony Fu, [furifont](https://github.com/antfu/furifont) 0.5.1 |
-| 글꼴 (`dist/`의 OTF, TTF, WOFF2) | [SIL OFL 1.1](OFL.txt). Adobe Source Han Sans KR에서 파생. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. |
+| 글꼴 (`dist/`의 OTF, TTF, WOFF2) | [SIL OFL 1.1](OFL.txt). [본고딕(Adobe Source Han Sans KR)](https://github.com/adobe-fonts/source-han-sans)을 바탕으로 만들었지만, OFL 조건에 따라 원본의 예약 글꼴 이름인 Source는 쓰지 않습니다. |
 | `data/ko-kr-stdict.tsv` | [CC BY-SA 4.0](LICENSES/CC-BY-SA-4.0.txt). 국립국어원 표준국어대사전. 선비가 정리한 표. |
-| `data/ko-kp-opendict.tsv` | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/). 국립국어원 우리말샘 북한어. 홍민혜의 [gukhanmun](https://gukhanmun.org/)이 2026-06-03에 뽑은 표. [저장소](https://github.com/dahlia/gukhanmun). 국한문혼용을 한글 문자열로 바꾸는 라이브러리이며, 이 글꼴과 다른 프로젝트입니다. |
+| `data/ko-kp-opendict.tsv` | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/). 국립국어원 [우리말샘](https://opendict.korean.go.kr/) 북한어. 홍민혜의 [gukhanmun](https://gukhanmun.org/)이 2026년 6월 3일에 추린 표. [저장소](https://github.com/dahlia/gukhanmun). 국한문혼용 글을 한글로 바꿔 주는 라이브러리로, 이 글꼴과는 별개의 프로젝트입니다. |
 | `data/khangul.json` | [Unicode License](LICENSES/Unicode-License.txt). Unihan `kHangul`. 선비가 KS X 인용과 함께 정리한 파일. |
 | 데모의 Gothic A1 | SIL OFL 1.1. 예약된 이름은 Gothic A1. 데모가 원본을 그대로 씁니다. |
 
