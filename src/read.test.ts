@@ -266,8 +266,8 @@ test('web coverage keeps non-Hanja and KS X 1001, and shared outlines', () => {
 
 test('pages paths are the gukhanmun-font site', () => {
   assert.equal(pagesBase(), '/gukhanmun-font/')
-  assert.equal(pagesOrigin(), 'https://morealdot.github.io/gukhanmun-font')
-  assert.equal(githubOrigin(), 'https://github.com/morealdot/gukhanmun-font')
+  assert.equal(pagesOrigin(), 'https://moreal.github.io/gukhanmun-font')
+  assert.equal(githubOrigin(), 'https://github.com/moreal/gukhanmun-font')
 })
 
 test('the pages landing is the typesetting story and the playground is separate', () => {

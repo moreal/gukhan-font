@@ -1,5 +1,5 @@
-/** Published repository. The Pages path is this name, not the name GitHub still has checked out. */
-const REPOSITORY = 'morealdot/gukhanmun-font'
+/** Published repository. Pages is served at /gukhanmun-font/ on this owner's github.io host. */
+const REPOSITORY = 'moreal/gukhanmun-font'
 
 export function pagesRepo(): string {
   return 'gukhanmun-font'
@@ -10,7 +10,7 @@ export function pagesBase(): string {
 }
 
 export function pagesOrigin(): string {
-  return `https://morealdot.github.io/${pagesRepo()}`
+  return `https://moreal.github.io/${pagesRepo()}`
 }
 
 export function githubOrigin(): string {

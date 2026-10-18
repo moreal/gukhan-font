@@ -1,6 +1,6 @@
 # 국한문 안내
 
-이 문서는 측정값, 메트릭, 빌드, 라이선스 출처를 담습니다. 짧은 사용법은 저장소 [README](../README.md)에 있고, 동작은 [라이브 페이지](https://morealdot.github.io/gukhanmun-font/)와 [놀이터](https://morealdot.github.io/gukhanmun-font/playground/)가 설명합니다.
+이 문서는 측정값, 메트릭, 빌드, 라이선스 출처를 담습니다. 짧은 사용법은 저장소 [README](../README.md)에 있고, 동작은 [라이브 페이지](https://moreal.github.io/gukhanmun-font/)와 [놀이터](https://moreal.github.io/gukhanmun-font/playground/)가 설명합니다.
 
 한자는 그대로 두고 독음을 붙이는 글꼴입니다. `國漢文混用`이라고만 적습니다. `<ruby>`도, 자바스크립트도 필요 없고, 복사하면 한자 그대로입니다.
 
@@ -13,11 +13,11 @@
 
 Two families, two regions. Gukhanmun Sans draws the Hangul above the Hanja. Gukhanmun Hangul replaces the Hanja with that reading. Copy, paste, and search still see the Hanja. A variable font follows the weight axis, a Regular web subset drops most of the Hanja outside KS X 1001, and a Hanja-only add-on is meant to sit in front of any other Korean font.
 
-![國漢文混用 in Gukhanmun Sans and Gukhanmun Hangul](demo/screenshot-specimen.png)
+![國漢文混用 in Gukhanmun Sans and Gukhanmun Hangul](../demo/screenshot-specimen.png)
 
 한자 애드온을 Gothic A1 위에 얹은 모습입니다. 첫 줄은 Gothic A1이라 한자가 빈 상자입니다. 운영체제에 다른 한자 글꼴이 있으면 브라우저가 그 글자로 빈칸을 채웁니다. 데모는 그 한자를 빈 상자로 받는 `Hanja Box`를 뒤에 둡니다. 아래 줄은 애드온이 한자만 그리고, `와` 같은 한글은 Gothic A1이 그립니다. 넷째 줄의 `冷`은 북한 독음 `랭`입니다.
 
-![Hanja add-on layered on Gothic A1](demo/screenshot-hanja-addon.png)
+![Hanja add-on layered on Gothic A1](../demo/screenshot-hanja-addon.png)
 
 ## 쓰는 법
 

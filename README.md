@@ -4,7 +4,7 @@
 
 ![독음, 한글, 북한어, 굵기, 한자 애드온](docs/demo.gif)
 
-[라이브 데모](https://morealdot.github.io/gukhanmun-font/) · [놀이터](https://morealdot.github.io/gukhanmun-font/playground/) · [릴리스](https://github.com/morealdot/gukhanmun-font/releases)
+[라이브 데모](https://moreal.github.io/gukhanmun-font/) · [놀이터](https://moreal.github.io/gukhanmun-font/playground/) · [릴리스](https://github.com/moreal/gukhanmun-font/releases)
 
 ## 내려받기
 

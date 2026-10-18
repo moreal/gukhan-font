@@ -8,7 +8,7 @@
     <meta property="og:title" content="국한문 Gukhanmun">
     <meta property="og:description" content="한자는 그대로 두고, 독음만 그립니다.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://morealdot.github.io/gukhanmun-font/">
+    <meta property="og:url" content="https://moreal.github.io/gukhanmun-font/">
     <meta name="twitter:card" content="summary">
     <link rel="preload" href="../dist/GukhanmunSans-Web.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/GothicA1-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -1109,15 +1109,15 @@
           <p class="tagline">한자는 그대로 두고, 독음만 그립니다.</p>
           <p class="sub">OpenType 셰이핑으로 독음을 붙입니다. <code>&lt;ruby&gt;</code>도 자바스크립트도 필요 없고, 복사하면 한자입니다.</p>
           <div class="actions">
-            <a class="btn" href="https://github.com/morealdot/gukhanmun-font/releases">다운로드</a>
-            <a class="btn text" href="https://github.com/morealdot/gukhanmun-font">저장소</a>
+            <a class="btn" href="https://github.com/moreal/gukhanmun-font/releases">다운로드</a>
+            <a class="btn text" href="https://github.com/moreal/gukhanmun-font">저장소</a>
           </div>
         </div>
       </section>
       <div class="wrap">
         <section class="block" id="use">
           <header class="sec-head"><h2><span class="sec-no">Ⅰ</span> 넣는 법</h2></header>
-          <p class="lead">파일은 <a href="https://github.com/morealdot/gukhanmun-font/releases">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 독음은 <code>line-height</code>를 2로 둡니다.</p>
+          <p class="lead">파일은 <a href="https://github.com/moreal/gukhanmun-font/releases">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 독음은 <code>line-height</code>를 2로 둡니다.</p>
           <div class="snippet">
             <div class="snippet-head">
               <h3>웹 서브셋</h3>
@@ -1125,7 +1125,7 @@
             </div>
             <pre id="css-web"><code>@font-face {
   font-family: &quot;Gukhanmun Sans Web&quot;;
-  src: url(&quot;https://morealdot.github.io/gukhanmun-font/fonts/GukhanmunSans-Web.woff2&quot;) format(&quot;woff2&quot;);
+  src: url(&quot;https://moreal.github.io/gukhanmun-font/fonts/GukhanmunSans-Web.woff2&quot;) format(&quot;woff2&quot;);
   font-weight: 400;
   font-display: swap;
 }
@@ -1696,7 +1696,7 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
         <p class="layer-replace">女子와 男女, 平壤 冷麵</p>
         <p class="layer-label">북한 독음 <span class="loc">ko-KP</span></p>
         <p class="layer-kp">女子와 男女, 平壤 冷麵</p>
-        <p>일곱 굵기와 가변 폰트는 <a href="https://github.com/morealdot/gukhanmun-font/releases">릴리스</a>에 있습니다. 가변 폰트의 독음 획은 굵기 축을 따라가고, 기본 인스턴스는 ExtraLight입니다. 한자 사이의 공백은 한글 사이보다 좁습니다. Regular에서 224이고, 한글 사이는 280입니다. 가로쓰기만 됩니다.</p>
+        <p>일곱 굵기와 가변 폰트는 <a href="https://github.com/moreal/gukhanmun-font/releases">릴리스</a>에 있습니다. 가변 폰트의 독음 획은 굵기 축을 따라가고, 기본 인스턴스는 ExtraLight입니다. 한자 사이의 공백은 한글 사이보다 좁습니다. Regular에서 224이고, 한글 사이는 280입니다. 가로쓰기만 됩니다.</p>
         <p>빌드는 <code>planReadings</code>로 규칙을 한 번 고르고, <code>emitFamily</code>가 독음과 치환을 나눈 뒤, furifont <code>compileFont</code>가 윤곽과 GSUB를 씁니다. 한자 애드온은 그 정적 글꼴을 fontTools로 자릅니다.</p>
       </section>
 
@@ -1704,7 +1704,7 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
           <div class="foot-grid">
             <div>
               <p class="foot-label"><span class="fn">1</span> 라이선스</p>
-              <p>글꼴은 <a href="https://github.com/morealdot/gukhanmun-font/blob/main/OFL.txt">SIL OFL 1.1</a>로 배포합니다. <a href="https://github.com/adobe-fonts/source-han-sans">본고딕(Source Han Sans)</a>을 바탕으로 만들었지만, OFL 조건에 따라 원본의 예약 글꼴 이름인 Source는 쓰지 않습니다. 저장소 코드는 MIT 라이선스입니다.</p>
+              <p>글꼴은 <a href="https://github.com/moreal/gukhanmun-font/blob/main/OFL.txt">SIL OFL 1.1</a>로 배포합니다. <a href="https://github.com/adobe-fonts/source-han-sans">본고딕(Source Han Sans)</a>을 바탕으로 만들었지만, OFL 조건에 따라 원본의 예약 글꼴 이름인 Source는 쓰지 않습니다. 저장소 코드는 MIT 라이선스입니다.</p>
             </div>
             <div>
               <p class="foot-label"><span class="fn">2</span> 출처</p>
@@ -1716,8 +1716,8 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
             <div>
               <p class="foot-label"><span class="fn">3</span> 더 보기</p>
               <nav aria-label="바깥 링크">
-                <a href="https://github.com/morealdot/gukhanmun-font">저장소</a>
-                <a href="https://github.com/morealdot/gukhanmun-font/releases">릴리스</a>
+                <a href="https://github.com/moreal/gukhanmun-font">저장소</a>
+                <a href="https://github.com/moreal/gukhanmun-font/releases">릴리스</a>
                 <a href="/gukhanmun-font/playground/">놀이터</a>
               </nav>
             </div>

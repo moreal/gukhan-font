@@ -21,7 +21,7 @@ const REGIONS = ['ko-KR', 'ko-KP'] as const
 const STYLES = ['ruby', 'replace'] as const
 
 /**
- * Text set in Gowun Batang. The build subsets that face to these characters plus printable ASCII.
+ * Text set in Gowun Batang on the local catalog. The build subsets that face to these characters plus printable ASCII.
  * The face has no Hanja, so section numbers are Roman numerals rather than 第一.
  */
 export const DISPLAY_COPY = [
@@ -34,6 +34,7 @@ export const DISPLAY_COPY = [
   '글자',
   '라이선스',
   '바탕',
+  '출처',
   '더 보기',
   '남한',
   '북한',
@@ -56,7 +57,7 @@ export const DISPLAY_COPY = [
   'No. 01',
 ].join('')
 
-/** Codepoints the landing page's display serif is allowed to contain. */
+/** Codepoints the local catalog's display serif is allowed to contain. */
 export function displayCodepoints(): number[] {
   const set = new Set<number>()
   for (let cp = 0x20; cp <= 0x7e; cp++)
