@@ -124,6 +124,16 @@ function fontFaces(metrics: DemoMetrics, profile: DemoProfile): string {
       }
     }
   }
+  // Same outlines as Gukhan Sans Web, with the ideographic em instead of the ruby ascender.
+  // 86/14 was measured so 國 (ss01, ruby off) centers in a line box of line-height 1.
+  blocks.push(faceBlock({
+    family: 'Gukhan Mark',
+    weight: '400',
+    src: fontSrc(profile, fileName('ruby', 'ko-KR', 'web')),
+    ascent: '86%',
+    descent: '14%',
+    lineGap: '0%',
+  }))
   const gothic = 'fonts/GothicA1-Regular.woff2'
   blocks.push(faceBlock({ family: 'Gothic A1', weight: '400', src: gothic }))
   blocks.push(faceBlock({ family: 'Gowun Batang', weight: '400', src: 'fonts/GowunBatang-Regular.woff2' }))
@@ -449,7 +459,7 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
         margin: 0;
         background: var(--cinnabar);
         color: var(--paper);
-        font-family: "Gukhan Sans Web", sans-serif;
+        font-family: "Gukhan Mark", "Gukhan Sans Web", sans-serif;
         font-feature-settings: "ss01" 1;
         font-size: 1.7rem;
         line-height: 1;
@@ -801,6 +811,12 @@ ${specimenRules()}
         line-height: 2.05;
         text-align: center;
       }
+      /* The ruby ascender leaves the drawn ink high in the line box. Measured on the grid. */
+      .glyphs b {
+        font-weight: inherit;
+        line-height: inherit;
+        transform: translateY(0.105em);
+      }
       .layer-label {
         margin: 0.85rem 0 0;
         color: var(--muted);
@@ -1038,7 +1054,7 @@ ${cards}
           <h3 class="glyph-title">글자</h3>
           <p class="lead">한 칸에 한 글자입니다. 독음은 글꼴이 그립니다.</p>
           <div class="glyphs" aria-label="한자 견본">
-            ${['國', '漢', '文', '混', '用', '樂', '女', '男', '冷', '六', '月', '律', '來', '難', '問', '平', '壤', '麵'].map(char => `<span>${char}</span>`).join('')}
+            ${['國', '漢', '文', '混', '用', '樂', '女', '男', '冷', '六', '月', '律', '來', '難', '問', '平', '壤', '麵'].map(char => `<span><b>${char}</b></span>`).join('')}
           </div>
         </section>
 

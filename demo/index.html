@@ -382,6 +382,16 @@
         line-gap-override: 0%;
       }
 @font-face {
+        font-family: "Gukhan Mark";
+        src: url("../dist/GukhanSans-Web.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+        ascent-override: 86%;
+        descent-override: 14%;
+        line-gap-override: 0%;
+      }
+@font-face {
         font-family: "Gothic A1";
         src: url("fonts/GothicA1-Regular.woff2") format("woff2");
         font-weight: 400;
@@ -518,7 +528,7 @@
         margin: 0;
         background: var(--cinnabar);
         color: var(--paper);
-        font-family: "Gukhan Sans Web", sans-serif;
+        font-family: "Gukhan Mark", "Gukhan Sans Web", sans-serif;
         font-feature-settings: "ss01" 1;
         font-size: 1.7rem;
         line-height: 1;
@@ -888,6 +898,12 @@
         font-size: clamp(1.55rem, 2.8vw, 2.35rem);
         line-height: 2.05;
         text-align: center;
+      }
+      /* The ruby ascender leaves the drawn ink high in the line box. Measured on the grid. */
+      .glyphs b {
+        font-weight: inherit;
+        line-height: inherit;
+        transform: translateY(0.105em);
       }
       .layer-label {
         margin: 0.85rem 0 0;
@@ -1362,7 +1378,7 @@
           <h3 class="glyph-title">글자</h3>
           <p class="lead">한 칸에 한 글자입니다. 독음은 글꼴이 그립니다.</p>
           <div class="glyphs" aria-label="한자 견본">
-            <span>國</span><span>漢</span><span>文</span><span>混</span><span>用</span><span>樂</span><span>女</span><span>男</span><span>冷</span><span>六</span><span>月</span><span>律</span><span>來</span><span>難</span><span>問</span><span>平</span><span>壤</span><span>麵</span>
+            <span><b>國</b></span><span><b>漢</b></span><span><b>文</b></span><span><b>混</b></span><span><b>用</b></span><span><b>樂</b></span><span><b>女</b></span><span><b>男</b></span><span><b>冷</b></span><span><b>六</b></span><span><b>月</b></span><span><b>律</b></span><span><b>來</b></span><span><b>難</b></span><span><b>問</b></span><span><b>平</b></span><span><b>壤</b></span><span><b>麵</b></span>
           </div>
         </section>
 
