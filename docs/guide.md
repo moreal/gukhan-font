@@ -302,9 +302,9 @@ OpenType 글꼴 하나의 글리프 수는 65,535개가 한계입니다. Source 
 | 이 저장소의 코드 | [MIT](LICENSE) |
 | `vendor/furifont/` | [MIT](vendor/furifont/LICENSE.md), Anthony Fu, [furifont](https://github.com/antfu/furifont) 0.5.1 |
 | 글꼴 (`dist/`의 OTF, TTF, WOFF2) | [SIL OFL 1.1](OFL.txt). [본고딕(Adobe Source Han Sans KR)](https://github.com/adobe-fonts/source-han-sans)을 바탕으로 만들었지만, OFL 조건에 따라 원본의 예약 글꼴 이름인 Source는 쓰지 않습니다. |
-| `data/ko-kr-stdict.tsv` | [CC BY-SA 4.0](LICENSES/CC-BY-SA-4.0.txt). 국립국어원 표준국어대사전. 선비가 정리한 표. |
-| `data/ko-kp-opendict.tsv` | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/). 국립국어원 [우리말샘](https://opendict.korean.go.kr/) 북한어. 홍민혜의 [gukhanmun](https://gukhanmun.org/)이 2026년 6월 3일에 추린 표. [저장소](https://github.com/dahlia/gukhanmun). 국한문혼용 글을 한글로 바꿔 주는 라이브러리로, 이 글꼴과는 별개의 프로젝트입니다. |
-| `data/khangul.json` | [Unicode License](LICENSES/Unicode-License.txt). Unihan `kHangul`. 선비가 KS X 인용과 함께 정리한 파일. |
+| `data/ko-kr-stdict.tsv` | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/). 권리자는 국립국어원. [표준국어대사전](https://stdict.korean.go.kr/), [저작권 정책](https://stdict.korean.go.kr/join/copyrightPolicy.do). [선비](https://github.com/dahlia/seonbi)(dahlia, 홍민희)가 정리한 표. 선비의 코드는 [LGPL-2.1](https://github.com/dahlia/seonbi/blob/main/LICENSE)입니다. |
+| `data/ko-kp-opendict.tsv` | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/). 권리자는 국립국어원. [우리말샘](https://opendict.korean.go.kr/) 북한어, [저작권 정책](https://opendict.korean.go.kr/service/copyrightPolicy). 홍민희의 [gukhanmun](https://gukhanmun.org/)이 2026년 6월 3일에 추린 표. [저장소](https://github.com/dahlia/gukhanmun). 코드는 [GPL-3.0](https://github.com/dahlia/gukhanmun/blob/main/LICENSE)이고, 데이터 [NOTICE.md](https://github.com/dahlia/gukhanmun/blob/main/NOTICE.md)도 CC BY-SA 2.0 KR이라고 적습니다. 국한문혼용 글을 한글로 바꿔 주는 라이브러리로, 이 글꼴과는 별개의 프로젝트입니다. |
+| `data/khangul.json` | [Unicode License](LICENSES/Unicode-License.txt). Unihan `kHangul`. 선비가 묶었고, KS X 인용을 함께 달았습니다. |
 | 데모의 Gothic A1 | SIL OFL 1.1. 예약된 이름은 Gothic A1. 데모가 원본을 그대로 씁니다. |
 
 글꼴 파일의 획은 OFL이고, 그 안에 컴파일된 독음 선택은 위 사전과 Unihan에서 왔습니다. 이름 테이블에 그 출처를 적었습니다. 자세한 출처는 `data/README.md`에 있습니다.

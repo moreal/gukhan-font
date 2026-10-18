@@ -71,7 +71,7 @@ pnpm demo
 | 코드 | [MIT](LICENSE) |
 | 글꼴 | [SIL OFL 1.1](OFL.txt). [본고딕(Adobe Source Han Sans KR)](https://github.com/adobe-fonts/source-han-sans)을 바탕으로 만들었지만, OFL 조건에 따라 원본의 예약 글꼴 이름인 Source는 쓰지 않습니다. |
 | `vendor/furifont/` | [MIT](vendor/furifont/LICENSE.md), Anthony Fu, furifont 0.5.1 |
-| 남한 사전 표 | [CC BY-SA 4.0](LICENSES/CC-BY-SA-4.0.txt) |
-| 북한 사전 표 | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/) |
-| Unihan | [Unicode License](LICENSES/Unicode-License.txt) |
+| 남한 사전 표 (`data/ko-kr-stdict.tsv`) | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/). 국립국어원 [표준국어대사전](https://stdict.korean.go.kr/) ([저작권 정책](https://stdict.korean.go.kr/join/copyrightPolicy.do)). [선비](https://github.com/dahlia/seonbi)(dahlia, 홍민희)가 정리한 표이고, 선비의 코드는 [LGPL-2.1](https://github.com/dahlia/seonbi/blob/main/LICENSE)입니다. |
+| 북한 사전 표 (`data/ko-kp-opendict.tsv`) | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/). 국립국어원 [우리말샘](https://opendict.korean.go.kr/) ([저작권 정책](https://opendict.korean.go.kr/service/copyrightPolicy)). [gukhanmun](https://github.com/dahlia/gukhanmun)(dahlia)이 2026-06-03에 추린 표입니다. gukhanmun의 코드는 [GPL-3.0](https://github.com/dahlia/gukhanmun/blob/main/LICENSE)이고, 데이터 [NOTICE.md](https://github.com/dahlia/gukhanmun/blob/main/NOTICE.md)도 이 표를 CC BY-SA 2.0 KR로 적습니다. |
+| Unihan (`data/khangul.json`) | [Unicode License](LICENSES/Unicode-License.txt). Unihan `kHangul`. 선비가 묶었습니다. |
 | 데모의 Gothic A1 | SIL OFL 1.1. 예약된 이름은 Gothic A1. |

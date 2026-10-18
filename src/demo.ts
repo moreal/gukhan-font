@@ -1076,6 +1076,7 @@ ${explainHtml()}
               <p class="foot-label"><span class="fn">2</span> 출처</p>
               <p>글자 모양은 Adobe의 <a href="https://github.com/adobe-fonts/source-han-sans">본고딕(Source Han Sans KR)</a>을 바탕으로 했습니다.</p>
               <p>남한 독음은 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서, 북한 독음은 <a href="https://gukhanmun.org/">dahlia의 gukhanmun</a>이 2026년 6월 3일 <a href="https://opendict.korean.go.kr/">우리말샘</a>에서 추린 단어 목록에서 가져왔습니다. gukhanmun은 국한문혼용 글을 한글로 바꿔 주는 라이브러리로, 이 글꼴과는 별개의 프로젝트입니다.</p>
+              <p>남한 단어는 국립국어원 <a href="https://stdict.korean.go.kr/">표준국어대사전</a>에서, 북한 단어는 국립국어원 <a href="https://opendict.korean.go.kr/">우리말샘</a>에서 왔으며, 둘 다 <a href="https://creativecommons.org/licenses/by-sa/2.0/kr/">CC BY-SA 2.0 KR</a>입니다.</p>
               <p>글꼴 빌드에는 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>를 썼습니다.</p>
               <p>이 페이지의 본문 서체는 <a href="https://fonts.google.com/specimen/Gothic+A1">Gothic A1</a>(OFL)이며, 한자 애드온과 함께 쓸 때 줄 높이가 맞도록 메트릭을 조정했습니다. 제목은 류양희의 <a href="https://github.com/yangheeryu/Gowun-Batang">고운바탕</a>(OFL)입니다.</p>
             </div>
