@@ -59,7 +59,7 @@ export function explainHtml(): string {
         <p>자바스크립트는 쓰지 않습니다. 브라우저가 셰이핑할 때 텍스트를 스크립트 런으로 나누고, 한자가 이어진 런만 이 글꼴의 OpenType <code>rclt</code>가 바꿉니다. 한글과 라틴은 다른 런이라 다음 글꼴이 그립니다. 숫자는 <code>GukhanmunSans-Regular.otf</code>를 HarfBuzz로 셰이핑한 값입니다. 아래 큰 예시는 웹 서브셋으로 고정했습니다. 복사하면 한자입니다.</p>
 
         <h3>글꼴 파일은 표의 묶음입니다</h3>
-        <p>OTF와 TTF는 sfnt 표의 묶음입니다. 독음을 그리는 데 쓰는 표는 이 일곱입니다. 루비 획은 글리프 윤곽 안에 그려 넣고, 진행 너비는 <code>hmtx</code>에 적습니다. <code>GPOS</code> 마크 부착은 쓰지 않습니다.</p>
+        <p>OTF와 TTF는 sfnt 표의 묶음입니다. 독음을 그리는 데 쓰는 표는 이 일곱입니다. 독음 획은 글리프 윤곽 안에 그려 넣고, 진행 너비는 <code>hmtx</code>에 적습니다. <code>GPOS</code> 마크 부착은 쓰지 않습니다.</p>
         <div class="diagram">${fontTables(99)}</div>
 
         <h3>코드포인트, 글리프, cmap</h3>
@@ -152,14 +152,14 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
           </div>
         </div>
 
-        <h3>루비와 치환</h3>
+        <h3>독음과 한글</h3>
         <div class="diagram">${draw(99)}</div>
         <div class="pair">
           <div class="card">
-            <p class="label">Gukhanmun Sans · 한자 위의 루비</p>
+            <p class="label">Gukhanmun Sans · 한자 위의 독음</p>
             <p class="ex-ruby">國漢文混用</p>
             <p class="ex-ruby">音樂</p>
-            <p>배율은 0.68이고, 간격은 em의 0.02입니다. <code>ss01</code>을 켜면 이 폰트 패밀리의 루비만 꺼집니다. 줄 높이는 2가 필요합니다.</p>
+            <p>배율은 0.68이고, 간격은 em의 0.02입니다. <code>ss01</code>을 켜면 이 폰트 패밀리의 독음만 꺼집니다. 줄 높이는 2가 필요합니다.</p>
           </div>
           <div class="card">
             <p class="label">Gukhanmun Hangul · 한자를 한글로</p>
@@ -184,18 +184,18 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
         <p>한자 애드온은 그 정적 글꼴에서 한자 cmap만 남긴 것입니다. 글리프는 ko-KR 24,438개, ko-KP 24,492개이고, cmap은 둘 다 8,497자입니다. 독음이 없는 한자 155자는 빼서 본문 글꼴에 맡깁니다.</p>
 
         <h3>한자만 얹기</h3>
-        <p>애드온의 cmap은 한자뿐입니다. <code>unicode-range</code>를 그 8,497자와 같게 적어야, 글꼴에 없는 한자가 빈 칸이 되지 않고 다음 글꼴로 넘어갑니다. 블록 전체를 적으면, 없는 한자까지 이 글꼴이 맡아 빈 칸이 됩니다. 루비 애드온은 <code>ascent-override: 158%</code>, 치환은 <code>116%</code>, 디센더는 <code>28.8%</code>입니다. 한글을 그리는 글꼴에도 같은 어센더, 디센더, 라인갭을 줘야 한자가 있는 줄과 없는 줄의 높이가 같습니다. 데모의 Gothic A1은 그 값으로 폰트 패밀리를 둘 나눴습니다.</p>
+        <p>애드온의 cmap은 한자뿐입니다. <code>unicode-range</code>를 그 8,497자와 같게 적어야, 글꼴에 없는 한자가 빈 칸이 되지 않고 다음 글꼴로 넘어갑니다. 블록 전체를 적으면, 없는 한자까지 이 글꼴이 맡아 빈 칸이 됩니다. 독음 애드온은 <code>ascent-override: 158%</code>, 치환은 <code>116%</code>, 디센더는 <code>28.8%</code>입니다. 한글을 그리는 글꼴에도 같은 어센더, 디센더, 라인갭을 줘야 한자가 있는 줄과 없는 줄의 높이가 같습니다. 데모의 Gothic A1은 그 값으로 폰트 패밀리를 둘 나눴습니다.</p>
         <div class="diagram">${layerStack(99)}</div>
         <p>본문은 Gothic A1입니다. 한자가 없는 글꼴이라 첫 줄은 빈 상자입니다. 브라우저에 다른 한자 글꼴이 있으면 그 글자로 빈칸을 채우므로, 데모는 <code>Hanja Box</code>를 뒤에 둡니다. 아래 줄은 애드온이 한자만 그리고, <code>와</code> 같은 한글은 Gothic A1이 그립니다. 넷째 줄의 冷은 북한 독음 랭입니다.</p>
         <p class="layer-label">본문 <span class="loc">Gothic A1</span></p>
         <p class="layer-body">女子와 男女, 平壤 冷麵</p>
-        <p class="layer-label">루비 애드온</p>
+        <p class="layer-label">독음 애드온</p>
         <p class="layer-ruby">女子와 男女, 平壤 冷麵</p>
         <p class="layer-label">치환 애드온</p>
         <p class="layer-replace">女子와 男女, 平壤 冷麵</p>
-        <p class="layer-label">북한 루비 <span class="loc">ko-KP</span></p>
+        <p class="layer-label">북한 독음 <span class="loc">ko-KP</span></p>
         <p class="layer-kp">女子와 男女, 平壤 冷麵</p>
-        <p>일곱 굵기와 가변 폰트는 <a href="${githubOrigin()}/releases">릴리스</a>에 있습니다. 가변 폰트의 루비 획은 굵기 축을 따라가고, 기본 인스턴스는 ExtraLight입니다. 한자 사이의 공백은 한글 사이보다 좁습니다. Regular에서 224이고, 한글 사이는 280입니다. 가로쓰기만 됩니다.</p>
-        <p>빌드는 <code>planReadings</code>로 규칙을 한 번 고르고, <code>emitFamily</code>가 루비와 치환을 나눈 뒤, furifont <code>compileFont</code>가 윤곽과 GSUB를 씁니다. 한자 애드온은 그 정적 글꼴을 fontTools로 자릅니다. <a href="${pagesBase()}slides/">슬라이드</a>가 이 과정을 코드와 함께 설명합니다.</p>
+        <p>일곱 굵기와 가변 폰트는 <a href="${githubOrigin()}/releases">릴리스</a>에 있습니다. 가변 폰트의 독음 획은 굵기 축을 따라가고, 기본 인스턴스는 ExtraLight입니다. 한자 사이의 공백은 한글 사이보다 좁습니다. Regular에서 224이고, 한글 사이는 280입니다. 가로쓰기만 됩니다.</p>
+        <p>빌드는 <code>planReadings</code>로 규칙을 한 번 고르고, <code>emitFamily</code>가 독음과 치환을 나눈 뒤, furifont <code>compileFont</code>가 윤곽과 GSUB를 씁니다. 한자 애드온은 그 정적 글꼴을 fontTools로 자릅니다. <a href="${pagesBase()}slides/">슬라이드</a>가 이 과정을 코드와 함께 설명합니다.</p>
       </section>`
 }

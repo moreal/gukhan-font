@@ -14,13 +14,13 @@
       font-family: "Gukhanmun Sans Web";
       src: url("/gukhanmun-font/fonts/GukhanmunSans-Web.woff2") format("woff2");
       font-weight: 400;
-      font-display: swap;
+      font-display: block;
     }
     @font-face {
       font-family: "Gukhanmun Sans VF";
       src: url("/gukhanmun-font/fonts/GukhanmunSansVF.woff2") format("woff2");
       font-weight: 250 900;
-      font-display: swap;
+      font-display: block;
     }
     @font-face {
       font-family: "Gothic A1";
@@ -36,6 +36,9 @@
       --line: rgba(27, 25, 22, 0.14);
       --cinnabar: #8c2f2b;
       --bar: 3.25rem;
+      --type: clamp(2.45rem, 11vw, 7.25rem);
+      /* Fraction of the line box that holds the reading, above the Hanja ink. */
+      --band: 0.38;
     }
     * { box-sizing: border-box; }
     html { background: var(--paper); }
@@ -49,7 +52,7 @@
       background-size: 3.5rem 3.5rem;
       font-family: "Gothic A1", sans-serif;
       font-size: 1rem;
-      line-height: 1.5;
+      line-height: 1.55;
       overflow-x: clip;
     }
     a { color: inherit; }
@@ -67,19 +70,14 @@
       border-bottom: 1px solid var(--line);
       backdrop-filter: blur(10px);
     }
-    .brand {
-      text-decoration: none;
-      letter-spacing: 0.18em;
-      font-size: 0.92rem;
-    }
+    .brand { text-decoration: none; letter-spacing: 0.18em; font-size: 0.92rem; }
     .top nav { display: flex; gap: 0.9rem; }
-    .top nav a {
-      text-decoration: none;
-      font-size: 0.86rem;
-      color: var(--muted);
-    }
+    .top nav a { text-decoration: none; font-size: 0.86rem; color: var(--muted); }
     .top nav a[aria-current="page"] { color: var(--cinnabar); }
-    .act { height: 230vh; view-timeline-name: --act; view-timeline-axis: block; }
+    .act { height: 190vh; view-timeline-axis: block; }
+    #open { view-timeline-name: --open; }
+    #liga { view-timeline-name: --liga; }
+    #axis { view-timeline-name: --axis; }
     .pin {
       position: sticky;
       top: 0;
@@ -88,157 +86,189 @@
       display: grid;
       align-content: center;
       justify-items: center;
-      padding: calc(var(--bar) + 1.25rem) 1.25rem 2rem;
+      padding: calc(var(--bar) + 1.25rem) 1.25rem 2.25rem;
       text-align: center;
     }
     .step {
-      margin: 0 0 0.35rem;
+      margin: 0 0 0.55rem;
       color: var(--cinnabar);
       font-size: 0.78rem;
       letter-spacing: 0.22em;
     }
-    .stack { position: relative; }
-    .hero, .split, .joined, .axis {
+    .specimen {
+      position: relative;
+      font-size: var(--type);
+      line-height: 2;
+    }
+    .face, .axis {
       margin: 0;
       font-weight: 400;
-      font-size: clamp(2.7rem, 12vw, 8rem);
+      font-size: 1em;
       line-height: 2;
       letter-spacing: 0;
+      white-space: nowrap;
     }
-    .hero { font-family: "Gukhanmun Sans Web", sans-serif; }
-    .plain { font-feature-settings: "ss01" 1; }
-    .ruby {
+    .hanja, .reading, .split, .joined {
+      font-family: "Gukhanmun Sans Web", sans-serif;
+    }
+    .hanja { font-feature-settings: "ss01" 1; }
+    .window {
       position: absolute;
-      inset: 0;
-      font-feature-settings: "ss01" 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: calc(var(--band) * 100%);
+      overflow: clip;
+      pointer-events: none;
     }
+    .band {
+      height: calc(100% / var(--band));
+      clip-path: inset(0 0 calc((1 - var(--band)) * 100%) 0);
+      opacity: 0;
+      transform: translateY(-48%);
+      animation: descend linear both;
+      animation-timeline: --open;
+      animation-range: entry 100% exit 0%;
+    }
+    .reading { font-feature-settings: "ss01" 0; }
     .cap {
       position: relative;
-      min-height: 3.2em;
-      margin: 0.2rem 0 0;
-      max-width: 28rem;
+      width: min(26rem, 100%);
+      min-height: 4.8em;
+      margin: 0.85rem 0 0;
       color: var(--muted);
       font-size: 0.98rem;
     }
     .cap span { display: block; }
-    .cap .on { position: absolute; inset: 0; }
-    .meet { position: relative; min-height: 2em; }
-    .split {
-      display: flex;
-      justify-content: center;
-      font-family: "Gukhanmun Sans Web", sans-serif;
-    }
-    .joined {
-      position: absolute;
-      inset: 0;
-      font-family: "Gukhanmun Sans Web", sans-serif;
-      opacity: 0;
-    }
-    .axis {
-      font-family: "Gukhanmun Sans VF", "Gukhanmun Sans Web", sans-serif;
-      font-weight: 900;
-    }
-    .axis-out {
-      margin: 0.4rem 0 0;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.14em;
-      color: var(--cinnabar);
-    }
-    .colophon {
-      padding: 12vh 1.25rem 18vh;
-      text-align: center;
-    }
-    .colophon a { color: var(--cinnabar); }
-    .plain {
-      animation: plain-out linear both;
-      animation-timeline: --act;
-      animation-range: entry 100% exit 0%;
-    }
-    .ruby {
-      animation: ruby-in linear both;
-      animation-timeline: --act;
-      animation-range: entry 100% exit 0%;
-    }
+    .cap .on { position: absolute; inset: 0 auto auto 0; width: 100%; opacity: 0; }
     #open .off {
-      animation: plain-out linear both;
-      animation-timeline: --act;
+      animation: cap-off linear both;
+      animation-timeline: --open;
       animation-range: entry 100% exit 0%;
     }
     #open .on {
       animation: cap-on linear both;
-      animation-timeline: --act;
+      animation-timeline: --open;
       animation-range: entry 100% exit 0%;
     }
-    .split span:first-child, .split span:last-child {
-      animation: meet linear both;
-      animation-timeline: --act;
-      animation-range: entry 100% exit 35%;
+    .meet {
+      display: grid;
+      place-items: center;
+      font-size: var(--type);
+      overflow: clip;
     }
-    .split span:first-child { --from: -11vw; }
-    .split span:last-child { --from: 11vw; }
+    .split, .joined { grid-area: 1 / 1; }
     .split {
-      animation: fade-out linear both;
-      animation-timeline: --act;
+      display: flex;
+      justify-content: center;
+      animation: split-out linear both;
+      animation-timeline: --liga;
       animation-range: entry 100% exit 0%;
     }
+    .split span {
+      display: block;
+      animation: approach linear both;
+      animation-timeline: --liga;
+      animation-range: entry 100% exit 0%;
+    }
+    .split span:first-child { --from: -0.72em; }
+    .split span:last-child { --from: 0.72em; }
     .joined {
-      animation: fade-in linear both;
-      animation-timeline: --act;
+      opacity: 0;
+      animation: join-in linear both;
+      animation-timeline: --liga;
       animation-range: entry 100% exit 0%;
     }
     #liga .off {
-      animation: fade-out linear both;
-      animation-timeline: --act;
+      animation: cap-off-late linear both;
+      animation-timeline: --liga;
       animation-range: entry 100% exit 0%;
     }
     #liga .on {
-      animation: fade-in linear both;
-      animation-timeline: --act;
+      animation: cap-on-late linear both;
+      animation-timeline: --liga;
       animation-range: entry 100% exit 0%;
+    }
+    .axis-slot {
+      display: grid;
+      place-items: center;
+      width: 4.6em;
+      height: 2em;
+      font-size: var(--type);
     }
     .axis {
+      font-family: "Gukhanmun Sans VF", sans-serif;
+      font-weight: 250;
       animation: weigh linear both;
-      animation-timeline: --act;
+      animation-timeline: --axis;
       animation-range: entry 100% exit 0%;
     }
-    @keyframes plain-out {
-      0%, 6% { opacity: 1; }
-      30%, 100% { opacity: 0; }
+    #axis .on { opacity: 1; }
+    .axis-out {
+      margin: 0.55rem 0 0;
+      min-width: 4ch;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.14em;
+      color: var(--cinnabar);
     }
-    @keyframes ruby-in {
-      0%, 12% { opacity: 0; transform: translateY(-0.1em); }
-      26% { opacity: 0.4; transform: none; }
-      42%, 100% { opacity: 1; transform: none; }
+    .colophon { padding: 12vh 1.25rem 18vh; text-align: center; }
+    .colophon a { color: var(--cinnabar); }
+    .face, .axis { visibility: hidden; }
+    html.ready .face, html.ready .axis { visibility: visible; }
+    @keyframes descend {
+      0% { transform: translateY(-48%); opacity: 0; }
+      18% { transform: translateY(-36%); opacity: 0; }
+      34% { transform: translateY(-14%); opacity: 0.72; }
+      48% { transform: translateY(-3%); opacity: 1; }
+      58%, 100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes cap-off {
+      0%, 30% { opacity: 1; }
+      50%, 100% { opacity: 0; }
     }
     @keyframes cap-on {
-      0%, 8% { opacity: 0; }
-      36%, 100% { opacity: 1; }
+      0%, 32% { opacity: 0; }
+      52%, 100% { opacity: 1; }
     }
-    @keyframes meet {
-      from { transform: translateX(var(--from)); }
-      to { transform: none; }
+    @keyframes approach {
+      0% { transform: translateX(var(--from)); }
+      14% { transform: translateX(calc(var(--from) * 0.86)); }
+      32% { transform: translateX(calc(var(--from) * 0.46)); }
+      48% { transform: translateX(calc(var(--from) * 0.12)); }
+      58%, 100% { transform: translateX(0); }
     }
-    @keyframes fade-out {
-      0%, 42% { opacity: 1; }
-      68%, 100% { opacity: 0; }
+    @keyframes split-out {
+      0%, 64% { opacity: 1; }
+      80%, 100% { opacity: 0; }
     }
-    @keyframes fade-in {
-      0%, 46% { opacity: 0; }
-      72%, 100% { opacity: 1; }
+    @keyframes join-in {
+      0%, 64% { opacity: 0; }
+      80%, 100% { opacity: 1; }
+    }
+    @keyframes cap-off-late {
+      0%, 64% { opacity: 1; }
+      80%, 100% { opacity: 0; }
+    }
+    @keyframes cap-on-late {
+      0%, 64% { opacity: 0; }
+      80%, 100% { opacity: 1; }
     }
     @keyframes weigh {
-      from { font-weight: 250; }
-      to { font-weight: 900; }
+      0% { font-weight: 250; }
+      18% { font-weight: 330; }
+      42% { font-weight: 490; }
+      68% { font-weight: 700; }
+      86% { font-weight: 830; }
+      100% { font-weight: 900; }
     }
     @media (max-width: 720px) {
-      .split span:first-child { --from: -6vw; }
-      .split span:last-child { --from: 6vw; }
-      .hero, .split, .joined, .axis { font-size: clamp(2.35rem, 14vw, 3.4rem); }
+      .top nav { gap: 0.65rem; }
+      .cap { font-size: 0.92rem; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .plain, .ruby, .split, .split span, .joined, .axis, .cap span { animation: none; }
-      .plain, #open .off, #liga .off { opacity: 0; }
-      .ruby { opacity: 1; clip-path: none; }
+      .band, .split, .split span, .joined, .axis, .cap span { animation: none; }
+      .band { opacity: 1; transform: none; }
+      .split, #open .off, #liga .off { opacity: 0; }
       .joined, #open .on, #liga .on { opacity: 1; }
       .axis { font-weight: 560; }
     }
@@ -257,38 +287,44 @@
 
   <section class="act" id="open">
     <div class="pin">
-      <p class="step">01 · ss01</p>
-      <div class="stack">
-        <p class="hero plain">國漢文混用</p>
-        <p class="hero ruby">國漢文混用</p>
+      <p class="step">01 · 독음</p>
+      <div class="specimen">
+        <p class="face hanja">國漢文混用</p>
+        <div class="window" aria-hidden="true">
+          <div class="band">
+            <p class="face reading">國漢文混用</p>
+          </div>
+        </div>
       </div>
       <p class="cap">
-        <span class="off">한자만 보입니다. 스타일 세트 ss01이 루비를 끄고 있습니다.</span>
-        <span class="on">같은 글꼴이 독음을 글리프 안에 그립니다. 자바스크립트가 붙인 주석이 아닙니다.</span>
+        <span class="off">한자만 보입니다. 스타일 세트 ss01이 독음을 끄고 있습니다.</span>
+        <span class="on">같은 글꼴이 독음을 글자 안에 그립니다. 덧붙인 주석이 아닙니다.</span>
       </p>
     </div>
   </section>
 
   <section class="act" id="liga">
     <div class="pin">
-      <p class="step">02 · GSUB</p>
+      <p class="step">02 · 합자</p>
       <div class="meet">
-        <p class="split hero"><span>音</span><span>樂</span></p>
-        <p class="joined hero">音樂</p>
+        <p class="split face"><span>音</span><span>樂</span></p>
+        <p class="joined face">音樂</p>
       </div>
       <p class="cap">
-        <span class="off">글자마다 읽으면 樂은 락입니다. 음락.</span>
-        <span class="on">音樂은 합자 하나입니다. 셰이핑이 음악으로 바꿉니다.</span>
+        <span class="off">떨어져 있으면 음, 낙입니다. 樂이 어두라 두음이 바뀝니다.</span>
+        <span class="on">붙으면 합자 하나입니다. 音樂의 독음은 음악입니다.</span>
       </p>
     </div>
   </section>
 
   <section class="act" id="axis">
     <div class="pin">
-      <p class="step">03 · wght</p>
-      <p class="axis">音樂</p>
+      <p class="step">03 · 굵기</p>
+      <div class="axis-slot">
+        <p class="axis">音樂</p>
+      </div>
       <p class="axis-out" id="wght">250</p>
-      <p class="cap"><span class="on">가변 폰트입니다. 한자와 독음의 획이 같은 굵기 축을 탑니다.</span></p>
+      <p class="cap"><span class="on">가변 폰트입니다. 한자와 독음의 획이 같은 굵기를 탑니다.</span></p>
     </div>
   </section>
 
@@ -311,12 +347,24 @@
     (function () {
       var axis = document.querySelector('.axis')
       var out = document.getElementById('wght')
-      if (!axis || !out) return
       var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      function show() {
+        document.documentElement.classList.add('ready')
+      }
+      Promise.all([
+        document.fonts.load('400 64px "Gukhanmun Sans Web"'),
+        document.fonts.load('250 64px "Gukhanmun Sans VF"'),
+        document.fonts.load('900 64px "Gukhanmun Sans VF"')
+      ]).then(show, show)
+      if (!axis || !out) return
+      if (reduce) {
+        out.textContent = '560'
+        return
+      }
       function tick() {
         var weight = Math.round(parseFloat(getComputedStyle(axis).fontWeight))
         if (weight) out.textContent = String(weight)
-        if (!reduce) requestAnimationFrame(tick)
+        requestAnimationFrame(tick)
       }
       tick()
     })()

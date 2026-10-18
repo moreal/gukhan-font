@@ -5,34 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title>시안 C. 시험 — 국한문</title>
-  <meta name="description" content="한자를 치면 독음이 바로 붙습니다. 커서를 움직이면 굵기가 따라갑니다.">
-  <link rel="preload" href="/gukhanmun-font/fonts/GukhanmunSans-Web.woff2" as="font" type="font/woff2" crossorigin>
+  <meta name="description" content="한자를 치면 독음이 바로 붙습니다. 글자 위에서 커서를 움직이면 굵기가 따라갑니다.">
   <link rel="preload" href="/gukhanmun-font/fonts/GukhanmunSansVF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/gukhanmun-font/fonts/GukhanmunHangulVF.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/gukhanmun-font/fonts/GothicA1-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <style>
-    @font-face {
-      font-family: "Gukhanmun Sans Web";
-      src: url("/gukhanmun-font/fonts/GukhanmunSans-Web.woff2") format("woff2");
-      font-weight: 400;
-      font-display: swap;
-    }
     @font-face {
       font-family: "Gukhanmun Sans Play";
       src: url("/gukhanmun-font/fonts/GukhanmunSansVF.woff2") format("woff2");
       font-weight: 250 900;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: "Gukhanmun Hangul Web";
-      src: url("/gukhanmun-font/fonts/GukhanmunHangul-Web.woff2") format("woff2");
-      font-weight: 400;
-      font-display: swap;
+      font-display: block;
     }
     @font-face {
       font-family: "Gukhanmun Hangul Play";
       src: url("/gukhanmun-font/fonts/GukhanmunHangulVF.woff2") format("woff2");
       font-weight: 250 900;
-      font-display: swap;
+      font-display: block;
     }
     @font-face {
       font-family: "Gothic A1";
@@ -57,7 +45,9 @@
       grid-template-rows: auto 1fr auto;
       min-height: 100vh;
       min-height: 100dvh;
-      background: var(--ink);
+      background:
+        radial-gradient(ellipse at 50% 42%, rgba(224, 122, 98, 0.07), transparent 46%),
+        var(--ink);
       color: var(--paper);
       font-family: "Gothic A1", sans-serif;
       overflow: hidden;
@@ -72,65 +62,94 @@
     }
     .top { border-bottom: 1px solid var(--line); }
     .brand { text-decoration: none; letter-spacing: 0.16em; font-size: 0.92rem; }
-    .top nav, .modes { display: flex; gap: 0.75rem; align-items: center; }
+    .top nav { display: flex; gap: 0.75rem; align-items: center; }
     .top nav a { color: var(--muted); text-decoration: none; font-size: 0.86rem; }
     .top nav a[aria-current="page"] { color: var(--cinnabar); }
     .stage-wrap {
       position: relative;
       min-height: 0;
       display: grid;
-      place-items: center;
-      padding: 0.5rem 1.1rem 0.25rem;
+      grid-template-rows: 1fr auto;
+      align-items: center;
+      padding: 0.75rem 1.15rem 1rem;
+      gap: 0.85rem;
     }
-    #stage {
+    .stack {
+      position: relative;
       width: min(100%, 16em);
+      margin: 0 auto;
+      font-size: clamp(1.9rem, 5.2vw, 4.35rem);
+      min-height: 4.4em;
+      display: grid;
+      place-items: center;
+    }
+    #stage, .ghost {
+      grid-area: 1 / 1;
+      width: 100%;
       margin: 0;
       text-align: center;
-      font-family: "Gukhanmun Sans Play", "Gukhanmun Sans Web", sans-serif;
+      font-family: "Gukhanmun Sans Play", sans-serif;
       font-weight: 400;
-      font-size: clamp(1.85rem, 5.6vw, 4.6rem);
+      font-size: 1em;
       line-height: 2;
       outline: none;
       overflow-wrap: anywhere;
       caret-color: var(--cinnabar);
     }
-    #stage:focus-visible { outline: 1px solid var(--cinnabar); outline-offset: 0.35rem; }
-    #stage.is-replace {
-      font-family: "Gukhanmun Hangul Play", "Gukhanmun Hangul Web", sans-serif;
-      line-height: 1.35;
+    #stage.is-replace, .ghost.is-replace {
+      font-family: "Gukhanmun Hangul Play", sans-serif;
     }
-    #stage.morph { transition: opacity 220ms ease; }
+    #stage:focus-visible { outline: 1px solid var(--cinnabar); outline-offset: 0.4rem; }
+    .ghost {
+      opacity: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+    #stage, .ghost { visibility: hidden; }
+    html.ready #stage, html.ready .ghost { visibility: visible; }
     .hairline {
-      position: fixed;
-      top: 0;
-      bottom: 0;
+      position: absolute;
+      top: 12%;
+      bottom: 22%;
       left: 0;
       width: 1px;
       background: var(--cinnabar);
       opacity: 0;
       pointer-events: none;
-      z-index: 4;
+    }
+    .hint {
+      margin: 0;
+      min-height: 2.8em;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.84rem;
     }
     .dock {
       border-top: 1px solid var(--line);
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
+      gap: 0.75rem 1rem;
     }
     .modes { border: 0; margin: 0; padding: 0; display: flex; gap: 0.35rem; }
     .modes button, .chips button {
       font: inherit;
+      font-size: 0.92rem;
       color: var(--paper);
       background: transparent;
       border: 1px solid var(--line);
       border-radius: 999px;
-      padding: 0.35rem 0.75rem;
+      padding: 0.38rem 0.8rem;
       cursor: pointer;
     }
     .modes button[aria-pressed="true"] {
       background: var(--cinnabar);
       border-color: var(--cinnabar);
       color: var(--ink);
+    }
+    .modes button:focus-visible, .chips button:focus-visible {
+      outline: 1px solid var(--cinnabar);
+      outline-offset: 2px;
     }
     .weight {
       display: flex;
@@ -141,33 +160,19 @@
       font-size: 0.86rem;
     }
     .weight input { width: min(16rem, 100%); accent-color: var(--cinnabar); }
-    #wght { color: var(--paper); font-variant-numeric: tabular-nums; min-width: 3ch; }
+    #wght { color: var(--paper); font-variant-numeric: tabular-nums; min-width: 3.2ch; }
     .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: flex-end; }
-    .hint {
-      position: absolute;
-      bottom: 0.4rem;
-      left: 0;
-      right: 0;
-      margin: 0;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.8rem;
-      pointer-events: none;
-    }
-    .hint-touch { display: none; }
-    @media (hover: none) {
-      .hint-mouse { display: none; }
-      .hint-touch { display: block; }
-    }
     @media (max-width: 720px) {
       body { overflow: auto; }
+      .top nav { gap: 0.55rem; }
       .dock { grid-template-columns: 1fr; justify-items: stretch; }
       .chips { justify-content: flex-start; }
       .hairline { display: none; }
-      #stage { font-size: 2.15rem; width: 100%; }
+      .stack { font-size: 2.05rem; width: 100%; }
+      .modes button, .chips button { padding: 0.4rem 0.72rem; }
     }
     @media (prefers-reduced-motion: reduce) {
-      #stage.morph { transition: none; }
+      #stage, .ghost { transition: none !important; }
     }
   </style>
 </head>
@@ -181,17 +186,19 @@
     </nav>
   </header>
   <h1 class="visually-hidden">시험. 한자를 치면 독음이 붙습니다.</h1>
-  <div class="stage-wrap">
-    <div id="stage" contenteditable="true" role="textbox" aria-multiline="true" aria-label="시험 문장" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</div>
-    <p class="hint hint-mouse">마우스를 좌우로 움직이면 굵기가 바뀝니다.</p>
-    <p class="hint hint-touch">슬라이더로 굵기를 바꿉니다.</p>
+  <div class="stage-wrap" id="field">
+    <div class="stack">
+      <div class="ghost" id="ghost" aria-hidden="true"></div>
+      <div id="stage" contenteditable="true" role="textbox" aria-multiline="true" aria-label="시험 문장" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</div>
+    </div>
+    <div class="hairline" id="hair" aria-hidden="true"></div>
+    <p class="hint" id="hint">독음을 글자 위에 답니다. 마우스를 좌우로 움직이면 굵기가 바뀝니다.</p>
   </div>
-  <div class="hairline" id="hair" aria-hidden="true"></div>
   <footer class="dock">
     <fieldset class="modes">
       <legend class="visually-hidden">그리는 방식</legend>
-      <button type="button" id="ruby" aria-pressed="true">루비</button>
-      <button type="button" id="replace" aria-pressed="false">치환</button>
+      <button type="button" id="reading" aria-pressed="true" title="독음 달기">독음</button>
+      <button type="button" id="hangul" aria-pressed="false" title="한글로 바꾸기">한글</button>
     </fieldset>
     <label class="weight">굵기
       <input id="range" type="range" min="250" max="900" value="400" aria-valuemin="250" aria-valuemax="900" aria-valuenow="400">
@@ -219,58 +226,100 @@
   <script>
     (function () {
       var stage = document.getElementById('stage')
+      var ghost = document.getElementById('ghost')
+      var field = document.getElementById('field')
       var range = document.getElementById('range')
       var out = document.getElementById('wght')
       var hair = document.getElementById('hair')
-      var ruby = document.getElementById('ruby')
-      var replace = document.getElementById('replace')
+      var reading = document.getElementById('reading')
+      var hangul = document.getElementById('hangul')
+      var hint = document.getElementById('hint')
       var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      var mode = 'ruby'
+      function touchHint() {
+        return window.matchMedia('(max-width: 720px)').matches
+      }
+      var mode = 'reading'
+      var timer = 0
+
+      function show() { document.documentElement.classList.add('ready') }
+      Promise.all([
+        document.fonts.load('250 16px "Gukhanmun Sans Play"'),
+        document.fonts.load('900 16px "Gukhanmun Sans Play"'),
+        document.fonts.load('250 16px "Gukhanmun Hangul Play"'),
+        document.fonts.load('900 16px "Gukhanmun Hangul Play"')
+      ]).then(show, show)
 
       function paint(weight) {
         weight = Math.max(250, Math.min(900, Math.round(weight)))
         stage.style.fontWeight = String(weight)
+        ghost.style.fontWeight = String(weight)
         range.value = String(weight)
         range.setAttribute('aria-valuenow', String(weight))
         out.textContent = String(weight)
       }
 
+      function hintText(next) {
+        var how = next === 'hangul'
+          ? '한자로 둔 채 한글로 바꿉니다.'
+          : '독음을 글자 위에 답니다.'
+        var axis = touchHint() ? '슬라이더로 굵기를 바꿉니다.' : '글자 위에서 마우스를 좌우로 움직이면 굵기가 바뀝니다.'
+        hint.textContent = how + ' ' + axis
+      }
+
       function applyMode(next) {
         mode = next
-        var hangul = next === 'replace'
-        ruby.setAttribute('aria-pressed', hangul ? 'false' : 'true')
-        replace.setAttribute('aria-pressed', hangul ? 'true' : 'false')
-        stage.classList.toggle('is-replace', hangul)
+        var asHangul = next === 'hangul'
+        reading.setAttribute('aria-pressed', asHangul ? 'false' : 'true')
+        hangul.setAttribute('aria-pressed', asHangul ? 'true' : 'false')
+        stage.classList.toggle('is-replace', asHangul)
+        hintText(next)
       }
 
       function morph(next) {
         if (next === mode) return
+        window.clearTimeout(timer)
         if (reduce) {
           applyMode(next)
           return
         }
-        stage.classList.add('morph')
+        ghost.textContent = stage.textContent
+        ghost.classList.toggle('is-replace', next === 'hangul')
+        ghost.style.fontWeight = stage.style.fontWeight
+        ghost.style.transition = 'none'
+        stage.style.transition = 'none'
+        ghost.style.opacity = '0'
+        stage.style.opacity = '1'
+        ghost.getBoundingClientRect()
+        ghost.style.transition = 'opacity 260ms ease'
+        stage.style.transition = 'opacity 260ms ease'
+        ghost.style.opacity = '1'
         stage.style.opacity = '0'
-        window.setTimeout(function () {
+        timer = window.setTimeout(function () {
           applyMode(next)
+          stage.style.transition = 'none'
+          ghost.style.transition = 'none'
           stage.style.opacity = '1'
-        }, 180)
+          ghost.style.opacity = '0'
+        }, 260)
       }
 
-      ruby.addEventListener('click', function () { morph('ruby') })
-      replace.addEventListener('click', function () { morph('replace') })
+      reading.addEventListener('click', function () { morph('reading') })
+      hangul.addEventListener('click', function () { morph('hangul') })
       range.addEventListener('input', function () { paint(range.value) })
-      window.addEventListener('pointermove', function (event) {
+      field.addEventListener('pointermove', function (event) {
         if (event.pointerType !== 'mouse') return
-        if (event.clientX < 12) {
+        if (event.target.closest && event.target.closest('.hint')) return
+        var box = field.getBoundingClientRect()
+        var x = event.clientX - box.left
+        if (x < 8 || x > box.width - 8) {
           hair.style.opacity = '0'
           return
         }
-        hair.style.opacity = '0.85'
-        hair.style.transform = 'translateX(' + event.clientX + 'px)'
-        paint(250 + (event.clientX / window.innerWidth) * 650)
+        hair.style.opacity = '0.55'
+        hair.style.transform = 'translateX(' + x + 'px)'
+        paint(250 + (x / box.width) * 650)
       })
-      window.addEventListener('pointerleave', function () { hair.style.opacity = '0' })
+      field.addEventListener('pointerleave', function () { hair.style.opacity = '0' })
       stage.addEventListener('paste', function (event) {
         event.preventDefault()
         var text = event.clipboardData ? event.clipboardData.getData('text') : ''
@@ -286,8 +335,8 @@
         })
       })
       paint(400)
-      document.fonts.load('250 16px "Gukhanmun Sans Play"')
-      document.fonts.load('250 16px "Gukhanmun Hangul Play"')
+      hintText('reading')
+      window.addEventListener('resize', function () { hintText(mode) })
     })()
   </script>
 </body>

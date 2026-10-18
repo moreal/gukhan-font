@@ -4,7 +4,7 @@
 
 한자는 그대로 두고 독음을 붙이는 글꼴입니다. `國漢文混用`이라고만 적습니다. `<ruby>`도, 자바스크립트도 필요 없고, 복사하면 한자 그대로입니다.
 
-- **Gukhanmun Sans**는 한글 독음 `국한문혼용`을 한자 위에 루비로 그립니다.
+- **Gukhanmun Sans**는 한글 독음 `국한문혼용`을 한자 위에 그립니다.
 - **Gukhanmun Hangul**은 그 한자를 독음으로 바꿉니다. 화면에는 `국한문혼용`만 보입니다.
 - 지역은 **ko-KR**(남한, 두음 법칙)과 **ko-KP**(북한, 두음 법칙 없음)입니다. 폰트 패밀리 이름이 다릅니다.
 - 굵기는 ExtraLight부터 Heavy까지이고, 독음이 굵기를 따라가는 가변 폰트가 있습니다.
@@ -40,7 +40,7 @@ Two families, two regions. Gukhanmun Sans draws the Hangul above the Hanja. Gukh
 </style>
 ```
 
-Gukhanmun Sans는 `line-height`를 2로 둡니다. 루비는 전각 상자 위에 그려지므로, 줄 간격이 좁으면 잘립니다. `font-feature-settings: "ss01" 1`이면 그 폰트의 루비가 꺼지고 원래 한자만 남습니다. Gukhanmun Hangul에는 그 스위치가 없습니다. 한자가 이미 한글로 바뀌어 있습니다.
+Gukhanmun Sans는 `line-height`를 2로 둡니다. 독음은 전각 상자 위에 그려지므로, 줄 간격이 좁으면 잘립니다. `font-feature-settings: "ss01" 1`이면 그 폰트의 독음이 꺼지고 원래 한자만 남습니다. Gukhanmun Hangul에는 그 스위치가 없습니다. 한자가 이미 한글로 바뀌어 있습니다.
 
 굵기 파일은 `GukhanmunSans-ExtraLight.woff2`부터 `GukhanmunSans-Heavy.woff2`까지입니다. CSS `font-weight`는 250, 300, 350, 400, 500, 700, 900입니다. 가변 폰트의 폰트 패밀리는 `Gukhanmun Sans VF`이고 `font-weight: 250 900`입니다. 기본 인스턴스가 ExtraLight라서, 페이지에서는 굵기 400을 지정합니다. 웹 서브셋의 폰트 패밀리는 `Gukhanmun Sans Web`이고 Regular 하나입니다. 북한 글꼴은 이름에 `KP`가 붙습니다. `Gukhanmun Sans KP`, `Gukhanmun Sans KP VF`, `Gukhanmun Sans KP Web`.
 
@@ -76,11 +76,11 @@ Set `line-height: 2` for Gukhanmun Sans so the reading is not clipped. Stylistic
 </style>
 ```
 
-`font-family: "Gukhanmun Sans Hanja", "Pretendard", sans-serif`처럼 애드온을 맨 앞에 둡니다. 치환은 `Gukhanmun Hangul Hanja`, 북한 루비는 `Gukhanmun Sans KP Hanja`, 북한 치환은 `Gukhanmun Hangul KP Hanja`입니다. 굵기마다 파일이 있습니다. `dist/hanja.css`가 일곱 굵기의 `@font-face`를 이미 적습니다.
+`font-family: "Gukhanmun Sans Hanja", "Pretendard", sans-serif`처럼 애드온을 맨 앞에 둡니다. 치환은 `Gukhanmun Hangul Hanja`, 북한 독음은 `Gukhanmun Sans KP Hanja`, 북한 치환은 `Gukhanmun Hangul KP Hanja`입니다. 굵기마다 파일이 있습니다. `dist/hanja.css`가 일곱 굵기의 `@font-face`를 이미 적습니다.
 
 ### 메트릭과 맞추기
 
-애드온의 획은 Source Han Sans KR입니다. 본문 글꼴의 한글과 키, 베이스라인이 다르면 루비가 떠 보이거나 줄에 잘립니다.
+애드온의 획은 Source Han Sans KR입니다. 본문 글꼴의 한글과 키, 베이스라인이 다르면 독음이 떠 보이거나 줄에 잘립니다.
 
 | | 값 |
 | --- | --- |
@@ -89,19 +89,19 @@ Set `line-height: 2` for Gukhanmun Sans so the reading is not clipped. Stylistic
 | 한자 너비 | 1,000 |
 | OS/2 typo ascender / descender | 880 / −120 |
 | hhea (치환, 베이스와 같음) | 1,160 / −288, line gap 0 |
-| hhea (루비, 독음을 위해 올림) | 1,580 / −288, line gap 0 |
+| hhea (독음, 글자 위에 올리기 위해 키움) | 1,580 / −288, line gap 0 |
 | 한글 `가`의 상단 / 높이 | y 827, 높이 904 |
 
 CSS로 줄 상자를 그 값에 맞춥니다. 퍼센트는 em 기준입니다.
 
-- 루비: `ascent-override: 158%` (1,580 / 1,000)
+- 독음: `ascent-override: 158%` (1,580 / 1,000)
 - 치환: `ascent-override: 116%` (1,160 / 1,000)
 - 둘 다: `descent-override: 28.8%`, `line-gap-override: 0%`
-- 루비는 `line-height: 2`. 158% + 28.8%보다 줄이 커야 루비가 줄 안에 남습니다.
+- 독음은 `line-height: 2`. 158% + 28.8%보다 줄이 커야 독음이 줄 안에 남습니다.
 
 ### 본문 글꼴의 메트릭
 
-애드온과 본문 한글의 메트릭이 다르면, 한 줄 안에서 인라인 상자가 어긋납니다. 줄 높이가 `line-height`보다 커지고, 한자가 있는 줄과 없는 줄의 높이도 달라집니다. 한글 글꼴에 애드온과 같은 `ascent-override`, `descent-override`, `line-gap-override`를 줍니다. 루비와 치환의 어센더가 다르므로, 같은 파일로 폰트 패밀리를 둘 만듭니다.
+애드온과 본문 한글의 메트릭이 다르면, 한 줄 안에서 인라인 상자가 어긋납니다. 줄 높이가 `line-height`보다 커지고, 한자가 있는 줄과 없는 줄의 높이도 달라집니다. 한글 글꼴에 애드온과 같은 `ascent-override`, `descent-override`, `line-gap-override`를 줍니다. 독음과 치환의 어센더가 다르므로, 같은 파일로 폰트 패밀리를 둘 만듭니다.
 
 ```css
 @font-face {
@@ -131,7 +131,7 @@ CSS로 줄 상자를 그 값에 맞춥니다. 퍼센트는 em 기준입니다.
 }
 ```
 
-Gothic A1은 OFL이라 데모가 파일을 직접 둡니다. 다른 한글 글꼴을 쓰면 그 글꼴의 `@font-face`에 같은 세 값을 적습니다. 루비 애드온 앞에는 158% 패밀리, 치환 애드온 앞에는 116% 패밀리를 둡니다.
+Gothic A1은 OFL이라 데모가 파일을 직접 둡니다. 다른 한글 글꼴을 쓰면 그 글꼴의 `@font-face`에 같은 세 값을 적습니다. 독음 애드온 앞에는 158% 패밀리, 치환 애드온 앞에는 116% 패밀리를 둡니다.
 
 `size-adjust`의 기본은 100%입니다. 본문 한글의 키에 맞출 때는 다음을 씁니다.
 
@@ -139,7 +139,7 @@ Gothic A1은 OFL이라 데모가 파일을 직접 둡니다. 다른 한글 글�
 size-adjust = (본문 한글 높이 / 본문 upem) / (904 / 1000)
 ```
 
-데모의 Gothic A1 Regular(OFL, upem 1,024)는 `가`의 높이가 912, 너비가 984입니다. 높이를 맞추면 `size-adjust: 98.6%`이고, 너비를 맞추면 `(984 / 1024) / 0.92` ≈ `104.5%`입니다. 두 글꼴의 가로세로 비율이 달라서, 키와 너비를 한 숫자로 같이 맞출 수는 없습니다. 루비는 키를, 치환은 음절 너비를 기준으로 고릅니다. 애드온을 `font-family` 맨 앞에 두면 그 메트릭이 줄 높이를 정합니다.
+데모의 Gothic A1 Regular(OFL, upem 1,024)는 `가`의 높이가 912, 너비가 984입니다. 높이를 맞추면 `size-adjust: 98.6%`이고, 너비를 맞추면 `(984 / 1024) / 0.92` ≈ `104.5%`입니다. 두 글꼴의 가로세로 비율이 달라서, 키와 너비를 한 숫자로 같이 맞출 수는 없습니다. 독음은 키를, 치환은 음절 너비를 기준으로 고릅니다. 애드온을 `font-family` 맨 앞에 두면 그 메트릭이 줄 높이를 정합니다.
 
 ### 합자가 애드온에서도 되는 이유
 
@@ -258,7 +258,7 @@ Date tags are `vYYYY.MM.DD`, with `vYYYY.MM.DD.N` when the same day needs anothe
 
 두 글꼴은 `planReadings` 한 번으로 같은 합자, 같은 글자 폴백, 같은 `rclt` 규칙을 고릅니다. 그리는 방식만 다릅니다.
 
-- **Gukhanmun Sans**는 한자 획을 두고 그 위에 독음을 줄여 올립니다. 배율은 0.68이고, 한자와 루비 사이 간격은 em의 0.02입니다. 한 글자 독음은 그 글자의 너비 한가운데에 놓입니다.
+- **Gukhanmun Sans**는 한자 획을 두고 그 위에 독음을 줄여 올립니다. 배율은 0.68이고, 한자와 독음 사이 간격은 em의 0.02입니다. 한 글자 독음은 그 글자의 너비 한가운데에 놓입니다.
 - **Gukhanmun Hangul**은 한자 획을 그리지 않고, 독음의 음절을 제 크기로 나란히 놓습니다. 음절 하나의 너비는 베이스 글꼴의 한글(920)이고, N음절 합자는 그 N개를 더한 값입니다. `音樂`은 글자 둘을 `음`+`악` 너비의 합자 하나로 바꿉니다. `上海`처럼 음절이 글자보다 많으면(`상하이`) 음절 수만큼의 너비가 됩니다.
 
 This follows [furifont](https://github.com/antfu/furifont): one plan, then a compiler draws it into a CFF font and appends OpenType lookups. The compiler in `vendor/furifont/` is furifont's, MIT. Gukhanmun adds a `replace` placement that draws Hangul on the baseline. Korean readings, 두음 법칙, and which words become ligatures are implemented here and are not a copy of seonbi's code. The variable font is TrueType, so the reading composites follow the `wght` axis. Static CFF readings are flattened outlines.

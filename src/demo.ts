@@ -41,13 +41,13 @@ export const DISPLAY_COPY = [
   'ko-KP',
   'ko-KR · ko-KP',
   '본문',
-  '루비 애드온',
+  '독음 애드온',
   '치환 애드온',
-  '북한 루비',
+  '북한 독음',
   '폰트 패밀리',
   '지역',
   '파일',
-  '루비',
+  '독음',
   '웹 서브셋',
   '한자 애드온',
   'Gukhanmun Sans · OFL',
@@ -248,9 +248,9 @@ export function renderHanjaCss(metrics: DemoMetrics, only?: { style: FamilyStyle
     }
   }
   return `/* 한자 애드온. unicode-range 안의 한자만 이 글꼴이 그립니다. 한글과 라틴은 다음 글꼴로 넘어갑니다.
-   루비(Gukhanmun Sans Hanja)는 글줄을 키우므로 line-height: 2 를 씁니다.
+   독음(Gukhanmun Sans Hanja)은 글줄을 키우므로 line-height: 2 를 씁니다.
    본문 한글 글꼴에도 같은 ascent-override, descent-override, line-gap-override 를 주세요.
-   루비는 ${metrics.rubyAscent}, 치환은 ${metrics.replaceAscent}라서 본문 글꼴의 폰트 패밀리를 둘로 나눕니다.
+   독음은 ${metrics.rubyAscent}, 치환은 ${metrics.replaceAscent}라서 본문 글꼴의 폰트 패밀리를 둘로 나눕니다.
    size-adjust 로 본문 한글의 크기에 맞춥니다. 기본은 100%입니다. */
 ${blocks.join('\n')}
 .gukhanmun-hanja {
@@ -363,7 +363,7 @@ export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 ${profile === 'pages' ? `    <base href="${pagesBase()}">\n` : ''}    <title>국한문 Gukhanmun — 한자 위에 독음을 그리는 글꼴</title>
-    <meta name="description" content="한자는 그대로 두고, 독음만 그립니다. 루비와 치환, 남한·북한 독음, 가변 폰트.">
+    <meta name="description" content="한자는 그대로 두고, 독음만 그립니다. 독음 달기와 한글로 바꾸기, 남한·북한 독음, 가변 폰트.">
     <meta property="og:title" content="국한문 Gukhanmun">
     <meta property="og:description" content="한자는 그대로 두고, 독음만 그립니다.">
     <meta property="og:type" content="website">
@@ -986,7 +986,7 @@ ${explainCss()}
       <div class="wrap">
         <section class="block" id="use">
           ${sectionHead('Ⅰ', '넣는 법')}
-          <p class="lead">파일은 <a href="${releases}">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 루비는 <code>line-height</code>를 2로 둡니다.</p>
+          <p class="lead">파일은 <a href="${releases}">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 독음은 <code>line-height</code>를 2로 둡니다.</p>
           <div class="snippet">
             <div class="snippet-head">
               <h3>웹 서브셋</h3>
@@ -999,14 +999,14 @@ ${explainCss()}
               <h3>한자 애드온</h3>
               <button class="copy" type="button" data-copy="css-addon">복사</button>
             </div>
-            <p class="lead">애드온은 한글 글꼴 앞에 둡니다. 그 한글 글꼴에도 같은 어센더, 디센더, 라인갭을 주세요. 루비는 ${escapeHtml(metrics.rubyAscent)}, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 값이 다르면 한자가 있는 줄과 없는 줄의 높이가 달라집니다. <code>unicode-range</code> 전체는 릴리스의 <code>hanja.css</code>에 있습니다.</p>
+            <p class="lead">애드온은 한글 글꼴 앞에 둡니다. 그 한글 글꼴에도 같은 어센더, 디센더, 라인갭을 주세요. 독음은 ${escapeHtml(metrics.rubyAscent)}, 치환은 ${escapeHtml(metrics.replaceAscent)}입니다. 값이 다르면 한자가 있는 줄과 없는 줄의 높이가 달라집니다. <code>unicode-range</code> 전체는 릴리스의 <code>hanja.css</code>에 있습니다.</p>
             <pre id="css-addon"><code>${escapeHtml(snippet.addon)}</code></pre>
           </div>
         </section>
 
         <section class="block" id="try">
           ${sectionHead('Ⅱ', '써 보기')}
-          <p class="lead">문장을 고쳐 보세요. 크기, 굵기, 남한·북한 독음, 루비와 치환, 한자 애드온을 바꿉니다. 굵기 슬라이더는 가변 폰트를 받습니다. 이 페이지의 애드온은 Regular입니다. 복사하면 한자입니다.</p>
+          <p class="lead">문장을 고쳐 보세요. 크기, 굵기, 남한·북한 독음, 독음 달기와 한글로 바꾸기, 한자 애드온을 바꿉니다. 굵기 슬라이더는 가변 폰트를 받습니다. 이 페이지의 애드온은 Regular입니다. 복사하면 한자입니다.</p>
           <label class="visually-hidden" for="stage">시험할 문장</label>
           <textarea id="stage" class="stage" spellcheck="false" autocomplete="off">大韓民國의 音樂과 平壤 冷麵.</textarea>
           <div class="controls">
@@ -1021,8 +1021,8 @@ ${explainCss()}
             <fieldset>
               <legend>폰트 패밀리</legend>
               <div class="choice">
-                <label><input id="sans" name="family" type="radio" checked><span class="full">루비 Gukhanmun Sans</span><span class="brief">루비</span></label>
-                <label><input id="hangul" name="family" type="radio"><span class="full">치환 Gukhanmun Hangul</span><span class="brief">치환</span></label>
+                <label><input id="sans" name="family" type="radio" checked><span class="full">독음 Gukhanmun Sans</span><span class="brief">독음</span></label>
+                <label><input id="hangul" name="family" type="radio"><span class="full">한글 Gukhanmun Hangul</span><span class="brief">한글</span></label>
               </div>
             </fieldset>
             <fieldset>
@@ -1041,8 +1041,8 @@ ${explainCss()}
               </div>
             </fieldset>
             <fieldset>
-              <legend>루비</legend>
-              <label class="switch"><input id="ss01" type="checkbox"><i aria-hidden="true"></i>루비 끄기 · ss01</label>
+              <legend>독음</legend>
+              <label class="switch"><input id="ss01" type="checkbox"><i aria-hidden="true"></i>독음 끄기 · ss01</label>
             </fieldset>
           </div>
         </section>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>국한문 Gukhanmun — 한자 위에 독음을 그리는 글꼴</title>
-    <meta name="description" content="한자는 그대로 두고, 독음만 그립니다. 루비와 치환, 남한·북한 독음, 가변 폰트.">
+    <meta name="description" content="한자는 그대로 두고, 독음만 그립니다. 독음 달기와 한글로 바꾸기, 남한·북한 독음, 가변 폰트.">
     <meta property="og:title" content="국한문 Gukhanmun">
     <meta property="og:description" content="한자는 그대로 두고, 독음만 그립니다.">
     <meta property="og:type" content="website">
@@ -1118,7 +1118,7 @@
       <div class="wrap">
         <section class="block" id="use">
           <header class="sec-head"><h2><span class="sec-no">Ⅰ</span> 넣는 법</h2></header>
-          <p class="lead">파일은 <a href="https://github.com/morealdot/gukhanmun-font/releases">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 루비는 <code>line-height</code>를 2로 둡니다.</p>
+          <p class="lead">파일은 <a href="https://github.com/morealdot/gukhanmun-font/releases">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 독음은 <code>line-height</code>를 2로 둡니다.</p>
           <div class="snippet">
             <div class="snippet-head">
               <h3>웹 서브셋</h3>
@@ -1140,7 +1140,7 @@
               <h3>한자 애드온</h3>
               <button class="copy" type="button" data-copy="css-addon">복사</button>
             </div>
-            <p class="lead">애드온은 한글 글꼴 앞에 둡니다. 그 한글 글꼴에도 같은 어센더, 디센더, 라인갭을 주세요. 루비는 158%, 치환은 116%입니다. 값이 다르면 한자가 있는 줄과 없는 줄의 높이가 달라집니다. <code>unicode-range</code> 전체는 릴리스의 <code>hanja.css</code>에 있습니다.</p>
+            <p class="lead">애드온은 한글 글꼴 앞에 둡니다. 그 한글 글꼴에도 같은 어센더, 디센더, 라인갭을 주세요. 독음은 158%, 치환은 116%입니다. 값이 다르면 한자가 있는 줄과 없는 줄의 높이가 달라집니다. <code>unicode-range</code> 전체는 릴리스의 <code>hanja.css</code>에 있습니다.</p>
             <pre id="css-addon"><code>@font-face {
   font-family: &quot;Gukhanmun Sans Hanja&quot;;
   src: url(&quot;GukhanmunSansHanja-Regular.woff2&quot;) format(&quot;woff2&quot;);
@@ -1181,7 +1181,7 @@
 
         <section class="block" id="try">
           <header class="sec-head"><h2><span class="sec-no">Ⅱ</span> 써 보기</h2></header>
-          <p class="lead">문장을 고쳐 보세요. 크기, 굵기, 남한·북한 독음, 루비와 치환, 한자 애드온을 바꿉니다. 굵기 슬라이더는 가변 폰트를 받습니다. 이 페이지의 애드온은 Regular입니다. 복사하면 한자입니다.</p>
+          <p class="lead">문장을 고쳐 보세요. 크기, 굵기, 남한·북한 독음, 독음 달기와 한글로 바꾸기, 한자 애드온을 바꿉니다. 굵기 슬라이더는 가변 폰트를 받습니다. 이 페이지의 애드온은 Regular입니다. 복사하면 한자입니다.</p>
           <label class="visually-hidden" for="stage">시험할 문장</label>
           <textarea id="stage" class="stage" spellcheck="false" autocomplete="off">大韓民國의 音樂과 平壤 冷麵.</textarea>
           <div class="controls">
@@ -1196,8 +1196,8 @@
             <fieldset>
               <legend>폰트 패밀리</legend>
               <div class="choice">
-                <label><input id="sans" name="family" type="radio" checked><span class="full">루비 Gukhanmun Sans</span><span class="brief">루비</span></label>
-                <label><input id="hangul" name="family" type="radio"><span class="full">치환 Gukhanmun Hangul</span><span class="brief">치환</span></label>
+                <label><input id="sans" name="family" type="radio" checked><span class="full">독음 Gukhanmun Sans</span><span class="brief">독음</span></label>
+                <label><input id="hangul" name="family" type="radio"><span class="full">한글 Gukhanmun Hangul</span><span class="brief">한글</span></label>
               </div>
             </fieldset>
             <fieldset>
@@ -1216,8 +1216,8 @@
               </div>
             </fieldset>
             <fieldset>
-              <legend>루비</legend>
-              <label class="switch"><input id="ss01" type="checkbox"><i aria-hidden="true"></i>루비 끄기 · ss01</label>
+              <legend>독음</legend>
+              <label class="switch"><input id="ss01" type="checkbox"><i aria-hidden="true"></i>독음 끄기 · ss01</label>
             </fieldset>
           </div>
         </section>
@@ -1392,7 +1392,7 @@
         <p>자바스크립트는 쓰지 않습니다. 브라우저가 셰이핑할 때 텍스트를 스크립트 런으로 나누고, 한자가 이어진 런만 이 글꼴의 OpenType <code>rclt</code>가 바꿉니다. 한글과 라틴은 다른 런이라 다음 글꼴이 그립니다. 숫자는 <code>GukhanmunSans-Regular.otf</code>를 HarfBuzz로 셰이핑한 값입니다. 아래 큰 예시는 웹 서브셋으로 고정했습니다. 복사하면 한자입니다.</p>
 
         <h3>글꼴 파일은 표의 묶음입니다</h3>
-        <p>OTF와 TTF는 sfnt 표의 묶음입니다. 독음을 그리는 데 쓰는 표는 이 일곱입니다. 루비 획은 글리프 윤곽 안에 그려 넣고, 진행 너비는 <code>hmtx</code>에 적습니다. <code>GPOS</code> 마크 부착은 쓰지 않습니다.</p>
+        <p>OTF와 TTF는 sfnt 표의 묶음입니다. 독음을 그리는 데 쓰는 표는 이 일곱입니다. 독음 획은 글리프 윤곽 안에 그려 넣고, 진행 너비는 <code>hmtx</code>에 적습니다. <code>GPOS</code> 마크 부착은 쓰지 않습니다.</p>
         <div class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 312" width="100%" style="display:block;width:100%;height:auto;aspect-ratio:920/312" role="img"><g opacity="1">
       <rect x="16" y="18" width="140" height="32" rx="6" fill="#f6d7c8" stroke="#8c2f2b"/>
       <text x="86" y="39" text-anchor="middle" font-family="ui-monospace, monospace" font-size="15" fill="#1c1915">cmap</text>
@@ -1416,7 +1416,7 @@
     </g><g opacity="1">
       <rect x="16" y="228" width="140" height="32" rx="6" fill="#f6d7c8" stroke="#8c2f2b"/>
       <text x="86" y="249" text-anchor="middle" font-family="ui-monospace, monospace" font-size="15" fill="#1c1915">GPOS</text>
-      <text x="172" y="249" font-family="sans-serif" font-size="15" fill="#6b645b">위치. 루비는 여기 있지 않음</text>
+      <text x="172" y="249" font-family="sans-serif" font-size="15" fill="#6b645b">위치. 독음은 여기 있지 않음</text>
     </g><g opacity="1">
       <rect x="16" y="270" width="140" height="32" rx="6" fill="#f6d7c8" stroke="#8c2f2b"/>
       <text x="86" y="291" text-anchor="middle" font-family="ui-monospace, monospace" font-size="15" fill="#1c1915">name</text>
@@ -1604,9 +1604,9 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
           </div>
         </div>
 
-        <h3>루비와 치환</h3>
+        <h3>독음과 한글</h3>
         <div class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 290" width="100%" style="display:block;width:100%;height:auto;aspect-ratio:920/290" role="img"><g opacity="1">
-    <text x="24" y="24" font-family="sans-serif" font-size="14" fill="#6b645b">Gukhanmun Sans · 윤곽 안의 루비</text>
+    <text x="24" y="24" font-family="sans-serif" font-size="14" fill="#6b645b">Gukhanmun Sans · 윤곽 안의 독음</text>
     <rect x="24" y="36" width="200" height="250" fill="none" stroke="#cfc6b6"/>
     <line x1="24" y1="210" x2="224" y2="210" stroke="#243856"/>
     <text x="124" y="78" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#8c2f2b">유월</text>
@@ -1627,10 +1627,10 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
   </g></svg></div>
         <div class="pair">
           <div class="card">
-            <p class="label">Gukhanmun Sans · 한자 위의 루비</p>
+            <p class="label">Gukhanmun Sans · 한자 위의 독음</p>
             <p class="ex-ruby">國漢文混用</p>
             <p class="ex-ruby">音樂</p>
-            <p>배율은 0.68이고, 간격은 em의 0.02입니다. <code>ss01</code>을 켜면 이 폰트 패밀리의 루비만 꺼집니다. 줄 높이는 2가 필요합니다.</p>
+            <p>배율은 0.68이고, 간격은 em의 0.02입니다. <code>ss01</code>을 켜면 이 폰트 패밀리의 독음만 꺼집니다. 줄 높이는 2가 필요합니다.</p>
           </div>
           <div class="card">
             <p class="label">Gukhanmun Hangul · 한자를 한글로</p>
@@ -1674,7 +1674,7 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
         <p>한자 애드온은 그 정적 글꼴에서 한자 cmap만 남긴 것입니다. 글리프는 ko-KR 24,438개, ko-KP 24,492개이고, cmap은 둘 다 8,497자입니다. 독음이 없는 한자 155자는 빼서 본문 글꼴에 맡깁니다.</p>
 
         <h3>한자만 얹기</h3>
-        <p>애드온의 cmap은 한자뿐입니다. <code>unicode-range</code>를 그 8,497자와 같게 적어야, 글꼴에 없는 한자가 빈 칸이 되지 않고 다음 글꼴로 넘어갑니다. 블록 전체를 적으면, 없는 한자까지 이 글꼴이 맡아 빈 칸이 됩니다. 루비 애드온은 <code>ascent-override: 158%</code>, 치환은 <code>116%</code>, 디센더는 <code>28.8%</code>입니다. 한글을 그리는 글꼴에도 같은 어센더, 디센더, 라인갭을 줘야 한자가 있는 줄과 없는 줄의 높이가 같습니다. 데모의 Gothic A1은 그 값으로 폰트 패밀리를 둘 나눴습니다.</p>
+        <p>애드온의 cmap은 한자뿐입니다. <code>unicode-range</code>를 그 8,497자와 같게 적어야, 글꼴에 없는 한자가 빈 칸이 되지 않고 다음 글꼴로 넘어갑니다. 블록 전체를 적으면, 없는 한자까지 이 글꼴이 맡아 빈 칸이 됩니다. 독음 애드온은 <code>ascent-override: 158%</code>, 치환은 <code>116%</code>, 디센더는 <code>28.8%</code>입니다. 한글을 그리는 글꼴에도 같은 어센더, 디센더, 라인갭을 줘야 한자가 있는 줄과 없는 줄의 높이가 같습니다. 데모의 Gothic A1은 그 값으로 폰트 패밀리를 둘 나눴습니다.</p>
         <div class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 210" width="100%" style="display:block;width:100%;height:auto;aspect-ratio:920/210" role="img"><g opacity="1">
       <rect x="20" y="24" width="880" height="48" rx="8" fill="#f6d7c8" stroke="#8c2f2b"/>
       <text x="40" y="54" font-family="ui-monospace, monospace" font-size="16" fill="#1c1915">1  Gukhanmun Sans Hanja</text>
@@ -1691,14 +1691,14 @@ hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
         <p>본문은 Gothic A1입니다. 한자가 없는 글꼴이라 첫 줄은 빈 상자입니다. 브라우저에 다른 한자 글꼴이 있으면 그 글자로 빈칸을 채우므로, 데모는 <code>Hanja Box</code>를 뒤에 둡니다. 아래 줄은 애드온이 한자만 그리고, <code>와</code> 같은 한글은 Gothic A1이 그립니다. 넷째 줄의 冷은 북한 독음 랭입니다.</p>
         <p class="layer-label">본문 <span class="loc">Gothic A1</span></p>
         <p class="layer-body">女子와 男女, 平壤 冷麵</p>
-        <p class="layer-label">루비 애드온</p>
+        <p class="layer-label">독음 애드온</p>
         <p class="layer-ruby">女子와 男女, 平壤 冷麵</p>
         <p class="layer-label">치환 애드온</p>
         <p class="layer-replace">女子와 男女, 平壤 冷麵</p>
-        <p class="layer-label">북한 루비 <span class="loc">ko-KP</span></p>
+        <p class="layer-label">북한 독음 <span class="loc">ko-KP</span></p>
         <p class="layer-kp">女子와 男女, 平壤 冷麵</p>
-        <p>일곱 굵기와 가변 폰트는 <a href="https://github.com/morealdot/gukhanmun-font/releases">릴리스</a>에 있습니다. 가변 폰트의 루비 획은 굵기 축을 따라가고, 기본 인스턴스는 ExtraLight입니다. 한자 사이의 공백은 한글 사이보다 좁습니다. Regular에서 224이고, 한글 사이는 280입니다. 가로쓰기만 됩니다.</p>
-        <p>빌드는 <code>planReadings</code>로 규칙을 한 번 고르고, <code>emitFamily</code>가 루비와 치환을 나눈 뒤, furifont <code>compileFont</code>가 윤곽과 GSUB를 씁니다. 한자 애드온은 그 정적 글꼴을 fontTools로 자릅니다. <a href="/gukhanmun-font/slides/">슬라이드</a>가 이 과정을 코드와 함께 설명합니다.</p>
+        <p>일곱 굵기와 가변 폰트는 <a href="https://github.com/morealdot/gukhanmun-font/releases">릴리스</a>에 있습니다. 가변 폰트의 독음 획은 굵기 축을 따라가고, 기본 인스턴스는 ExtraLight입니다. 한자 사이의 공백은 한글 사이보다 좁습니다. Regular에서 224이고, 한글 사이는 280입니다. 가로쓰기만 됩니다.</p>
+        <p>빌드는 <code>planReadings</code>로 규칙을 한 번 고르고, <code>emitFamily</code>가 독음과 치환을 나눈 뒤, furifont <code>compileFont</code>가 윤곽과 GSUB를 씁니다. 한자 애드온은 그 정적 글꼴을 fontTools로 자릅니다. <a href="/gukhanmun-font/slides/">슬라이드</a>가 이 과정을 코드와 함께 설명합니다.</p>
       </section>
 
         <footer class="foot" id="license">

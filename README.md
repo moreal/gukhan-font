@@ -1,8 +1,8 @@
 # 국한문 / Gukhanmun
 
-한자는 그대로 두고, 독음을 위에 루비로 그리거나 그 한자를 한글로 바꿔 보여주는 글꼴입니다.
+한자는 그대로 두고, 독음을 위에 그리거나 그 한자를 한글로 바꿔 보여주는 글꼴입니다.
 
-![루비, 치환, 북한어, 굵기, 한자 애드온](docs/demo.gif)
+![독음, 한글, 북한어, 굵기, 한자 애드온](docs/demo.gif)
 
 [라이브 데모](https://morealdot.github.io/gukhanmun-font/) · [슬라이드](https://morealdot.github.io/gukhanmun-font/slides/) · [릴리스](https://github.com/morealdot/gukhanmun-font/releases)
 
@@ -45,9 +45,9 @@
 </style>
 ```
 
-한글 글꼴에도 애드온과 같은 `ascent-override`, `descent-override`, `line-gap-override`를 주세요. 루비는 158%, 치환은 116%라서 폰트 패밀리를 둘로 나눕니다. 예는 [안내](docs/guide.md)의 「본문 글꼴의 메트릭」에 있습니다.
+한글 글꼴에도 애드온과 같은 `ascent-override`, `descent-override`, `line-gap-override`를 주세요. 독음은 158%, 치환은 116%라서 폰트 패밀리를 둘로 나눕니다. 예는 [안내](docs/guide.md)의 「본문 글꼴의 메트릭」에 있습니다.
 
-`ss01`은 루비 폰트의 독음만 끕니다. 가변 폰트의 기본 인스턴스는 ExtraLight라서, 굵기를 지정합니다.
+`ss01`은 독음을 다는 폰트의 독음만 끕니다. 가변 폰트의 기본 인스턴스는 ExtraLight라서, 굵기를 지정합니다.
 
 ## 빌드
 

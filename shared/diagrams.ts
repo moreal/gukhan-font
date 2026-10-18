@@ -25,7 +25,7 @@ export function fontTables(step = 99): string {
     ['hmtx', '진행 너비와 왼쪽 사이드베어링'],
     ['maxp', '글리프 수. numGlyphs는 16비트'],
     ['GSUB', '글리프를 다른 글리프로 바꿈'],
-    ['GPOS', '위치. 루비는 여기 있지 않음'],
+    ['GPOS', '위치. 독음은 여기 있지 않음'],
     ['name', '폰트 패밀리 이름, 저작권, 설명'],
   ]
   const body = rows.map((row, index) => {
@@ -154,7 +154,7 @@ export function dueum(step = 99): string {
 
 export function draw(step = 99): string {
   const ruby = `<g opacity="${show(step, 0)}">
-    <text x="24" y="24" font-family="sans-serif" font-size="14" fill="${muted}">Gukhanmun Sans · 윤곽 안의 루비</text>
+    <text x="24" y="24" font-family="sans-serif" font-size="14" fill="${muted}">Gukhanmun Sans · 윤곽 안의 독음</text>
     <rect x="24" y="36" width="200" height="250" fill="none" stroke="${line}"/>
     <line x1="24" y1="210" x2="224" y2="210" stroke="${indigo}"/>
     <text x="124" y="78" text-anchor="middle" font-family="sans-serif" font-size="16" fill="${red}">유월</text>
