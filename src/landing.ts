@@ -631,7 +631,7 @@ export function renderLanding(metrics: DemoMetrics, profile: 'pages' | 'local' =
         ligaOn.style.opacity = cross.toFixed(3)
 
         var a2 = easeOut(span(p2, 0.04, 0.16))
-        var l2 = easeInOut(span(p2, 0.86, 1))
+        var l2 = 0
         var axisIn = easeOut(span(p2, 0.05, 0.17))
         place(axisStep, a2 * (1 - l2), (1 - a2) * 26 - l2 * 22)
         place(axisType, axisIn * (1 - l2), (1 - axisIn) * 32 - l2 * 24)
