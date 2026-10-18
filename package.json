@@ -1,5 +1,5 @@
 {
-  "name": "gukhan-font",
+  "name": "gukhanmun-font",
   "version": "0.2.0",
   "private": true,
   "type": "module",
@@ -19,7 +19,7 @@
     "build": "tsx src/cli.ts",
     "build:check": "tsx src/cli.ts --check",
     "build:pages": "tsx src/cli.ts --pages",
-    "slides:build": "pnpm --filter gukhan-slides build",
+    "slides:build": "pnpm --filter gukhanmun-slides build",
     "demo": "python3 -m http.server 4173"
   },
   "dependencies": {

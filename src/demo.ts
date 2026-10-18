@@ -3,6 +3,7 @@ import { fileName, productName, WEIGHTS, type WeightName } from './families.ts'
 import type { FamilyStyle } from './emit.ts'
 import type { Region } from './region.ts'
 import { SAMPLES } from './samples.ts'
+import { githubOrigin, pagesBase, pagesOrigin } from './site.ts'
 
 export interface DemoMetrics {
   /** unicode-range of the ko-KR Hanja add-on. */
@@ -23,7 +24,7 @@ const STYLES = ['ruby', 'replace'] as const
  * The face has no Hanja, so section numbers are Roman numerals rather than 第一.
  */
 export const DISPLAY_COPY = [
-  '국한',
+  '국한문',
   'Ⅰ', '넣는 법',
   'Ⅱ', '써 보기',
   'Ⅲ', '굵기',
@@ -49,7 +50,7 @@ export const DISPLAY_COPY = [
   '루비',
   '웹 서브셋',
   '한자 애드온',
-  'Gukhan Sans · OFL',
+  'Gukhanmun Sans · OFL',
   'Gothic A1',
   'No. 01',
 ].join('')
@@ -87,9 +88,6 @@ function faceBlock(input: { family: string, weight: string, src: string, format?
 
 export type DemoProfile = 'local' | 'pages'
 
-/** Project-site prefix. Relative `fonts/` URLs resolve here even when the path has no trailing slash. */
-export const PAGES_BASE = '/gukhan-font/'
-
 function fontSrc(profile: DemoProfile, file: string): string {
   return profile === 'pages' ? `fonts/${file}.woff2` : `../dist/${file}.woff2`
 }
@@ -124,10 +122,10 @@ function fontFaces(metrics: DemoMetrics, profile: DemoProfile): string {
       }
     }
   }
-  // Same outlines as Gukhan Sans Web, with the ideographic em instead of the ruby ascender.
+  // Same outlines as Gukhanmun Sans Web, with the ideographic em instead of the ruby ascender.
   // 86/14 was measured so 國 (ss01, ruby off) centers in a line box of line-height 1.
   blocks.push(faceBlock({
-    family: 'Gukhan Mark',
+    family: 'Gukhanmun Mark',
     weight: '400',
     src: fontSrc(profile, fileName('ruby', 'ko-KR', 'web')),
     ascent: '86%',
@@ -211,15 +209,15 @@ function familyRules(target: string): string {
 /** Web-font specimens follow region and family. They do not pull the variable font. */
 function specimenRules(): string {
   const lines = [
-    '      .page .spec .sample, .page .glyphs span { font-family: "Gukhan Sans Web", sans-serif; }',
-    '      .page:has(#kp:checked) .spec .sample, .page:has(#kp:checked) .glyphs span { font-family: "Gukhan Sans KP Web", sans-serif; }',
-    '      .page:has(#hangul:checked) .spec .sample, .page:has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul Web", sans-serif; }',
-    '      .page:has(#kp:checked):has(#hangul:checked) .spec .sample, .page:has(#kp:checked):has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul KP Web", sans-serif; }',
-    '      .wsample { font-family: "Gukhan Sans Web", sans-serif; }',
-    '      #weights.live .wsample { font-family: "Gukhan Sans VF", sans-serif; }',
-    '      .page:has(#kp:checked) #weights.live .wsample { font-family: "Gukhan Sans KP VF", sans-serif; }',
-    '      .page:has(#hangul:checked) #weights.live .wsample { font-family: "Gukhan Hangul VF", sans-serif; }',
-    '      .page:has(#kp:checked):has(#hangul:checked) #weights.live .wsample { font-family: "Gukhan Hangul KP VF", sans-serif; }',
+    '      .page .spec .sample, .page .glyphs span { font-family: "Gukhanmun Sans Web", sans-serif; }',
+    '      .page:has(#kp:checked) .spec .sample, .page:has(#kp:checked) .glyphs span { font-family: "Gukhanmun Sans KP Web", sans-serif; }',
+    '      .page:has(#hangul:checked) .spec .sample, .page:has(#hangul:checked) .glyphs span { font-family: "Gukhanmun Hangul Web", sans-serif; }',
+    '      .page:has(#kp:checked):has(#hangul:checked) .spec .sample, .page:has(#kp:checked):has(#hangul:checked) .glyphs span { font-family: "Gukhanmun Hangul KP Web", sans-serif; }',
+    '      .wsample { font-family: "Gukhanmun Sans Web", sans-serif; }',
+    '      #weights.live .wsample { font-family: "Gukhanmun Sans VF", sans-serif; }',
+    '      .page:has(#kp:checked) #weights.live .wsample { font-family: "Gukhanmun Sans KP VF", sans-serif; }',
+    '      .page:has(#hangul:checked) #weights.live .wsample { font-family: "Gukhanmun Hangul VF", sans-serif; }',
+    '      .page:has(#kp:checked):has(#hangul:checked) #weights.live .wsample { font-family: "Gukhanmun Hangul KP VF", sans-serif; }',
   ]
   return lines.join('\n')
 }
@@ -250,35 +248,38 @@ export function renderHanjaCss(metrics: DemoMetrics, only?: { style: FamilyStyle
     }
   }
   return `/* 한자 애드온. unicode-range 안의 한자만 이 글꼴이 그립니다. 한글과 라틴은 다음 글꼴로 넘어갑니다.
-   루비(Gukhan Sans Hanja)는 글줄을 키우므로 line-height: 2 를 씁니다.
+   루비(Gukhanmun Sans Hanja)는 글줄을 키우므로 line-height: 2 를 씁니다.
    본문 한글 글꼴에도 같은 ascent-override, descent-override, line-gap-override 를 주세요.
    루비는 ${metrics.rubyAscent}, 치환은 ${metrics.replaceAscent}라서 본문 글꼴의 폰트 패밀리를 둘로 나눕니다.
    size-adjust 로 본문 한글의 크기에 맞춥니다. 기본은 100%입니다. */
 ${blocks.join('\n')}
-.gukhan-hanja {
-  font-family: "Gukhan Sans Hanja", "Pretendard", sans-serif;
+.gukhanmun-hanja {
+  font-family: "Gukhanmun Sans Hanja", "Pretendard", sans-serif;
   line-height: 2;
 }
-.gukhan-hanja-replace {
-  font-family: "Gukhan Hangul Hanja", "Pretendard", sans-serif;
+.gukhanmun-hanja-replace {
+  font-family: "Gukhanmun Hangul Hanja", "Pretendard", sans-serif;
 }
 `
 }
 
 function cssSnippet(metrics: DemoMetrics): { web: string, addon: string } {
+  const webFamily = productName('ruby', 'ko-KR', 'web').family
+  const hanjaFamily = productName('ruby', 'ko-KR', 'hanja').family
+  const hangulHanja = productName('replace', 'ko-KR', 'hanja').family
   const web = `@font-face {
-  font-family: "Gukhan Sans Web";
-  src: url("https://morealdot.github.io/gukhan-font/fonts/GukhanSans-Web.woff2") format("woff2");
+  font-family: "${webFamily}";
+  src: url("${pagesOrigin()}/fonts/${fileName('ruby', 'ko-KR', 'web')}.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
 }
 .ruby {
-  font-family: "Gukhan Sans Web", sans-serif;
+  font-family: "${webFamily}", sans-serif;
   line-height: 2;
 }`
   const addon = `@font-face {
-  font-family: "Gukhan Sans Hanja";
-  src: url("GukhanSansHanja-Regular.woff2") format("woff2");
+  font-family: "${hanjaFamily}";
+  src: url("${fileName('ruby', 'ko-KR', 'hanja', 'Regular')}.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
   unicode-range: /* 릴리스 hanja.css. cmap과 같은 목록 */;
@@ -304,18 +305,15 @@ function cssSnippet(metrics: DemoMetrics): { web: string, addon: string } {
   descent-override: ${metrics.descent};
   line-gap-override: ${metrics.lineGap};
 }
-.gukhan-hanja {
-  font-family: "Gukhan Sans Hanja", "${hangulCompanion('ruby')}", sans-serif;
+.gukhanmun-hanja {
+  font-family: "${hanjaFamily}", "${hangulCompanion('ruby')}", sans-serif;
   line-height: 2;
 }
-.gukhan-hangul {
-  font-family: "Gukhan Hangul Hanja", "${hangulCompanion('replace')}", sans-serif;
+.gukhanmun-hangul {
+  font-family: "${hangulHanja}", "${hangulCompanion('replace')}", sans-serif;
 }`
   return { web, addon }
 }
-
-const RELEASES = 'https://github.com/morealdot/gukhan-font/releases'
-const REPO = 'https://github.com/morealdot/gukhan-font'
 
 function readRow(label: string, loc: string, reading: string): string {
   return `<div class="read-row"><dt>${label} <span class="loc">${loc}</span></dt><dd>${escapeHtml(reading)}</dd></div>`
@@ -325,9 +323,13 @@ function sectionHead(numeral: string, title: string): string {
   return `<header class="sec-head"><h2><span class="sec-no">${numeral}</span> ${escapeHtml(title)}</h2></header>`
 }
 
-/** Landing page. `pages` is served under `/gukhan-font/`. Variable fonts load when the slider or the waterfall asks for them. */
+/** Landing page. The Pages profile is served under `pagesBase()`, which follows the repository name. Variable fonts load when the slider or the waterfall asks for them. */
 export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local'): string {
   const snippet = cssSnippet(metrics)
+  const releases = `${githubOrigin()}/releases`
+  const repo = githubOrigin()
+  const slides = `${pagesBase()}slides/`
+  const ofl = `${githubOrigin()}/blob/main/OFL.txt`
   const cards = SAMPLES.map((sample, index) => {
     const notes = sample.note === sample.kpNote
       ? `<p class="note">${escapeHtml(sample.note)}</p>`
@@ -353,14 +355,20 @@ export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local')
             <p class="wmeta">${weight.name} <span class="wnum">${weight.css}</span></p>
             <p class="wsample" style="--w:${weight.css}">國漢文混用으로 쓴 大韓民國</p>
           </div>`).join('\n')
-  const preload = profile === 'pages' ? 'fonts/GukhanSans-Web.woff2' : '../dist/GukhanSans-Web.woff2'
+  const webFile = `${fileName('ruby', 'ko-KR', 'web')}.woff2`
+  const preload = profile === 'pages' ? `fonts/${webFile}` : `../dist/${webFile}`
   return `<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국한 Gukhan — 한자 위에 독음을 그리는 글꼴</title>
+${profile === 'pages' ? `    <base href="${pagesBase()}">\n` : ''}    <title>국한문 Gukhanmun — 한자 위에 독음을 그리는 글꼴</title>
     <meta name="description" content="한자는 그대로 두고, 독음만 그립니다. 루비와 치환, 남한·북한 독음, 가변 폰트.">
+    <meta property="og:title" content="국한문 Gukhanmun">
+    <meta property="og:description" content="한자는 그대로 두고, 독음만 그립니다.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="${pagesOrigin()}/">
+    <meta name="twitter:card" content="summary">
     <link rel="preload" href="${preload}" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/GothicA1-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/GowunBatang-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -459,7 +467,7 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
         margin: 0;
         background: var(--cinnabar);
         color: var(--paper);
-        font-family: "Gukhan Mark", "Gukhan Sans Web", sans-serif;
+        font-family: "Gukhanmun Mark", "Gukhanmun Sans Web", sans-serif;
         font-feature-settings: "ss01" 1;
         font-size: 1.7rem;
         line-height: 1;
@@ -479,7 +487,7 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
       }
       h1 {
         margin: 0;
-        font-family: "Gukhan Sans Web", sans-serif;
+        font-family: "Gukhanmun Sans Web", sans-serif;
         font-weight: 400;
         font-size: clamp(3.15rem, 10.2vw, 7.15rem);
         line-height: 2.05;
@@ -574,7 +582,7 @@ ${profile === 'pages' ? `    <base href="${PAGES_BASE}">\n` : ''}    <title>국�
         resize: vertical;
         background: transparent;
         color: var(--ink);
-        font-family: "Gukhan Sans Web", sans-serif;
+        font-family: "Gukhanmun Sans Web", sans-serif;
         font-weight: 400;
         font-size: 48px;
         line-height: 2.05;
@@ -826,9 +834,9 @@ ${specimenRules()}
       }
       .layer-label .loc { letter-spacing: 0.1em; }
       .layer-body { font-family: "Gothic A1", "Hanja Box"; color: var(--indigo); }
-      .layer-ruby { font-family: "Gukhan Sans Hanja", "${hangulCompanion('ruby')}", sans-serif; }
-      .layer-replace { font-family: "Gukhan Hangul Hanja", "${hangulCompanion('replace')}", sans-serif; color: var(--indigo); }
-      .layer-kp { font-family: "Gukhan Sans KP Hanja", "${hangulCompanion('ruby')}", sans-serif; }
+      .layer-ruby { font-family: "Gukhanmun Sans Hanja", "${hangulCompanion('ruby')}", sans-serif; }
+      .layer-replace { font-family: "Gukhanmun Hangul Hanja", "${hangulCompanion('replace')}", sans-serif; color: var(--indigo); }
+      .layer-kp { font-family: "Gukhanmun Sans KP Hanja", "${hangulCompanion('ruby')}", sans-serif; }
 ${explainCss()}
       .how {
         margin-top: 0;
@@ -946,14 +954,14 @@ ${explainCss()}
     <div class="page">
       <header class="bar">
         <div class="wrap bar-inner">
-          <a class="mark" href="${profile === 'pages' ? PAGES_BASE : './'}">국한</a>
+          <a class="mark" href="${profile === 'pages' ? pagesBase() : './'}">국한문</a>
           <nav class="nav" aria-label="페이지">
             <a href="#try">써 보기</a>
             <a href="#weights">굵기</a>
             <a href="#specimens">예문</a>
             <a href="#how">동작</a>
             <a href="#license">라이선스</a>
-            <a href="/gukhan-font/slides/">슬라이드</a>
+            <a href="${slides}">슬라이드</a>
           </nav>
         </div>
       </header>
@@ -961,7 +969,7 @@ ${explainCss()}
         <div class="wrap">
           <div class="hero-top">
             <p class="seal" aria-hidden="true">國</p>
-            <p class="kicker">Gukhan Sans · OFL</p>
+            <p class="kicker">Gukhanmun Sans · OFL</p>
           </div>
           <div class="hero-lockup">
             <h1>國漢文混用</h1>
@@ -969,16 +977,16 @@ ${explainCss()}
           <p class="tagline">한자는 그대로 두고, 독음만 그립니다.</p>
           <p class="sub">OpenType 셰이핑으로 독음을 붙입니다. <code>&lt;ruby&gt;</code>도 자바스크립트도 필요 없고, 복사하면 한자입니다.</p>
           <div class="actions">
-            <a class="btn" href="${RELEASES}">다운로드</a>
-            <a class="btn text" href="/gukhan-font/slides/">슬라이드</a>
-            <a class="btn text" href="${REPO}">저장소</a>
+            <a class="btn" href="${releases}">다운로드</a>
+            <a class="btn text" href="${slides}">슬라이드</a>
+            <a class="btn text" href="${repo}">저장소</a>
           </div>
         </div>
       </section>
       <div class="wrap">
         <section class="block" id="use">
           ${sectionHead('Ⅰ', '넣는 법')}
-          <p class="lead">파일은 <a href="${RELEASES}">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 루비는 <code>line-height</code>를 2로 둡니다.</p>
+          <p class="lead">파일은 <a href="${releases}">GitHub 릴리스</a>에 있습니다. 웹 서브셋은 Regular 하나이고, 이 주소로도 바로 쓸 수 있습니다. 일곱 굵기의 정적 파일과 가변 폰트, 한자 애드온은 zip 안에 있습니다. 루비는 <code>line-height</code>를 2로 둡니다.</p>
           <div class="snippet">
             <div class="snippet-head">
               <h3>웹 서브셋</h3>
@@ -1013,8 +1021,8 @@ ${explainCss()}
             <fieldset>
               <legend>폰트 패밀리</legend>
               <div class="choice">
-                <label><input id="sans" name="family" type="radio" checked><span class="full">루비 Gukhan Sans</span><span class="brief">루비</span></label>
-                <label><input id="hangul" name="family" type="radio"><span class="full">치환 Gukhan Hangul</span><span class="brief">치환</span></label>
+                <label><input id="sans" name="family" type="radio" checked><span class="full">루비 Gukhanmun Sans</span><span class="brief">루비</span></label>
+                <label><input id="hangul" name="family" type="radio"><span class="full">치환 Gukhanmun Hangul</span><span class="brief">치환</span></label>
               </div>
             </fieldset>
             <fieldset>
@@ -1064,7 +1072,7 @@ ${explainHtml()}
           <div class="foot-grid">
             <div>
               <p class="foot-label"><span class="fn">1</span> 라이선스</p>
-              <p>글꼴은 <a href="https://github.com/morealdot/gukhan-font/blob/main/OFL.txt">SIL OFL 1.1</a>입니다. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. 저장소 코드는 MIT입니다.</p>
+              <p>글꼴은 <a href="${ofl}">SIL OFL 1.1</a>입니다. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. 저장소 코드는 MIT입니다.</p>
             </div>
             <div>
               <p class="foot-label"><span class="fn">2</span> 바탕</p>
@@ -1074,9 +1082,9 @@ ${explainHtml()}
             <div>
               <p class="foot-label"><span class="fn">3</span> 더 보기</p>
               <nav aria-label="바깥 링크">
-                <a href="/gukhan-font/slides/">슬라이드</a>
-                <a href="${REPO}">저장소</a>
-                <a href="${RELEASES}">릴리스</a>
+                <a href="${slides}">슬라이드</a>
+                <a href="${repo}">저장소</a>
+                <a href="${releases}">릴리스</a>
               </nav>
             </div>
           </div>

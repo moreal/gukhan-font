@@ -1,4 +1,5 @@
 import { budget, cmapPicture, draw, dueum, fontTables, layerStack, liga, pipeline, runs } from '../shared/diagrams.ts'
+import { githubOrigin, pagesBase } from './site.ts'
 
 /** Korean explanation of the shaping model. The examples use fixed families so they stay put while the specimen radios move. */
 export function explainCss(): string {
@@ -10,10 +11,10 @@ export function explainCss(): string {
       .how .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
       .how .card { border: 1px solid var(--rule); padding: 0.55rem 0.75rem 0.7rem; }
       .how .label { color: var(--muted); font-size: 0.85rem; margin: 0 0 0.2rem; }
-      .ex-ruby, .ex-kp { font-family: "Gukhan Sans Web", sans-serif; }
-      .ex-kp { font-family: "Gukhan Sans KP Web", sans-serif; }
-      .ex-replace { font-family: "Gukhan Hangul Web", sans-serif; color: var(--indigo); }
-      .ex-kp-replace { font-family: "Gukhan Hangul KP Web", sans-serif; color: var(--indigo); }
+      .ex-ruby, .ex-kp { font-family: "Gukhanmun Sans Web", sans-serif; }
+      .ex-kp { font-family: "Gukhanmun Sans KP Web", sans-serif; }
+      .ex-replace { font-family: "Gukhanmun Hangul Web", sans-serif; color: var(--indigo); }
+      .ex-kp-replace { font-family: "Gukhanmun Hangul KP Web", sans-serif; color: var(--indigo); }
       .ex-ruby, .ex-kp, .ex-replace, .ex-kp-replace {
         font-size: clamp(1.4rem, 2.6vw, 1.95rem);
         line-height: 2;
@@ -55,7 +56,7 @@ export function explainCss(): string {
 export function explainHtml(): string {
   return `      <section class="how" id="how">
         <header class="sec-head"><h2><span class="sec-no">Ⅴ</span> 동작 방식</h2></header>
-        <p>자바스크립트는 쓰지 않습니다. 브라우저가 셰이핑할 때 텍스트를 스크립트 런으로 나누고, 한자가 이어진 런만 이 글꼴의 OpenType <code>rclt</code>가 바꿉니다. 한글과 라틴은 다른 런이라 다음 글꼴이 그립니다. 숫자는 <code>GukhanSans-Regular.otf</code>를 HarfBuzz로 셰이핑한 값입니다. 아래 큰 예시는 웹 서브셋으로 고정했습니다. 복사하면 한자입니다.</p>
+        <p>자바스크립트는 쓰지 않습니다. 브라우저가 셰이핑할 때 텍스트를 스크립트 런으로 나누고, 한자가 이어진 런만 이 글꼴의 OpenType <code>rclt</code>가 바꿉니다. 한글과 라틴은 다른 런이라 다음 글꼴이 그립니다. 숫자는 <code>GukhanmunSans-Regular.otf</code>를 HarfBuzz로 셰이핑한 값입니다. 아래 큰 예시는 웹 서브셋으로 고정했습니다. 복사하면 한자입니다.</p>
 
         <h3>글꼴 파일은 표의 묶음입니다</h3>
         <p>OTF와 TTF는 sfnt 표의 묶음입니다. 독음을 그리는 데 쓰는 표는 이 일곱입니다. 루비 획은 글리프 윤곽 안에 그려 넣고, 진행 너비는 <code>hmtx</code>에 적습니다. <code>GPOS</code> 마크 부착은 쓰지 않습니다.</p>
@@ -98,10 +99,10 @@ export function explainHtml(): string {
   sub uni97F3 uni6A02 by gkw08396;
 } words;
 
-hb-shape GukhanSans-Regular.otf --text 六月
+hb-shape GukhanmunSans-Regular.otf --text 六月
 [gid34500=0+2000]
 
-hb-shape GukhanSans-Regular.otf --text 六月 --features ss01
+hb-shape GukhanmunSans-Regular.otf --text 六月 --features ss01
 [gid2975=0+1000|gid5271=0+1000]</code></pre>
 
         <h3>글자 폴백, 그다음 두음 법칙</h3>
@@ -116,7 +117,7 @@ lookup adjust useExtension {
   sub @dueum' lookup surface;
 } adjust;
 
-hb-shape GukhanSans-Regular.otf --text '女子와 男女'
+hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
 [gid26394=0+1000|gid26591=1+1000|gid17045=2+920|gid1=3+224|gid29649=4+1000|gid26393=5+1000]</code></pre>
         <p>코드포인트는 둘 다 U+5973입니다. 첫 女는 gid 26394(여), 남 뒤의 女는 gid 26393(녀)입니다. <code>와</code>는 한글이라 베이스 글리프 gid 17045, 진행 너비 920입니다. 한자 사이 공백은 gid 1이고, Regular에서 진행 너비 224입니다. 모음이나 ㄴ 받침 뒤의 <code>렬</code>/<code>률</code>은 <code>@open @ryeol'</code> 규칙이 <code>열</code>/<code>율</code>로 바꿉니다.</p>
         <div class="pair">
@@ -136,14 +137,14 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
         <p>폰트 패밀리 이름이 다릅니다. 북한 글꼴은 두음 법칙을 쓰지 않습니다. 우리말샘에 있는 두 글자 이상 단어가 남한 사전보다 우선하고, 거기에 없는 단어는 남한 독음에서 두음만 되돌립니다. 한 글자 우리말샘 독음이 한 음절이면 그 글자만 폴백을 바꿉니다. 그렇게 달라지는 글자가 열한 자입니다.</p>
         <div class="pair">
           <div class="card">
-            <p class="label">남한 Gukhan Sans</p>
+            <p class="label">남한 Gukhanmun Sans</p>
             <p class="ex-ruby">平壤 冷麵</p>
             <p class="ex-ruby">六月과 十月</p>
             <p class="ex-ruby">困難</p>
             <p>냉면, 유월과 시월, 곤란. 困難은 합자 하나입니다.</p>
           </div>
           <div class="card">
-            <p class="label">북한 Gukhan Sans KP</p>
+            <p class="label">북한 Gukhanmun Sans KP</p>
             <p class="ex-kp">平壤 冷麵</p>
             <p class="ex-kp">六月과 十月</p>
             <p class="ex-kp">困難</p>
@@ -155,13 +156,13 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
         <div class="diagram">${draw(99)}</div>
         <div class="pair">
           <div class="card">
-            <p class="label">Gukhan Sans · 한자 위의 루비</p>
+            <p class="label">Gukhanmun Sans · 한자 위의 루비</p>
             <p class="ex-ruby">國漢文混用</p>
             <p class="ex-ruby">音樂</p>
             <p>배율은 0.68이고, 간격은 em의 0.02입니다. <code>ss01</code>을 켜면 이 폰트 패밀리의 루비만 꺼집니다. 줄 높이는 2가 필요합니다.</p>
           </div>
           <div class="card">
-            <p class="label">Gukhan Hangul · 한자를 한글로</p>
+            <p class="label">Gukhanmun Hangul · 한자를 한글로</p>
             <p class="ex-replace">國漢文混用</p>
             <p class="ex-replace">音樂</p>
             <p>음절 하나의 너비는 한글 920입니다. N음절 합자는 그 N개를 더한 값입니다. 音樂은 음과 악의 너비를 가진 합자 하나입니다.</p>
@@ -194,7 +195,7 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
         <p class="layer-replace">女子와 男女, 平壤 冷麵</p>
         <p class="layer-label">북한 루비 <span class="loc">ko-KP</span></p>
         <p class="layer-kp">女子와 男女, 平壤 冷麵</p>
-        <p>일곱 굵기와 가변 폰트는 <a href="https://github.com/morealdot/gukhan-font/releases">릴리스</a>에 있습니다. 가변 폰트의 루비 획은 굵기 축을 따라가고, 기본 인스턴스는 ExtraLight입니다. 한자 사이의 공백은 한글 사이보다 좁습니다. Regular에서 224이고, 한글 사이는 280입니다. 가로쓰기만 됩니다.</p>
-        <p>빌드는 <code>planReadings</code>로 규칙을 한 번 고르고, <code>emitFamily</code>가 루비와 치환을 나눈 뒤, furifont <code>compileFont</code>가 윤곽과 GSUB를 씁니다. 한자 애드온은 그 정적 글꼴을 fontTools로 자릅니다. <a href="/gukhan-font/slides/">슬라이드</a>가 이 과정을 코드와 함께 설명합니다.</p>
+        <p>일곱 굵기와 가변 폰트는 <a href="${githubOrigin()}/releases">릴리스</a>에 있습니다. 가변 폰트의 루비 획은 굵기 축을 따라가고, 기본 인스턴스는 ExtraLight입니다. 한자 사이의 공백은 한글 사이보다 좁습니다. Regular에서 224이고, 한글 사이는 280입니다. 가로쓰기만 됩니다.</p>
+        <p>빌드는 <code>planReadings</code>로 규칙을 한 번 고르고, <code>emitFamily</code>가 루비와 치환을 나눈 뒤, furifont <code>compileFont</code>가 윤곽과 GSUB를 씁니다. 한자 애드온은 그 정적 글꼴을 fontTools로 자릅니다. <a href="${pagesBase()}slides/">슬라이드</a>가 이 과정을 코드와 함께 설명합니다.</p>
       </section>`
 }

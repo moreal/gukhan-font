@@ -50,5 +50,5 @@ jobs:
           set -euo pipefail
           gh release create "$GITHUB_REF_NAME" \
             --title "$GITHUB_REF_NAME" \
-            --notes "Date-stamped Gukhan font build. Verify SHA256SUMS.txt before installing." \
+            --notes "Date-stamped Gukhanmun font build. Verify SHA256SUMS.txt before installing." \
             dist/release/*

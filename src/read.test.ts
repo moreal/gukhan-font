@@ -5,6 +5,7 @@ import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { createHash } from 'node:crypto'
 import { displayCodepoints, pagesDistFonts, renderDemo } from './demo.ts'
+import { githubOrigin, pagesBase, pagesOrigin } from './site.ts'
 import { emitFamily, planReadings } from './emit.ts'
 import { productName } from './families.ts'
 import { applyInitialSoundLaw, revertInitialSoundLaw } from './hangul.ts'
@@ -75,9 +76,9 @@ test('dictionary readings, 두음 법칙, and ligatures', () => {
   const planned = planReadings({ underlying, entries, coverage, baseGlyphCount: 24973 })
   const { reader, shape, report, plan } = emitFamily(planned, 'ruby')
   const hangul = emitFamily(planned, 'replace')
-  assert.equal(plan.names.family, 'Gukhan Sans')
+  assert.equal(plan.names.family, 'Gukhanmun Sans')
   assert.equal(plan.placement, 'ruby')
-  assert.equal(hangul.plan.names.family, 'Gukhan Hangul')
+  assert.equal(hangul.plan.names.family, 'Gukhanmun Hangul')
   assert.equal(hangul.plan.placement, 'replace')
   assert.deepEqual(hangul.shape('音樂'), shape('音樂'))
   assert.deepEqual(hangul.shape('女子'), shape('女子'))
@@ -208,7 +209,7 @@ test('ko-KP keeps 우리말샘 readings and does not build 두음 glyphs', () =>
 
   const planned = planReadings({ underlying: kpUnderlying, entries, coverage, baseGlyphCount: 24973, initialSoundLaw: false })
   const { reader, shape, report, plan } = emitFamily(planned, 'ruby', productName('ruby', 'ko-KP', 'static'))
-  assert.equal(plan.names.family, 'Gukhan Sans KP')
+  assert.equal(plan.names.family, 'Gukhanmun Sans KP')
   assert.equal(plan.names.family.includes('Source'), false)
   assert.equal(report.initialSoundLaw, false)
   assert.equal(report.initialGlyphs, 0)
@@ -261,7 +262,17 @@ test('web coverage keeps non-Hanja and KS X 1001, and shared outlines', () => {
   assert.deepEqual(codepointsSharingGlyph(glyphOf, [cp('女')]), [cp('女'), cp('女')].sort((a, b) => a - b))
 })
 
-test('the pages demo is rooted at /gukhan-font/ and ships the light font set', () => {
+test('pages paths follow the repository name', () => {
+  assert.equal(pagesBase('morealdot/gukhan-font'), '/gukhan-font/')
+  assert.equal(pagesOrigin('morealdot/gukhan-font'), 'https://morealdot.github.io/gukhan-font')
+  assert.equal(githubOrigin('morealdot/gukhan-font'), 'https://github.com/morealdot/gukhan-font')
+  assert.equal(pagesBase('morealdot/gukhanmun-font'), '/gukhanmun-font/')
+  assert.equal(pagesOrigin('morealdot/gukhanmun-font'), 'https://morealdot.github.io/gukhanmun-font')
+  assert.equal(githubOrigin('morealdot/gukhanmun-font'), 'https://github.com/morealdot/gukhanmun-font')
+  assert.equal(pagesBase(), `/${(process.env.GITHUB_REPOSITORY ?? 'morealdot/gukhan-font').split('/').pop()}/`)
+})
+
+test('the pages demo follows the repository name and ships the light font set', () => {
   const metrics = {
     unicodeRange: 'U+4E00',
     kpUnicodeRange: 'U+4E01',
@@ -271,9 +282,13 @@ test('the pages demo is rooted at /gukhan-font/ and ships the light font set', (
     lineGap: '0%',
   }
   const pages = renderDemo(metrics, 'pages')
-  assert.match(pages, /<base href="\/gukhan-font\/">/)
+  const base = pagesBase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  assert.match(pages, new RegExp(`<base href="${base}">`))
+  assert.match(pages, /국한문/)
+  assert.match(pages, /Gukhanmun Mark/)
+  assert.equal(pages.includes('국한문문'), false)
   assert.equal(pages.includes('../dist/'), false)
-  assert.match(pages, /fonts\/GukhanSansVF\.woff2/)
+  assert.match(pages, /fonts\/GukhanmunSansVF\.woff2/)
   assert.match(pages, /id="vf" name="source" type="radio"><span class="full">가변 폰트<\/span>/)
   assert.equal(pages.includes('id="w700"'), false)
   assert.equal(pages.includes('id="full"'), false)
@@ -311,7 +326,7 @@ test('the pages demo is rooted at /gukhan-font/ and ships the light font set', (
   assert.match(pages, /unicode-range: U\+4E01;/)
   const local = renderDemo(metrics)
   assert.equal(local.includes('<base '), false)
-  assert.match(local, /\.\.\/dist\/GukhanSansVF\.woff2/)
+  assert.match(local, /\.\.\/dist\/GukhanmunSansVF\.woff2/)
   assert.match(local, /가변 폰트/)
   assert.match(local, /id="web" name="source" type="radio" checked/)
   assert.match(local, /Gothic A1 Replace/)
@@ -321,6 +336,6 @@ test('the pages demo is rooted at /gukhan-font/ and ships the light font set', (
   assert.match(pages, /gid34500/)
   assert.match(pages, /<svg /)
   assert.match(pages, /가장 긴 단어가 이깁니다/)
-  assert.match(pages, /href="\/gukhan-font\/slides\/"/)
+  assert.match(pages, new RegExp(`href="${base}slides/"`))
   assert.match(local, /id="how"/)
 })

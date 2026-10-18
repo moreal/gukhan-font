@@ -42,8 +42,8 @@ function kindNote(kind: ProductKind): string {
 
 /** Family and file names. `Source` is never one of them. */
 export function productName(style: FamilyStyle, region: Region, kind: ProductKind): ProductName {
-  const base = style === 'ruby' ? 'Gukhan Sans' : 'Gukhan Hangul'
-  const file = style === 'ruby' ? 'GukhanSans' : 'GukhanHangul'
+  const base = style === 'ruby' ? 'Gukhanmun Sans' : 'Gukhanmun Hangul'
+  const file = style === 'ruby' ? 'GukhanmunSans' : 'GukhanmunHangul'
   const kp = region === 'ko-KP'
   const family = kind === 'static'
     ? (kp ? `${base} KP` : base)

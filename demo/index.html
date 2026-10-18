@@ -3,31 +3,36 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>국한 Gukhan — 한자 위에 독음을 그리는 글꼴</title>
+    <title>국한문 Gukhanmun — 한자 위에 독음을 그리는 글꼴</title>
     <meta name="description" content="한자는 그대로 두고, 독음만 그립니다. 루비와 치환, 남한·북한 독음, 가변 폰트.">
-    <link rel="preload" href="../dist/GukhanSans-Web.woff2" as="font" type="font/woff2" crossorigin>
+    <meta property="og:title" content="국한문 Gukhanmun">
+    <meta property="og:description" content="한자는 그대로 두고, 독음만 그립니다.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://morealdot.github.io/gukhan-font/">
+    <meta name="twitter:card" content="summary">
+    <link rel="preload" href="../dist/GukhanmunSans-Web.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/GothicA1-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/GowunBatang-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <style>
       @font-face {
-        font-family: "Gukhan Sans VF";
-        src: url("../dist/GukhanSansVF.woff2") format("woff2");
+        font-family: "Gukhanmun Sans VF";
+        src: url("../dist/GukhanmunSansVF.woff2") format("woff2");
         font-weight: 250 900;
         font-style: normal;
         font-display: swap;
         
       }
 @font-face {
-        font-family: "Gukhan Sans Web";
-        src: url("../dist/GukhanSans-Web.woff2") format("woff2");
+        font-family: "Gukhanmun Sans Web";
+        src: url("../dist/GukhanmunSans-Web.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
         
       }
 @font-face {
-        font-family: "Gukhan Sans Hanja";
-        src: url("../dist/GukhanSansHanja-ExtraLight.woff2") format("woff2");
+        font-family: "Gukhanmun Sans Hanja";
+        src: url("../dist/GukhanmunSansHanja-ExtraLight.woff2") format("woff2");
         font-weight: 250;
         font-style: normal;
         font-display: swap;
@@ -37,8 +42,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans Hanja";
-        src: url("../dist/GukhanSansHanja-Light.woff2") format("woff2");
+        font-family: "Gukhanmun Sans Hanja";
+        src: url("../dist/GukhanmunSansHanja-Light.woff2") format("woff2");
         font-weight: 300;
         font-style: normal;
         font-display: swap;
@@ -48,8 +53,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans Hanja";
-        src: url("../dist/GukhanSansHanja-Normal.woff2") format("woff2");
+        font-family: "Gukhanmun Sans Hanja";
+        src: url("../dist/GukhanmunSansHanja-Normal.woff2") format("woff2");
         font-weight: 350;
         font-style: normal;
         font-display: swap;
@@ -59,8 +64,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans Hanja";
-        src: url("../dist/GukhanSansHanja-Regular.woff2") format("woff2");
+        font-family: "Gukhanmun Sans Hanja";
+        src: url("../dist/GukhanmunSansHanja-Regular.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
@@ -70,8 +75,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans Hanja";
-        src: url("../dist/GukhanSansHanja-Medium.woff2") format("woff2");
+        font-family: "Gukhanmun Sans Hanja";
+        src: url("../dist/GukhanmunSansHanja-Medium.woff2") format("woff2");
         font-weight: 500;
         font-style: normal;
         font-display: swap;
@@ -81,8 +86,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans Hanja";
-        src: url("../dist/GukhanSansHanja-Bold.woff2") format("woff2");
+        font-family: "Gukhanmun Sans Hanja";
+        src: url("../dist/GukhanmunSansHanja-Bold.woff2") format("woff2");
         font-weight: 700;
         font-style: normal;
         font-display: swap;
@@ -92,8 +97,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans Hanja";
-        src: url("../dist/GukhanSansHanja-Heavy.woff2") format("woff2");
+        font-family: "Gukhanmun Sans Hanja";
+        src: url("../dist/GukhanmunSansHanja-Heavy.woff2") format("woff2");
         font-weight: 900;
         font-style: normal;
         font-display: swap;
@@ -103,24 +108,24 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul VF";
-        src: url("../dist/GukhanHangulVF.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul VF";
+        src: url("../dist/GukhanmunHangulVF.woff2") format("woff2");
         font-weight: 250 900;
         font-style: normal;
         font-display: swap;
         
       }
 @font-face {
-        font-family: "Gukhan Hangul Web";
-        src: url("../dist/GukhanHangul-Web.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul Web";
+        src: url("../dist/GukhanmunHangul-Web.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
         
       }
 @font-face {
-        font-family: "Gukhan Hangul Hanja";
-        src: url("../dist/GukhanHangulHanja-ExtraLight.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul Hanja";
+        src: url("../dist/GukhanmunHangulHanja-ExtraLight.woff2") format("woff2");
         font-weight: 250;
         font-style: normal;
         font-display: swap;
@@ -130,8 +135,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul Hanja";
-        src: url("../dist/GukhanHangulHanja-Light.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul Hanja";
+        src: url("../dist/GukhanmunHangulHanja-Light.woff2") format("woff2");
         font-weight: 300;
         font-style: normal;
         font-display: swap;
@@ -141,8 +146,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul Hanja";
-        src: url("../dist/GukhanHangulHanja-Normal.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul Hanja";
+        src: url("../dist/GukhanmunHangulHanja-Normal.woff2") format("woff2");
         font-weight: 350;
         font-style: normal;
         font-display: swap;
@@ -152,8 +157,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul Hanja";
-        src: url("../dist/GukhanHangulHanja-Regular.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul Hanja";
+        src: url("../dist/GukhanmunHangulHanja-Regular.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
@@ -163,8 +168,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul Hanja";
-        src: url("../dist/GukhanHangulHanja-Medium.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul Hanja";
+        src: url("../dist/GukhanmunHangulHanja-Medium.woff2") format("woff2");
         font-weight: 500;
         font-style: normal;
         font-display: swap;
@@ -174,8 +179,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul Hanja";
-        src: url("../dist/GukhanHangulHanja-Bold.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul Hanja";
+        src: url("../dist/GukhanmunHangulHanja-Bold.woff2") format("woff2");
         font-weight: 700;
         font-style: normal;
         font-display: swap;
@@ -185,8 +190,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul Hanja";
-        src: url("../dist/GukhanHangulHanja-Heavy.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul Hanja";
+        src: url("../dist/GukhanmunHangulHanja-Heavy.woff2") format("woff2");
         font-weight: 900;
         font-style: normal;
         font-display: swap;
@@ -196,24 +201,24 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans KP VF";
-        src: url("../dist/GukhanSansKPVF.woff2") format("woff2");
+        font-family: "Gukhanmun Sans KP VF";
+        src: url("../dist/GukhanmunSansKPVF.woff2") format("woff2");
         font-weight: 250 900;
         font-style: normal;
         font-display: swap;
         
       }
 @font-face {
-        font-family: "Gukhan Sans KP Web";
-        src: url("../dist/GukhanSansKP-Web.woff2") format("woff2");
+        font-family: "Gukhanmun Sans KP Web";
+        src: url("../dist/GukhanmunSansKP-Web.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
         
       }
 @font-face {
-        font-family: "Gukhan Sans KP Hanja";
-        src: url("../dist/GukhanSansKPHanja-ExtraLight.woff2") format("woff2");
+        font-family: "Gukhanmun Sans KP Hanja";
+        src: url("../dist/GukhanmunSansKPHanja-ExtraLight.woff2") format("woff2");
         font-weight: 250;
         font-style: normal;
         font-display: swap;
@@ -223,8 +228,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans KP Hanja";
-        src: url("../dist/GukhanSansKPHanja-Light.woff2") format("woff2");
+        font-family: "Gukhanmun Sans KP Hanja";
+        src: url("../dist/GukhanmunSansKPHanja-Light.woff2") format("woff2");
         font-weight: 300;
         font-style: normal;
         font-display: swap;
@@ -234,8 +239,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans KP Hanja";
-        src: url("../dist/GukhanSansKPHanja-Normal.woff2") format("woff2");
+        font-family: "Gukhanmun Sans KP Hanja";
+        src: url("../dist/GukhanmunSansKPHanja-Normal.woff2") format("woff2");
         font-weight: 350;
         font-style: normal;
         font-display: swap;
@@ -245,8 +250,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans KP Hanja";
-        src: url("../dist/GukhanSansKPHanja-Regular.woff2") format("woff2");
+        font-family: "Gukhanmun Sans KP Hanja";
+        src: url("../dist/GukhanmunSansKPHanja-Regular.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
@@ -256,8 +261,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans KP Hanja";
-        src: url("../dist/GukhanSansKPHanja-Medium.woff2") format("woff2");
+        font-family: "Gukhanmun Sans KP Hanja";
+        src: url("../dist/GukhanmunSansKPHanja-Medium.woff2") format("woff2");
         font-weight: 500;
         font-style: normal;
         font-display: swap;
@@ -267,8 +272,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans KP Hanja";
-        src: url("../dist/GukhanSansKPHanja-Bold.woff2") format("woff2");
+        font-family: "Gukhanmun Sans KP Hanja";
+        src: url("../dist/GukhanmunSansKPHanja-Bold.woff2") format("woff2");
         font-weight: 700;
         font-style: normal;
         font-display: swap;
@@ -278,8 +283,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Sans KP Hanja";
-        src: url("../dist/GukhanSansKPHanja-Heavy.woff2") format("woff2");
+        font-family: "Gukhanmun Sans KP Hanja";
+        src: url("../dist/GukhanmunSansKPHanja-Heavy.woff2") format("woff2");
         font-weight: 900;
         font-style: normal;
         font-display: swap;
@@ -289,24 +294,24 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul KP VF";
-        src: url("../dist/GukhanHangulKPVF.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul KP VF";
+        src: url("../dist/GukhanmunHangulKPVF.woff2") format("woff2");
         font-weight: 250 900;
         font-style: normal;
         font-display: swap;
         
       }
 @font-face {
-        font-family: "Gukhan Hangul KP Web";
-        src: url("../dist/GukhanHangulKP-Web.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul KP Web";
+        src: url("../dist/GukhanmunHangulKP-Web.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
         
       }
 @font-face {
-        font-family: "Gukhan Hangul KP Hanja";
-        src: url("../dist/GukhanHangulKPHanja-ExtraLight.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul KP Hanja";
+        src: url("../dist/GukhanmunHangulKPHanja-ExtraLight.woff2") format("woff2");
         font-weight: 250;
         font-style: normal;
         font-display: swap;
@@ -316,8 +321,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul KP Hanja";
-        src: url("../dist/GukhanHangulKPHanja-Light.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul KP Hanja";
+        src: url("../dist/GukhanmunHangulKPHanja-Light.woff2") format("woff2");
         font-weight: 300;
         font-style: normal;
         font-display: swap;
@@ -327,8 +332,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul KP Hanja";
-        src: url("../dist/GukhanHangulKPHanja-Normal.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul KP Hanja";
+        src: url("../dist/GukhanmunHangulKPHanja-Normal.woff2") format("woff2");
         font-weight: 350;
         font-style: normal;
         font-display: swap;
@@ -338,8 +343,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul KP Hanja";
-        src: url("../dist/GukhanHangulKPHanja-Regular.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul KP Hanja";
+        src: url("../dist/GukhanmunHangulKPHanja-Regular.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
@@ -349,8 +354,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul KP Hanja";
-        src: url("../dist/GukhanHangulKPHanja-Medium.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul KP Hanja";
+        src: url("../dist/GukhanmunHangulKPHanja-Medium.woff2") format("woff2");
         font-weight: 500;
         font-style: normal;
         font-display: swap;
@@ -360,8 +365,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul KP Hanja";
-        src: url("../dist/GukhanHangulKPHanja-Bold.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul KP Hanja";
+        src: url("../dist/GukhanmunHangulKPHanja-Bold.woff2") format("woff2");
         font-weight: 700;
         font-style: normal;
         font-display: swap;
@@ -371,8 +376,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Hangul KP Hanja";
-        src: url("../dist/GukhanHangulKPHanja-Heavy.woff2") format("woff2");
+        font-family: "Gukhanmun Hangul KP Hanja";
+        src: url("../dist/GukhanmunHangulKPHanja-Heavy.woff2") format("woff2");
         font-weight: 900;
         font-style: normal;
         font-display: swap;
@@ -382,8 +387,8 @@
         line-gap-override: 0%;
       }
 @font-face {
-        font-family: "Gukhan Mark";
-        src: url("../dist/GukhanSans-Web.woff2") format("woff2");
+        font-family: "Gukhanmun Mark";
+        src: url("../dist/GukhanmunSans-Web.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
@@ -528,7 +533,7 @@
         margin: 0;
         background: var(--cinnabar);
         color: var(--paper);
-        font-family: "Gukhan Mark", "Gukhan Sans Web", sans-serif;
+        font-family: "Gukhanmun Mark", "Gukhanmun Sans Web", sans-serif;
         font-feature-settings: "ss01" 1;
         font-size: 1.7rem;
         line-height: 1;
@@ -548,7 +553,7 @@
       }
       h1 {
         margin: 0;
-        font-family: "Gukhan Sans Web", sans-serif;
+        font-family: "Gukhanmun Sans Web", sans-serif;
         font-weight: 400;
         font-size: clamp(3.15rem, 10.2vw, 7.15rem);
         line-height: 2.05;
@@ -643,7 +648,7 @@
         resize: vertical;
         background: transparent;
         color: var(--ink);
-        font-family: "Gukhan Sans Web", sans-serif;
+        font-family: "Gukhanmun Sans Web", sans-serif;
         font-weight: 400;
         font-size: 48px;
         line-height: 2.05;
@@ -763,18 +768,18 @@
           var(--cinnabar);
       }
       .switch:focus-within { outline: 2px solid var(--cinnabar); outline-offset: 3px; }
-      .page .stage { font-family: "Gukhan Sans Web", sans-serif; font-weight: 400; }
-      .page:has(#hangul:checked) .stage { font-family: "Gukhan Hangul Web", sans-serif; font-weight: 400; }
-      .page:has(#kp:checked) .stage { font-family: "Gukhan Sans KP Web", sans-serif; font-weight: 400; }
-      .page:has(#kp:checked):has(#hangul:checked) .stage { font-family: "Gukhan Hangul KP Web", sans-serif; font-weight: 400; }
-      .page:has(#vf:checked) .stage { font-family: "Gukhan Sans VF", sans-serif; }
-      .page:has(#vf:checked):has(#hangul:checked) .stage { font-family: "Gukhan Hangul VF", sans-serif; }
-      .page:has(#vf:checked):has(#kp:checked) .stage { font-family: "Gukhan Sans KP VF", sans-serif; }
-      .page:has(#vf:checked):has(#kp:checked):has(#hangul:checked) .stage { font-family: "Gukhan Hangul KP VF", sans-serif; }
-      .page:has(#addon:checked) .stage { font-family: "Gukhan Sans Hanja", "Gothic A1 Ruby", sans-serif; font-weight: 400; }
-      .page:has(#addon:checked):has(#hangul:checked) .stage { font-family: "Gukhan Hangul Hanja", "Gothic A1 Replace", sans-serif; font-weight: 400; }
-      .page:has(#addon:checked):has(#kp:checked) .stage { font-family: "Gukhan Sans KP Hanja", "Gothic A1 Ruby", sans-serif; font-weight: 400; }
-      .page:has(#addon:checked):has(#kp:checked):has(#hangul:checked) .stage { font-family: "Gukhan Hangul KP Hanja", "Gothic A1 Replace", sans-serif; font-weight: 400; }
+      .page .stage { font-family: "Gukhanmun Sans Web", sans-serif; font-weight: 400; }
+      .page:has(#hangul:checked) .stage { font-family: "Gukhanmun Hangul Web", sans-serif; font-weight: 400; }
+      .page:has(#kp:checked) .stage { font-family: "Gukhanmun Sans KP Web", sans-serif; font-weight: 400; }
+      .page:has(#kp:checked):has(#hangul:checked) .stage { font-family: "Gukhanmun Hangul KP Web", sans-serif; font-weight: 400; }
+      .page:has(#vf:checked) .stage { font-family: "Gukhanmun Sans VF", sans-serif; }
+      .page:has(#vf:checked):has(#hangul:checked) .stage { font-family: "Gukhanmun Hangul VF", sans-serif; }
+      .page:has(#vf:checked):has(#kp:checked) .stage { font-family: "Gukhanmun Sans KP VF", sans-serif; }
+      .page:has(#vf:checked):has(#kp:checked):has(#hangul:checked) .stage { font-family: "Gukhanmun Hangul KP VF", sans-serif; }
+      .page:has(#addon:checked) .stage { font-family: "Gukhanmun Sans Hanja", "Gothic A1 Ruby", sans-serif; font-weight: 400; }
+      .page:has(#addon:checked):has(#hangul:checked) .stage { font-family: "Gukhanmun Hangul Hanja", "Gothic A1 Replace", sans-serif; font-weight: 400; }
+      .page:has(#addon:checked):has(#kp:checked) .stage { font-family: "Gukhanmun Sans KP Hanja", "Gothic A1 Ruby", sans-serif; font-weight: 400; }
+      .page:has(#addon:checked):has(#kp:checked):has(#hangul:checked) .stage { font-family: "Gukhanmun Hangul KP Hanja", "Gothic A1 Replace", sans-serif; font-weight: 400; }
       .page:has(#ss01:checked) .stage { font-feature-settings: "ss01" 1; }
       .page:has(#ss01:checked):has(#hangul:checked) .stage { font-feature-settings: "ss01" 0; }
       .wrow {
@@ -797,15 +802,15 @@
         overflow-wrap: anywhere;
       }
       #weights.live .wsample { font-weight: var(--w); font-synthesis: none; }
-      .page .spec .sample, .page .glyphs span { font-family: "Gukhan Sans Web", sans-serif; }
-      .page:has(#kp:checked) .spec .sample, .page:has(#kp:checked) .glyphs span { font-family: "Gukhan Sans KP Web", sans-serif; }
-      .page:has(#hangul:checked) .spec .sample, .page:has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul Web", sans-serif; }
-      .page:has(#kp:checked):has(#hangul:checked) .spec .sample, .page:has(#kp:checked):has(#hangul:checked) .glyphs span { font-family: "Gukhan Hangul KP Web", sans-serif; }
-      .wsample { font-family: "Gukhan Sans Web", sans-serif; }
-      #weights.live .wsample { font-family: "Gukhan Sans VF", sans-serif; }
-      .page:has(#kp:checked) #weights.live .wsample { font-family: "Gukhan Sans KP VF", sans-serif; }
-      .page:has(#hangul:checked) #weights.live .wsample { font-family: "Gukhan Hangul VF", sans-serif; }
-      .page:has(#kp:checked):has(#hangul:checked) #weights.live .wsample { font-family: "Gukhan Hangul KP VF", sans-serif; }
+      .page .spec .sample, .page .glyphs span { font-family: "Gukhanmun Sans Web", sans-serif; }
+      .page:has(#kp:checked) .spec .sample, .page:has(#kp:checked) .glyphs span { font-family: "Gukhanmun Sans KP Web", sans-serif; }
+      .page:has(#hangul:checked) .spec .sample, .page:has(#hangul:checked) .glyphs span { font-family: "Gukhanmun Hangul Web", sans-serif; }
+      .page:has(#kp:checked):has(#hangul:checked) .spec .sample, .page:has(#kp:checked):has(#hangul:checked) .glyphs span { font-family: "Gukhanmun Hangul KP Web", sans-serif; }
+      .wsample { font-family: "Gukhanmun Sans Web", sans-serif; }
+      #weights.live .wsample { font-family: "Gukhanmun Sans VF", sans-serif; }
+      .page:has(#kp:checked) #weights.live .wsample { font-family: "Gukhanmun Sans KP VF", sans-serif; }
+      .page:has(#hangul:checked) #weights.live .wsample { font-family: "Gukhanmun Hangul VF", sans-serif; }
+      .page:has(#kp:checked):has(#hangul:checked) #weights.live .wsample { font-family: "Gukhanmun Hangul KP VF", sans-serif; }
       .specs {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -914,9 +919,9 @@
       }
       .layer-label .loc { letter-spacing: 0.1em; }
       .layer-body { font-family: "Gothic A1", "Hanja Box"; color: var(--indigo); }
-      .layer-ruby { font-family: "Gukhan Sans Hanja", "Gothic A1 Ruby", sans-serif; }
-      .layer-replace { font-family: "Gukhan Hangul Hanja", "Gothic A1 Replace", sans-serif; color: var(--indigo); }
-      .layer-kp { font-family: "Gukhan Sans KP Hanja", "Gothic A1 Ruby", sans-serif; }
+      .layer-ruby { font-family: "Gukhanmun Sans Hanja", "Gothic A1 Ruby", sans-serif; }
+      .layer-replace { font-family: "Gukhanmun Hangul Hanja", "Gothic A1 Replace", sans-serif; color: var(--indigo); }
+      .layer-kp { font-family: "Gukhanmun Sans KP Hanja", "Gothic A1 Ruby", sans-serif; }
 
       .how { margin-top: 2.2rem; }
       .how h2 { font-size: 1.35rem; font-weight: 500; margin: 0 0 0.4rem; }
@@ -925,10 +930,10 @@
       .how .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
       .how .card { border: 1px solid var(--rule); padding: 0.55rem 0.75rem 0.7rem; }
       .how .label { color: var(--muted); font-size: 0.85rem; margin: 0 0 0.2rem; }
-      .ex-ruby, .ex-kp { font-family: "Gukhan Sans Web", sans-serif; }
-      .ex-kp { font-family: "Gukhan Sans KP Web", sans-serif; }
-      .ex-replace { font-family: "Gukhan Hangul Web", sans-serif; color: var(--indigo); }
-      .ex-kp-replace { font-family: "Gukhan Hangul KP Web", sans-serif; color: var(--indigo); }
+      .ex-ruby, .ex-kp { font-family: "Gukhanmun Sans Web", sans-serif; }
+      .ex-kp { font-family: "Gukhanmun Sans KP Web", sans-serif; }
+      .ex-replace { font-family: "Gukhanmun Hangul Web", sans-serif; color: var(--indigo); }
+      .ex-kp-replace { font-family: "Gukhanmun Hangul KP Web", sans-serif; color: var(--indigo); }
       .ex-ruby, .ex-kp, .ex-replace, .ex-kp-replace {
         font-size: clamp(1.4rem, 2.6vw, 1.95rem);
         line-height: 2;
@@ -1081,7 +1086,7 @@
     <div class="page">
       <header class="bar">
         <div class="wrap bar-inner">
-          <a class="mark" href="./">국한</a>
+          <a class="mark" href="./">국한문</a>
           <nav class="nav" aria-label="페이지">
             <a href="#try">써 보기</a>
             <a href="#weights">굵기</a>
@@ -1096,7 +1101,7 @@
         <div class="wrap">
           <div class="hero-top">
             <p class="seal" aria-hidden="true">國</p>
-            <p class="kicker">Gukhan Sans · OFL</p>
+            <p class="kicker">Gukhanmun Sans · OFL</p>
           </div>
           <div class="hero-lockup">
             <h1>國漢文混用</h1>
@@ -1120,13 +1125,13 @@
               <button class="copy" type="button" data-copy="css-web">복사</button>
             </div>
             <pre id="css-web"><code>@font-face {
-  font-family: &quot;Gukhan Sans Web&quot;;
-  src: url(&quot;https://morealdot.github.io/gukhan-font/fonts/GukhanSans-Web.woff2&quot;) format(&quot;woff2&quot;);
+  font-family: &quot;Gukhanmun Sans Web&quot;;
+  src: url(&quot;https://morealdot.github.io/gukhan-font/fonts/GukhanmunSans-Web.woff2&quot;) format(&quot;woff2&quot;);
   font-weight: 400;
   font-display: swap;
 }
 .ruby {
-  font-family: &quot;Gukhan Sans Web&quot;, sans-serif;
+  font-family: &quot;Gukhanmun Sans Web&quot;, sans-serif;
   line-height: 2;
 }</code></pre>
           </div>
@@ -1137,8 +1142,8 @@
             </div>
             <p class="lead">애드온은 한글 글꼴 앞에 둡니다. 그 한글 글꼴에도 같은 어센더, 디센더, 라인갭을 주세요. 루비는 158%, 치환은 116%입니다. 값이 다르면 한자가 있는 줄과 없는 줄의 높이가 달라집니다. <code>unicode-range</code> 전체는 릴리스의 <code>hanja.css</code>에 있습니다.</p>
             <pre id="css-addon"><code>@font-face {
-  font-family: &quot;Gukhan Sans Hanja&quot;;
-  src: url(&quot;GukhanSansHanja-Regular.woff2&quot;) format(&quot;woff2&quot;);
+  font-family: &quot;Gukhanmun Sans Hanja&quot;;
+  src: url(&quot;GukhanmunSansHanja-Regular.woff2&quot;) format(&quot;woff2&quot;);
   font-weight: 400;
   font-display: swap;
   unicode-range: /* 릴리스 hanja.css. cmap과 같은 목록 */;
@@ -1164,12 +1169,12 @@
   descent-override: 28.8%;
   line-gap-override: 0%;
 }
-.gukhan-hanja {
-  font-family: &quot;Gukhan Sans Hanja&quot;, &quot;Gothic A1 Ruby&quot;, sans-serif;
+.gukhanmun-hanja {
+  font-family: &quot;Gukhanmun Sans Hanja&quot;, &quot;Gothic A1 Ruby&quot;, sans-serif;
   line-height: 2;
 }
-.gukhan-hangul {
-  font-family: &quot;Gukhan Hangul Hanja&quot;, &quot;Gothic A1 Replace&quot;, sans-serif;
+.gukhanmun-hangul {
+  font-family: &quot;Gukhanmun Hangul Hanja&quot;, &quot;Gothic A1 Replace&quot;, sans-serif;
 }</code></pre>
           </div>
         </section>
@@ -1191,8 +1196,8 @@
             <fieldset>
               <legend>폰트 패밀리</legend>
               <div class="choice">
-                <label><input id="sans" name="family" type="radio" checked><span class="full">루비 Gukhan Sans</span><span class="brief">루비</span></label>
-                <label><input id="hangul" name="family" type="radio"><span class="full">치환 Gukhan Hangul</span><span class="brief">치환</span></label>
+                <label><input id="sans" name="family" type="radio" checked><span class="full">루비 Gukhanmun Sans</span><span class="brief">루비</span></label>
+                <label><input id="hangul" name="family" type="radio"><span class="full">치환 Gukhanmun Hangul</span><span class="brief">치환</span></label>
               </div>
             </fieldset>
             <fieldset>
@@ -1384,7 +1389,7 @@
 
       <section class="how" id="how">
         <header class="sec-head"><h2><span class="sec-no">Ⅴ</span> 동작 방식</h2></header>
-        <p>자바스크립트는 쓰지 않습니다. 브라우저가 셰이핑할 때 텍스트를 스크립트 런으로 나누고, 한자가 이어진 런만 이 글꼴의 OpenType <code>rclt</code>가 바꿉니다. 한글과 라틴은 다른 런이라 다음 글꼴이 그립니다. 숫자는 <code>GukhanSans-Regular.otf</code>를 HarfBuzz로 셰이핑한 값입니다. 아래 큰 예시는 웹 서브셋으로 고정했습니다. 복사하면 한자입니다.</p>
+        <p>자바스크립트는 쓰지 않습니다. 브라우저가 셰이핑할 때 텍스트를 스크립트 런으로 나누고, 한자가 이어진 런만 이 글꼴의 OpenType <code>rclt</code>가 바꿉니다. 한글과 라틴은 다른 런이라 다음 글꼴이 그립니다. 숫자는 <code>GukhanmunSans-Regular.otf</code>를 HarfBuzz로 셰이핑한 값입니다. 아래 큰 예시는 웹 서브셋으로 고정했습니다. 복사하면 한자입니다.</p>
 
         <h3>글꼴 파일은 표의 묶음입니다</h3>
         <p>OTF와 TTF는 sfnt 표의 묶음입니다. 독음을 그리는 데 쓰는 표는 이 일곱입니다. 루비 획은 글리프 윤곽 안에 그려 넣고, 진행 너비는 <code>hmtx</code>에 적습니다. <code>GPOS</code> 마크 부착은 쓰지 않습니다.</p>
@@ -1420,7 +1425,7 @@
 
         <h3>코드포인트, 글리프, cmap</h3>
         <p>텍스트는 코드포인트의 배열입니다. 글리프는 그 글꼴이 그리는 그림이고, 글리프 ID는 그 그림의 번호입니다. <code>cmap</code>이 코드포인트를 글리프 ID로 바꿉니다. ID는 16비트라서, 한 글꼴의 글리프는 65,535개가 한계입니다.</p>
-        <div class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 250" width="100%" style="display:block;width:100%;height:auto;aspect-ratio:920/250" role="img"><text x="24" y="28" font-family="sans-serif" font-size="14" fill="#6b645b">GukhanSans-Regular.otf cmap</text>
+        <div class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 250" width="100%" style="display:block;width:100%;height:auto;aspect-ratio:920/250" role="img"><text x="24" y="28" font-family="sans-serif" font-size="14" fill="#6b645b">GukhanmunSans-Regular.otf cmap</text>
     <text x="24" y="56" font-family="ui-monospace, monospace" font-size="13" fill="#6b645b">codepoint</text>
     <text x="250" y="56" font-family="ui-monospace, monospace" font-size="13" fill="#6b645b">glyph id</text>
     <text x="430" y="56" font-family="ui-monospace, monospace" font-size="13" fill="#6b645b">CFF name</text><g opacity="1">
@@ -1532,10 +1537,10 @@
   sub uni97F3 uni6A02 by gkw08396;
 } words;
 
-hb-shape GukhanSans-Regular.otf --text 六月
+hb-shape GukhanmunSans-Regular.otf --text 六月
 [gid34500=0+2000]
 
-hb-shape GukhanSans-Regular.otf --text 六月 --features ss01
+hb-shape GukhanmunSans-Regular.otf --text 六月 --features ss01
 [gid2975=0+1000|gid5271=0+1000]</code></pre>
 
         <h3>글자 폴백, 그다음 두음 법칙</h3>
@@ -1564,7 +1569,7 @@ lookup adjust useExtension {
   sub @dueum' lookup surface;
 } adjust;
 
-hb-shape GukhanSans-Regular.otf --text '女子와 男女'
+hb-shape GukhanmunSans-Regular.otf --text '女子와 男女'
 [gid26394=0+1000|gid26591=1+1000|gid17045=2+920|gid1=3+224|gid29649=4+1000|gid26393=5+1000]</code></pre>
         <p>코드포인트는 둘 다 U+5973입니다. 첫 女는 gid 26394(여), 남 뒤의 女는 gid 26393(녀)입니다. <code>와</code>는 한글이라 베이스 글리프 gid 17045, 진행 너비 920입니다. 한자 사이 공백은 gid 1이고, Regular에서 진행 너비 224입니다. 모음이나 ㄴ 받침 뒤의 <code>렬</code>/<code>률</code>은 <code>@open @ryeol'</code> 규칙이 <code>열</code>/<code>율</code>로 바꿉니다.</p>
         <div class="pair">
@@ -1584,14 +1589,14 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
         <p>폰트 패밀리 이름이 다릅니다. 북한 글꼴은 두음 법칙을 쓰지 않습니다. 우리말샘에 있는 두 글자 이상 단어가 남한 사전보다 우선하고, 거기에 없는 단어는 남한 독음에서 두음만 되돌립니다. 한 글자 우리말샘 독음이 한 음절이면 그 글자만 폴백을 바꿉니다. 그렇게 달라지는 글자가 열한 자입니다.</p>
         <div class="pair">
           <div class="card">
-            <p class="label">남한 Gukhan Sans</p>
+            <p class="label">남한 Gukhanmun Sans</p>
             <p class="ex-ruby">平壤 冷麵</p>
             <p class="ex-ruby">六月과 十月</p>
             <p class="ex-ruby">困難</p>
             <p>냉면, 유월과 시월, 곤란. 困難은 합자 하나입니다.</p>
           </div>
           <div class="card">
-            <p class="label">북한 Gukhan Sans KP</p>
+            <p class="label">북한 Gukhanmun Sans KP</p>
             <p class="ex-kp">平壤 冷麵</p>
             <p class="ex-kp">六月과 十月</p>
             <p class="ex-kp">困難</p>
@@ -1601,7 +1606,7 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
 
         <h3>루비와 치환</h3>
         <div class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 290" width="100%" style="display:block;width:100%;height:auto;aspect-ratio:920/290" role="img"><g opacity="1">
-    <text x="24" y="24" font-family="sans-serif" font-size="14" fill="#6b645b">Gukhan Sans · 윤곽 안의 루비</text>
+    <text x="24" y="24" font-family="sans-serif" font-size="14" fill="#6b645b">Gukhanmun Sans · 윤곽 안의 루비</text>
     <rect x="24" y="36" width="200" height="250" fill="none" stroke="#cfc6b6"/>
     <line x1="24" y1="210" x2="224" y2="210" stroke="#243856"/>
     <text x="124" y="78" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#8c2f2b">유월</text>
@@ -1611,7 +1616,7 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
     <text x="240" y="168" font-family="sans-serif" font-size="14" fill="#6b645b">한자 너비 1000 × 2</text>
     <text x="240" y="192" font-family="sans-serif" font-size="14" fill="#6b645b">hhea ascender 1330</text>
   </g><g opacity="1">
-    <text x="500" y="24" font-family="sans-serif" font-size="14" fill="#6b645b">Gukhan Hangul · 같은 글리프 ID</text>
+    <text x="500" y="24" font-family="sans-serif" font-size="14" fill="#6b645b">Gukhanmun Hangul · 같은 글리프 ID</text>
     <rect x="500" y="96" width="184" height="140" fill="none" stroke="#cfc6b6"/>
     <rect x="684" y="96" width="184" height="140" fill="none" stroke="#cfc6b6"/>
     <line x1="500" y1="210" x2="868" y2="210" stroke="#243856"/>
@@ -1622,13 +1627,13 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
   </g></svg></div>
         <div class="pair">
           <div class="card">
-            <p class="label">Gukhan Sans · 한자 위의 루비</p>
+            <p class="label">Gukhanmun Sans · 한자 위의 루비</p>
             <p class="ex-ruby">國漢文混用</p>
             <p class="ex-ruby">音樂</p>
             <p>배율은 0.68이고, 간격은 em의 0.02입니다. <code>ss01</code>을 켜면 이 폰트 패밀리의 루비만 꺼집니다. 줄 높이는 2가 필요합니다.</p>
           </div>
           <div class="card">
-            <p class="label">Gukhan Hangul · 한자를 한글로</p>
+            <p class="label">Gukhanmun Hangul · 한자를 한글로</p>
             <p class="ex-replace">國漢文混用</p>
             <p class="ex-replace">音樂</p>
             <p>음절 하나의 너비는 한글 920입니다. N음절 합자는 그 N개를 더한 값입니다. 音樂은 음과 악의 너비를 가진 합자 하나입니다.</p>
@@ -1672,7 +1677,7 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
         <p>애드온의 cmap은 한자뿐입니다. <code>unicode-range</code>를 그 8,497자와 같게 적어야, 글꼴에 없는 한자가 빈 칸이 되지 않고 다음 글꼴로 넘어갑니다. 블록 전체를 적으면, 없는 한자까지 이 글꼴이 맡아 빈 칸이 됩니다. 루비 애드온은 <code>ascent-override: 158%</code>, 치환은 <code>116%</code>, 디센더는 <code>28.8%</code>입니다. 한글을 그리는 글꼴에도 같은 어센더, 디센더, 라인갭을 줘야 한자가 있는 줄과 없는 줄의 높이가 같습니다. 데모의 Gothic A1은 그 값으로 폰트 패밀리를 둘 나눴습니다.</p>
         <div class="diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 210" width="100%" style="display:block;width:100%;height:auto;aspect-ratio:920/210" role="img"><g opacity="1">
       <rect x="20" y="24" width="880" height="48" rx="8" fill="#f6d7c8" stroke="#8c2f2b"/>
-      <text x="40" y="54" font-family="ui-monospace, monospace" font-size="16" fill="#1c1915">1  Gukhan Sans Hanja</text>
+      <text x="40" y="54" font-family="ui-monospace, monospace" font-size="16" fill="#1c1915">1  Gukhanmun Sans Hanja</text>
       <text x="430" y="54" font-family="sans-serif" font-size="15" fill="#6b645b">unicode-range 안의 한자만</text>
     </g><g opacity="1">
       <rect x="20" y="82" width="880" height="48" rx="8" fill="#e7eef6" stroke="#243856"/>

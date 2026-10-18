@@ -12,7 +12,7 @@ The file is the South Korean (ko-KR) reading, so 두음 법칙 is already applie
 
 ## `khangul.json`
 
-Per-character Hangul readings. The syllables come from the Unicode Unihan database field `kHangul` ([Unicode License](../LICENSES/Unicode-License.txt)). The file is the extract published with seonbi (`src/Text/Seonbi/Unihan/kHangul.json`), which pairs each syllable with a short citation: `0`/`1` for KS X 1001 / KS X 1002, and `E` / `N` for 교육용 기초 한자 / 인명용 한자. Gukhan-font uses those citations only to choose one underlying syllable, then applies 두음 법칙 itself.
+Per-character Hangul readings. The syllables come from the Unicode Unihan database field `kHangul` ([Unicode License](../LICENSES/Unicode-License.txt)). The file is the extract published with seonbi (`src/Text/Seonbi/Unihan/kHangul.json`), which pairs each syllable with a short citation: `0`/`1` for KS X 1001 / KS X 1002, and `E` / `N` for 교육용 기초 한자 / 인명용 한자. Gukhanmun-font uses those citations only to choose one underlying syllable, then applies 두음 법칙 itself.
 
 Unihan data: Unicode, Inc. https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip
 

@@ -4,7 +4,7 @@ OpenType drawing and GSUB compilation from [furifont](https://github.com/antfu/f
 
 License: MIT. See [LICENSE.md](LICENSE.md). Copyright (c) 2025-PRESENT Anthony Fu.
 
-Gukhan-font reuses this pipeline so Hangul-over-Hanja glyphs are drawn into a CFF base font the same way furigana is drawn into Source Han Sans JP. The planner that decides Korean readings is original code under `src/`; this directory does not choose readings.
+Gukhanmun-font reuses this pipeline so Hangul-over-Hanja glyphs are drawn into a CFF base font the same way furigana is drawn into Source Han Sans JP. The planner that decides Korean readings is original code under `src/`; this directory does not choose readings.
 
 Changes from upstream:
 

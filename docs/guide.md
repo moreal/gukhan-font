@@ -1,20 +1,19 @@
-# 국한 안내
+# 국한문 안내
 
-이 문서는 측정값, 메트릭, 빌드, 라이선스 출처를 담습니다. 짧은 사용법은 저장소 [README](../README.md)에 있고, 동작은 [라이브 데모](https://morealdot.github.io/gukhan-font/)와 [슬라이드](https://morealdot.github.io/gukhan-font/slides/)가 설명합니다.
-
+이 문서는 측정값, 메트릭, 빌드, 라이선스 출처를 담습니다. 짧은 사용법은 저장소 [README](../README.md)에 있고, 동작은 [라이브 데모](https://morealdot.github.io/gukhanmun-font/)와 [슬라이드](https://morealdot.github.io/gukhanmun-font/slides/)가 설명합니다. 저장소 이름이 바뀌기 전에는 같은 사이트가 [https://morealdot.github.io/gukhan-font/](https://morealdot.github.io/gukhan-font/)에 있습니다.
 
 한자는 그대로 두고 독음을 붙이는 글꼴입니다. `國漢文混用`이라고만 적습니다. `<ruby>`도, 자바스크립트도 필요 없고, 복사하면 한자 그대로입니다.
 
-- **Gukhan Sans**는 한글 독음 `국한문혼용`을 한자 위에 루비로 그립니다.
-- **Gukhan Hangul**은 그 한자를 독음으로 바꿉니다. 화면에는 `국한문혼용`만 보입니다.
+- **Gukhanmun Sans**는 한글 독음 `국한문혼용`을 한자 위에 루비로 그립니다.
+- **Gukhanmun Hangul**은 그 한자를 독음으로 바꿉니다. 화면에는 `국한문혼용`만 보입니다.
 - 지역은 **ko-KR**(남한, 두음 법칙)과 **ko-KP**(북한, 두음 법칙 없음)입니다. 폰트 패밀리 이름이 다릅니다.
 - 굵기는 ExtraLight부터 Heavy까지이고, 독음이 굵기를 따라가는 가변 폰트가 있습니다.
 - **웹 서브셋**은 Regular 한 파일이고, 한글·라틴과 KS X 1001 한자를 담습니다.
 - **한자 애드온**은 한자만 담습니다. `unicode-range`로 다른 한글 글꼴 위에 얹습니다.
 
-Two families, two regions. Gukhan Sans draws the Hangul above the Hanja. Gukhan Hangul replaces the Hanja with that reading. Copy, paste, and search still see the Hanja. A variable font follows the weight axis, a Regular web subset drops most of the Hanja outside KS X 1001, and a Hanja-only add-on is meant to sit in front of any other Korean font.
+Two families, two regions. Gukhanmun Sans draws the Hangul above the Hanja. Gukhanmun Hangul replaces the Hanja with that reading. Copy, paste, and search still see the Hanja. A variable font follows the weight axis, a Regular web subset drops most of the Hanja outside KS X 1001, and a Hanja-only add-on is meant to sit in front of any other Korean font.
 
-![國漢文混用 in Gukhan Sans and Gukhan Hangul](demo/screenshot-specimen.png)
+![國漢文混用 in Gukhanmun Sans and Gukhanmun Hangul](demo/screenshot-specimen.png)
 
 한자 애드온을 Gothic A1 위에 얹은 모습입니다. 첫 줄은 Gothic A1이라 한자가 빈 상자입니다. 운영체제에 다른 한자 글꼴이 있으면 브라우저가 그 글자로 빈칸을 채웁니다. 데모는 그 한자를 빈 상자로 받는 `Hanja Box`를 뒤에 둡니다. 아래 줄은 애드온이 한자만 그리고, `와` 같은 한글은 Gothic A1이 그립니다. 넷째 줄의 `冷`은 북한 독음 `랭`입니다.
 
@@ -27,25 +26,25 @@ Two families, two regions. Gukhan Sans draws the Hangul above the Hanja. Gukhan 
 <p class="hangul">國漢文混用으로 쓴 大韓民國.</p>
 <style>
   @font-face {
-    font-family: "Gukhan Sans";
-    src: url("GukhanSans-Regular.woff2") format("woff2");
+    font-family: "Gukhanmun Sans";
+    src: url("GukhanmunSans-Regular.woff2") format("woff2");
     font-weight: 400;
   }
   @font-face {
-    font-family: "Gukhan Hangul";
-    src: url("GukhanHangul-Regular.woff2") format("woff2");
+    font-family: "Gukhanmun Hangul";
+    src: url("GukhanmunHangul-Regular.woff2") format("woff2");
     font-weight: 400;
   }
-  .ruby { font-family: "Gukhan Sans", sans-serif; line-height: 2; }
-  .hangul { font-family: "Gukhan Hangul", sans-serif; }
+  .ruby { font-family: "Gukhanmun Sans", sans-serif; line-height: 2; }
+  .hangul { font-family: "Gukhanmun Hangul", sans-serif; }
 </style>
 ```
 
-Gukhan Sans는 `line-height`를 2로 둡니다. 루비는 전각 상자 위에 그려지므로, 줄 간격이 좁으면 잘립니다. `font-feature-settings: "ss01" 1`이면 그 폰트의 루비가 꺼지고 원래 한자만 남습니다. Gukhan Hangul에는 그 스위치가 없습니다. 한자가 이미 한글로 바뀌어 있습니다.
+Gukhanmun Sans는 `line-height`를 2로 둡니다. 루비는 전각 상자 위에 그려지므로, 줄 간격이 좁으면 잘립니다. `font-feature-settings: "ss01" 1`이면 그 폰트의 루비가 꺼지고 원래 한자만 남습니다. Gukhanmun Hangul에는 그 스위치가 없습니다. 한자가 이미 한글로 바뀌어 있습니다.
 
-굵기 파일은 `GukhanSans-ExtraLight.woff2`부터 `GukhanSans-Heavy.woff2`까지입니다. CSS `font-weight`는 250, 300, 350, 400, 500, 700, 900입니다. 가변 폰트의 폰트 패밀리는 `Gukhan Sans VF`이고 `font-weight: 250 900`입니다. 기본 인스턴스가 ExtraLight라서, 페이지에서는 굵기 400을 지정합니다. 웹 서브셋의 폰트 패밀리는 `Gukhan Sans Web`이고 Regular 하나입니다. 북한 글꼴은 이름에 `KP`가 붙습니다. `Gukhan Sans KP`, `Gukhan Sans KP VF`, `Gukhan Sans KP Web`.
+굵기 파일은 `GukhanmunSans-ExtraLight.woff2`부터 `GukhanmunSans-Heavy.woff2`까지입니다. CSS `font-weight`는 250, 300, 350, 400, 500, 700, 900입니다. 가변 폰트의 폰트 패밀리는 `Gukhanmun Sans VF`이고 `font-weight: 250 900`입니다. 기본 인스턴스가 ExtraLight라서, 페이지에서는 굵기 400을 지정합니다. 웹 서브셋의 폰트 패밀리는 `Gukhanmun Sans Web`이고 Regular 하나입니다. 북한 글꼴은 이름에 `KP`가 붙습니다. `Gukhanmun Sans KP`, `Gukhanmun Sans KP VF`, `Gukhanmun Sans KP Web`.
 
-Set `line-height: 2` for Gukhan Sans so the reading is not clipped. Stylistic set `ss01` turns that family's readings off. Variable families are named `Gukhan Sans VF` (and `Gukhan Hangul VF`, plus `KP` for the north). The default instance is ExtraLight, so set an explicit weight.
+Set `line-height: 2` for Gukhanmun Sans so the reading is not clipped. Stylistic set `ss01` turns that family's readings off. Variable families are named `Gukhanmun Sans VF` (and `Gukhanmun Hangul VF`, plus `KP` for the north). The default instance is ExtraLight, so set an explicit weight.
 
 ## 한자 애드온
 
@@ -56,12 +55,12 @@ Set `line-height: 2` for Gukhan Sans so the reading is not clipped. Stylistic se
 들어 있는 한자: CJK Unified Ideographs 8,004자, Extension A 92자, Compatibility Ideographs 330자, Extension B 56자, Extension E 2자, Extension F 1자, Compatibility Ideographs Supplement 12자. 남한과 북한이 맡는 한자 집합은 같습니다. 독음만 다릅니다. 독음이 없는 한자 155자는 일부러 빼서 본문 글꼴에 맡깁니다.
 
 ```html
-<p class="gukhan-hanja">女子와 男女, 平壤 冷麵.</p>
+<p class="gukhanmun-hanja">女子와 男女, 平壤 冷麵.</p>
 <style>
   /* 전체 목록은 dist/hanja.css 에 있습니다. 아래 unicode-range 는 그 파일의 값으로 바꿉니다. */
   @font-face {
-    font-family: "Gukhan Sans Hanja";
-    src: url("GukhanSansHanja-Regular.woff2") format("woff2");
+    font-family: "Gukhanmun Sans Hanja";
+    src: url("GukhanmunSansHanja-Regular.woff2") format("woff2");
     font-weight: 400;
     font-display: swap;
     unicode-range: U+349A, U+4E00-4E01, U+4E03, /* … cmap 과 같은 8,497자 … */ U+2F9DF;
@@ -70,14 +69,14 @@ Set `line-height: 2` for Gukhan Sans so the reading is not clipped. Stylistic se
     line-gap-override: 0%;
     size-adjust: 100%;
   }
-  .gukhan-hanja {
-    font-family: "Gukhan Sans Hanja", "Pretendard", sans-serif;
+  .gukhanmun-hanja {
+    font-family: "Gukhanmun Sans Hanja", "Pretendard", sans-serif;
     line-height: 2;
   }
 </style>
 ```
 
-`font-family: "Gukhan Sans Hanja", "Pretendard", sans-serif`처럼 애드온을 맨 앞에 둡니다. 치환은 `Gukhan Hangul Hanja`, 북한 루비는 `Gukhan Sans KP Hanja`, 북한 치환은 `Gukhan Hangul KP Hanja`입니다. 굵기마다 파일이 있습니다. `dist/hanja.css`가 일곱 굵기의 `@font-face`를 이미 적습니다.
+`font-family: "Gukhanmun Sans Hanja", "Pretendard", sans-serif`처럼 애드온을 맨 앞에 둡니다. 치환은 `Gukhanmun Hangul Hanja`, 북한 루비는 `Gukhanmun Sans KP Hanja`, 북한 치환은 `Gukhanmun Hangul KP Hanja`입니다. 굵기마다 파일이 있습니다. `dist/hanja.css`가 일곱 굵기의 `@font-face`를 이미 적습니다.
 
 ### 메트릭과 맞추기
 
@@ -123,12 +122,12 @@ CSS로 줄 상자를 그 값에 맞춥니다. 퍼센트는 em 기준입니다.
   descent-override: 28.8%;
   line-gap-override: 0%;
 }
-.gukhan-hanja {
-  font-family: "Gukhan Sans Hanja", "Gothic A1 Ruby", sans-serif;
+.gukhanmun-hanja {
+  font-family: "Gukhanmun Sans Hanja", "Gothic A1 Ruby", sans-serif;
   line-height: 2;
 }
-.gukhan-hangul {
-  font-family: "Gukhan Hangul Hanja", "Gothic A1 Replace", sans-serif;
+.gukhanmun-hangul {
+  font-family: "Gukhanmun Hangul Hanja", "Gothic A1 Replace", sans-serif;
 }
 ```
 
@@ -150,11 +149,11 @@ The add-on cmap is Hanja only: 8,497 codepoints, listed exactly in `dist/hanja.c
 
 ## 웹 서브셋
 
-`GukhanSans-Web.woff2` 같은 Regular 파일 하나입니다. 베이스 글꼴의 한자가 아닌 문자 전부, 그 글꼴에 있는 KS X 1001 한자, 데모 문장의 한자를 남깁니다. 합자는 그 파일 안에서 동작합니다. 여기 없는 한자, 특히 대부분의 확장 B는 독음 없이 빈 칸이거나 다음 글꼴로 넘어갑니다. ko-KR 웹은 글자 독음 4,644개, 두음 법칙 형태 309개, 합자 7,055개입니다. ko-KP 웹은 두음 법칙 형태가 없고 합자 7,650개입니다.
+`GukhanmunSans-Web.woff2` 같은 Regular 파일 하나입니다. 베이스 글꼴의 한자가 아닌 문자 전부, 그 글꼴에 있는 KS X 1001 한자, 데모 문장의 한자를 남깁니다. 합자는 그 파일 안에서 동작합니다. 여기 없는 한자, 특히 대부분의 확장 B는 독음 없이 빈 칸이거나 다음 글꼴로 넘어갑니다. ko-KR 웹은 글자 독음 4,644개, 두음 법칙 형태 309개, 합자 7,055개입니다. ko-KP 웹은 두음 법칙 형태가 없고 합자 7,650개입니다.
 
 ## 북한어 (ko-KP)
 
-폰트 패밀리는 `Gukhan Sans KP`, `Gukhan Hangul KP`입니다. 두음 법칙을 적용하지 않습니다. `平壤 冷麵`은 `평양 랭면`, `女子`는 `녀자`입니다.
+폰트 패밀리는 `Gukhanmun Sans KP`, `Gukhanmun Hangul KP`입니다. 두음 법칙을 적용하지 않습니다. `平壤 冷麵`은 `평양 랭면`, `女子`는 `녀자`입니다.
 
 표제어는 국립국어원 우리말샘 북한어입니다. 거기에 있는 두 글자 이상 단어가 남한 사전보다 우선합니다. `六月`은 `류월`입니다. 우리말샘에 없는 단어는 남한 독음에서 두음만 되돌립니다. `音樂`은 `음악`으로 남고, `十月`은 `시월`로 남습니다. 사전에 없는 어휘 차이와 중국 지명은 틀릴 수 있습니다. 같은 표제어가 여러 번이면 첫 행이 이깁니다.
 
@@ -189,7 +188,7 @@ Date tags are `vYYYY.MM.DD`, with `vYYYY.MM.DD.N` when the same day needs anothe
 
 바이트입니다. 가변 폰트 행의 첫 숫자는 TTF입니다. 나머지는 OTF입니다. WOFF2는 품질 11입니다. 한자 애드온은 굵기마다 있습니다.
 
-### Gukhan Sans (ko-KR)
+### Gukhanmun Sans (ko-KR)
 
 | | OTF / TTF | WOFF2 | Hanja OTF | Hanja WOFF2 |
 | --- | ---: | ---: | ---: | ---: |
@@ -203,7 +202,7 @@ Date tags are `vYYYY.MM.DD`, with `vYYYY.MM.DD.N` when the same day needs anothe
 | VF | 11,859,404 | 4,545,292 | | |
 | Web | 11,489,920 | 2,938,432 | | |
 
-### Gukhan Hangul (ko-KR)
+### Gukhanmun Hangul (ko-KR)
 
 | | OTF / TTF | WOFF2 | Hanja OTF | Hanja WOFF2 |
 | --- | ---: | ---: | ---: | ---: |
@@ -217,7 +216,7 @@ Date tags are `vYYYY.MM.DD`, with `vYYYY.MM.DD.N` when the same day needs anothe
 | VF | 11,444,824 | 4,468,276 | | |
 | Web | 6,309,408 | 2,658,588 | | |
 
-### Gukhan Sans KP (ko-KP)
+### Gukhanmun Sans KP (ko-KP)
 
 | | OTF / TTF | WOFF2 | Hanja OTF | Hanja WOFF2 |
 | --- | ---: | ---: | ---: | ---: |
@@ -231,7 +230,7 @@ Date tags are `vYYYY.MM.DD`, with `vYYYY.MM.DD.N` when the same day needs anothe
 | VF | 11,879,832 | 4,548,312 | | |
 | Web | 11,958,448 | 2,951,992 | | |
 
-### Gukhan Hangul KP (ko-KP)
+### Gukhanmun Hangul KP (ko-KP)
 
 | | OTF / TTF | WOFF2 | Hanja OTF | Hanja WOFF2 |
 | --- | ---: | ---: | ---: | ---: |
@@ -245,7 +244,7 @@ Date tags are `vYYYY.MM.DD`, with `vYYYY.MM.DD.N` when the same day needs anothe
 | VF | 11,447,372 | 4,469,704 | | |
 | Web | 6,441,000 | 2,667,668 | | |
 
-릴리스 zip: `GukhanSans.zip` 181,224,864, `GukhanSansKP.zip` 184,860,475, `GukhanHangul.zip` 108,926,971, `GukhanHangulKP.zip` 109,401,126. 각 zip에 그 폰트 패밀리의 정적 폰트, 가변 폰트, 웹 서브셋, 한자 애드온 OTF/TTF/WOFF2와 `hanja.css`, `SHA256SUMS.txt`가 있습니다.
+릴리스 zip: `GukhanmunSans.zip` 181,224,864, `GukhanmunSansKP.zip` 184,860,475, `GukhanmunHangul.zip` 108,926,971, `GukhanmunHangulKP.zip` 109,401,126. 각 zip에 그 폰트 패밀리의 정적 폰트, 가변 폰트, 웹 서브셋, 한자 애드온 OTF/TTF/WOFF2와 `hanja.css`, `SHA256SUMS.txt`가 있습니다.
 
 ## 동작
 
@@ -259,10 +258,10 @@ Date tags are `vYYYY.MM.DD`, with `vYYYY.MM.DD.N` when the same day needs anothe
 
 두 글꼴은 `planReadings` 한 번으로 같은 합자, 같은 글자 폴백, 같은 `rclt` 규칙을 고릅니다. 그리는 방식만 다릅니다.
 
-- **Gukhan Sans**는 한자 획을 두고 그 위에 독음을 줄여 올립니다. 배율은 0.68이고, 한자와 루비 사이 간격은 em의 0.02입니다. 한 글자 독음은 그 글자의 너비 한가운데에 놓입니다.
-- **Gukhan Hangul**은 한자 획을 그리지 않고, 독음의 음절을 제 크기로 나란히 놓습니다. 음절 하나의 너비는 베이스 글꼴의 한글(920)이고, N음절 합자는 그 N개를 더한 값입니다. `音樂`은 글자 둘을 `음`+`악` 너비의 합자 하나로 바꿉니다. `上海`처럼 음절이 글자보다 많으면(`상하이`) 음절 수만큼의 너비가 됩니다.
+- **Gukhanmun Sans**는 한자 획을 두고 그 위에 독음을 줄여 올립니다. 배율은 0.68이고, 한자와 루비 사이 간격은 em의 0.02입니다. 한 글자 독음은 그 글자의 너비 한가운데에 놓입니다.
+- **Gukhanmun Hangul**은 한자 획을 그리지 않고, 독음의 음절을 제 크기로 나란히 놓습니다. 음절 하나의 너비는 베이스 글꼴의 한글(920)이고, N음절 합자는 그 N개를 더한 값입니다. `音樂`은 글자 둘을 `음`+`악` 너비의 합자 하나로 바꿉니다. `上海`처럼 음절이 글자보다 많으면(`상하이`) 음절 수만큼의 너비가 됩니다.
 
-This follows [furifont](https://github.com/antfu/furifont): one plan, then a compiler draws it into a CFF font and appends OpenType lookups. The compiler in `vendor/furifont/` is furifont's, MIT. Gukhan adds a `replace` placement that draws Hangul on the baseline. Korean readings, 두음 법칙, and which words become ligatures are implemented here and are not a copy of seonbi's code. The variable font is TrueType, so the reading composites follow the `wght` axis. Static CFF readings are flattened outlines.
+This follows [furifont](https://github.com/antfu/furifont): one plan, then a compiler draws it into a CFF font and appends OpenType lookups. The compiler in `vendor/furifont/` is furifont's, MIT. Gukhanmun adds a `replace` placement that draws Hangul on the baseline. Korean readings, 두음 법칙, and which words become ligatures are implemented here and are not a copy of seonbi's code. The variable font is TrueType, so the reading composites follow the `wght` axis. Static CFF readings are flattened outlines.
 
 ## 글자 수
 
@@ -291,7 +290,7 @@ OpenType 글꼴 하나의 글리프 수는 65,535개가 한계입니다. Source 
 - Unihan에 독음이 없는 한자는 그대로 둡니다. 한자 애드온은 그 글자를 cmap에서 빼서 본문 글꼴에 맡깁니다.
 - 우리말샘에 없는 북한 단어는 남한 독음에서 두음만 되돌린 값입니다. 사전에 없는 어휘 차이는 틀릴 수 있습니다.
 - 가로쓰기만 됩니다. 세로쓰기용 독음 위치는 없습니다.
-- Gukhan Hangul에서 한자 사이의 공백은 한자 런으로 남습니다. 베이스 글꼴은 한글 사이의 공백을 280, 한자 사이의 공백을 Regular에서 224로 둡니다. 공백 너비는 굵기마다 조금씩 다릅니다(ExtraLight 220, Heavy 229). `平壤 冷麵`의 빈칸은 `평양 냉면`의 빈칸보다 조금 좁습니다. 음절 자체의 너비는 한글과 같습니다.
+- Gukhanmun Hangul에서 한자 사이의 공백은 한자 런으로 남습니다. 베이스 글꼴은 한글 사이의 공백을 280, 한자 사이의 공백을 Regular에서 224로 둡니다. 공백 너비는 굵기마다 조금씩 다릅니다(ExtraLight 220, Heavy 229). `平壤 冷麵`의 빈칸은 `평양 냉면`의 빈칸보다 조금 좁습니다. 음절 자체의 너비는 한글과 같습니다.
 - 호환용 한자와 본자가 같은 획이면 독음도 하나입니다. 둘의 사전 독음이 다르면 본자 쪽을 택합니다.
 - 한자 애드온의 독음 획은 본문 글꼴의 한글과 다른 디자인입니다. 위 메트릭과 `size-adjust`로 키와 베이스라인을 맞춥니다.
 - 가변 폰트의 기본 인스턴스는 ExtraLight입니다.
@@ -304,7 +303,7 @@ OpenType 글꼴 하나의 글리프 수는 65,535개가 한계입니다. Source 
 | `vendor/furifont/` | [MIT](vendor/furifont/LICENSE.md), Anthony Fu, [furifont](https://github.com/antfu/furifont) 0.5.1 |
 | 글꼴 (`dist/`의 OTF, TTF, WOFF2) | [SIL OFL 1.1](OFL.txt). Adobe Source Han Sans KR에서 파생. 예약된 이름 Source는 이 글꼴의 이름이 아닙니다. |
 | `data/ko-kr-stdict.tsv` | [CC BY-SA 4.0](LICENSES/CC-BY-SA-4.0.txt). 국립국어원 표준국어대사전. 선비가 정리한 표. |
-| `data/ko-kp-opendict.tsv` | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/). 국립국어원 우리말샘 북한어. 국한문이 2026-06-03에 뽑은 표. |
+| `data/ko-kp-opendict.tsv` | [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/). 국립국어원 우리말샘 북한어. gukhanmun이 2026-06-03에 뽑은 표. |
 | `data/khangul.json` | [Unicode License](LICENSES/Unicode-License.txt). Unihan `kHangul`. 선비가 KS X 인용과 함께 정리한 파일. |
 | 데모의 Gothic A1 | SIL OFL 1.1. 예약된 이름은 Gothic A1. 데모가 원본을 그대로 씁니다. |
 

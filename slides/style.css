@@ -1,27 +1,28 @@
+/* /__REPO_BASE__/ is the repository name. The slide build substitutes it so the font URLs follow a rename. */
 @font-face {
-  font-family: "Gukhan Sans Web";
-  src: url("/gukhan-font/fonts/GukhanSans-Web.woff2") format("woff2");
+  font-family: "Gukhanmun Sans Web";
+  src: url("/__REPO_BASE__/fonts/GukhanmunSans-Web.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "Gukhan Hangul Web";
-  src: url("/gukhan-font/fonts/GukhanHangul-Web.woff2") format("woff2");
+  font-family: "Gukhanmun Hangul Web";
+  src: url("/__REPO_BASE__/fonts/GukhanmunHangul-Web.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "Gukhan Sans KP Web";
-  src: url("/gukhan-font/fonts/GukhanSansKP-Web.woff2") format("woff2");
+  font-family: "Gukhanmun Sans KP Web";
+  src: url("/__REPO_BASE__/fonts/GukhanmunSansKP-Web.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "Gukhan Sans Hanja";
-  src: url("/gukhan-font/fonts/GukhanSansHanja-Regular.woff2") format("woff2");
+  font-family: "Gukhanmun Sans Hanja";
+  src: url("/__REPO_BASE__/fonts/GukhanmunSansHanja-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -31,14 +32,14 @@
 }
 @font-face {
   font-family: "Gothic A1";
-  src: url("/gukhan-font/fonts/GothicA1-Regular.woff2") format("woff2");
+  src: url("/__REPO_BASE__/fonts/GothicA1-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Gothic A1 Ruby";
-  src: url("/gukhan-font/fonts/GothicA1-Regular.woff2") format("woff2");
+  src: url("/__REPO_BASE__/fonts/GothicA1-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -48,7 +49,7 @@
 }
 @font-face {
   font-family: "Hanja Box";
-  src: url("/gukhan-font/fonts/HanjaBox.woff") format("woff");
+  src: url("/__REPO_BASE__/fonts/HanjaBox.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -125,11 +126,11 @@ html.dark .slidev-layout .shiki {
   margin: 0.15rem 0;
 }
 
-.ruby { font-family: "Gukhan Sans Web", sans-serif; }
-.replace { font-family: "Gukhan Hangul Web", sans-serif; color: #243856; }
-.kp { font-family: "Gukhan Sans KP Web", sans-serif; }
+.ruby { font-family: "Gukhanmun Sans Web", sans-serif; }
+.replace { font-family: "Gukhanmun Hangul Web", sans-serif; color: #243856; }
+.kp { font-family: "Gukhanmun Sans KP Web", sans-serif; }
 .plain { font-family: "Gothic A1", "Hanja Box", sans-serif; color: #243856; }
-.addon { font-family: "Gukhan Sans Hanja", "Gothic A1 Ruby", sans-serif; }
+.addon { font-family: "Gukhanmun Sans Hanja", "Gothic A1 Ruby", sans-serif; }
 
 .cols {
   display: grid;

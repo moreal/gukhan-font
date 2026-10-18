@@ -1,6 +1,6 @@
 ---
 theme: default
-title: 국한. 한자를 읽는 글꼴
+title: 국한문. 한자를 읽는 글꼴
 addons:
   - subtitle
 aspectRatio: 16/9
@@ -10,7 +10,7 @@ highlighter: shiki
 routerMode: hash
 ---
 
-# 국한
+# 국한문
 
 글꼴이 한자를 읽고, 텍스트는 한자로 남습니다.
 
@@ -18,7 +18,7 @@ routerMode: hash
 
 <!--
 [subtitle:pause]
-국한은 한자 위에 루비를 그리거나, 그 한자를 한글로 바꿔 그리는 글꼴입니다.
+국한문은 한자 위에 루비를 그리거나, 그 한자를 한글로 바꿔 그리는 글꼴입니다.
 복사하고 검색해도 텍스트는 한자입니다.
 -->
 
@@ -73,14 +73,14 @@ ruby 태그는 문서를 마크업으로 바꿉니다. 그 마크업 밖에는 �
 - 한자를 한글 문자열로 바꿉니다.
 - 두음 법칙을 적용합니다.
 - ko-KR과 ko-KP를 나눕니다.
-- 국립국어원 표준국어대사전 표를 정리해 두었습니다. 국한의 남한 단어 표는 그 데이터입니다.
+- 국립국어원 표준국어대사전 표를 정리해 두었습니다. 국한문의 남한 단어 표는 그 데이터입니다.
 
-국한은 선비 코드를 가져오지 않습니다. 데이터 라이선스에 따라 읽고, 치환은 글꼴 안에서 합니다.
+국한문은 선비 코드를 가져오지 않습니다. 데이터 라이선스에 따라 읽고, 치환은 글꼴 안에서 합니다.
 
 <!--
 선비는 한글 조판 라이브러리입니다. 한자를 한글로 바꾸고, 두음 법칙을 적용하고, 남한과 북한을 나눕니다.
-국한의 남한 단어 목록은 선비가 정리한 표준국어대사전 표입니다.
-코드는 가져오지 않았습니다. 선비는 문자열을 바꾸고, 국한은 글리프를 바꿉니다.
+국한문의 남한 단어 목록은 선비가 정리한 표준국어대사전 표입니다.
+코드는 가져오지 않았습니다. 선비는 문자열을 바꾸고, 국한문은 글리프를 바꿉니다.
 -->
 
 ---
@@ -93,12 +93,12 @@ ruby 태그는 문서를 마크업으로 바꿉니다. 그 마크업 밖에는 �
 - 피처 파일을 GSUB로 컴파일합니다.
 - 어떤 한자를 어떤 독음으로 읽을지는 알지 못합니다.
 
-`vendor/furifont/`가 그 컴파일러입니다. 라이선스는 MIT입니다. 국한이 더한 것은 `placement: 'replace'`입니다. 독음을 베이스라인에, 음절 너비로 그립니다.
+`vendor/furifont/`가 그 컴파일러입니다. 라이선스는 MIT입니다. 국한문이 더한 것은 `placement: 'replace'`입니다. 독음을 베이스라인에, 음절 너비로 그립니다.
 
 <!--
 furifont는 Anthony Fu가 만든 컴파일러입니다. 독음 윤곽을 글리프 안에 그리고, 피처 파일을 GSUB로 컴파일합니다.
-어떤 한자를 어떻게 읽는지는 알지 못합니다. 그건 국한의 플래너가 정합니다.
-vendor의 furifont는 0.5.1이고, 치환 배치만 국한이 더했습니다.
+어떤 한자를 어떻게 읽는지는 알지 못합니다. 그건 국한문의 플래너가 정합니다.
+vendor의 furifont는 0.5.1이고, 치환 배치만 국한문이 더했습니다.
 -->
 
 ---
@@ -121,7 +121,7 @@ vendor의 furifont는 0.5.1이고, 치환 배치만 국한이 더했습니다.
 
 합자 글꼴입니다. `!=`이라는 코드포인트 열이 GSUB `liga`로 그려진 글리프 하나가 됩니다.
 
-국한의 `六月 → 유월`은 같은 종류의 치환입니다. 대상이 연산자가 아니라 독음입니다.
+국한문의 `六月 → 유월`은 같은 종류의 치환입니다. 대상이 연산자가 아니라 독음입니다.
 
 </div>
 </div>
@@ -131,7 +131,7 @@ vendor의 furifont는 0.5.1이고, 치환 배치만 국한이 더했습니다.
 여러 독음은 rclt 문맥 치환으로 고릅니다.
 Fira Code는 프로그래밍 합자입니다.
 코드포인트 열이 글리프 하나로 바뀝니다.
-국한의 단어 합자는 그 둘을 한국어 독음에 씁니다.
+국한문의 단어 합자는 그 둘을 한국어 독음에 씁니다.
 -->
 
 ---
@@ -150,7 +150,7 @@ CFF나 glyf는 윤곽이고, hmtx는 진행 너비입니다.
 maxp는 글리프 수를 셉니다.
 GSUB는 글리프를 바꾸고, GPOS는 위치를 옮깁니다.
 name은 폰트 패밀리 이름을 적습니다.
-국한의 루비는 GPOS 마크가 아닙니다.
+국한문의 루비는 GPOS 마크가 아닙니다.
 윤곽 안에 그려 넣고, 진행 너비는 hmtx에 적습니다.
 -->
 
@@ -168,7 +168,7 @@ cmap  U+6708 月  →  glyph 5271  cid20702
 cmap  U+5973 女  →  glyph 3779  cid14218
 ```
 
-측정은 `GukhanSans-Regular.otf`, 글리프 41,259개입니다. 독음 글리프는 이 표에 없습니다.
+측정은 `GukhanmunSans-Regular.otf`, 글리프 41,259개입니다. 독음 글리프는 이 표에 없습니다.
 
 <!--
 코드포인트와 글리프 ID는 다른 번호입니다.
@@ -193,7 +193,7 @@ cmap이 코드포인트를 글리프 ID로 바꿉니다.
 [click]
 GSUB가 글리프 ID를 바꾸고, 합자와 두음 법칙은 이 단계입니다.
 [click]
-GPOS는 위치를 옮기지만, 국한의 루비는 이 단계에 없습니다.
+GPOS는 위치를 옮기지만, 국한문의 루비는 이 단계에 없습니다.
 [click]
 래스터라이저가 윤곽을 픽셀로 그립니다.
 -->
@@ -207,7 +207,7 @@ GPOS는 위치를 옮기지만, 국한의 루비는 이 단계에 없습니다.
 <Diagram name="runs" frozen />
 
 ```text
-hb-shape GukhanSans-Regular.otf --text '大韓民國의 憲法'
+hb-shape GukhanmunSans-Regular.otf --text '大韓民國의 憲法'
 [gid26352=0+1000|gid32991=1+1000|gid28555=2+1000|gid26142=3+1000
  |gid17325=4+920|gid1=5+224
  |gid27377=6+1000|gid28648=7+1000]
@@ -284,13 +284,13 @@ OpenType 합자 치환은 가장 긴 일치를 고르므로, 더 긴 단어가 �
 컴파일러가 `gkw00891`을 CFF 글리프 ID 34500으로 넣습니다. 이름은 cid로 바뀌고, 계약은 글리프 ID입니다.
 
 ```text
-hb-shape GukhanSans-Regular.otf --text 六月
+hb-shape GukhanmunSans-Regular.otf --text 六月
 [gid34500=0+2000]
 
-hb-shape GukhanSans-Regular.otf --text 六月 --features +ss01
+hb-shape GukhanmunSans-Regular.otf --text 六月 --features +ss01
 [gid2975=0+1000|gid5271=0+1000]
 
-hb-shape GukhanHangul-Regular.otf --text 六月
+hb-shape GukhanmunHangul-Regular.otf --text 六月
 [gid34500=0+1840]
 ```
 
@@ -404,7 +404,7 @@ ss01은 스타일 세트입니다. 기본값은 0입니다.
 </div>
 
 ```text
-hb-shape GukhanSansKP-Regular.otf --text 困難
+hb-shape GukhanmunSansKP-Regular.otf --text 困難
 [gid26056=0+1000|gid32378=1+1000]
 ```
 
@@ -530,7 +530,7 @@ subsetter.populate(unicodes=unicodes)  # 한자 cmap, 8497개
 subsetter.subset(font)
 ```
 
-`layout_features`를 비우면 합자 글리프를 아무도 참조하지 않아 잘립니다. 그 다음 name ID 1, 4, 6, 16을 `Gukhan Sans Hanja`로 바꿉니다. 독음 글리프는 cmap에 없고, GSUB가 가리키므로 글꼴 안에 남습니다.
+`layout_features`를 비우면 합자 글리프를 아무도 참조하지 않아 잘립니다. 그 다음 name ID 1, 4, 6, 16을 `Gukhanmun Sans Hanja`로 바꿉니다. 독음 글리프는 cmap에 없고, GSUB가 가리키므로 글꼴 안에 남습니다.
 
 <!--
 wasm subsetFont는 다시 쓴 CFF를 버리므로 애드온에는 쓰지 않습니다.
@@ -547,30 +547,30 @@ name 테이블의 폰트 패밀리를 애드온 이름으로 바꿉니다.
 
 ```css
 @font-face {
-  font-family: "Gukhan Sans";
-  src: url("GukhanSans-Regular.woff2") format("woff2");
+  font-family: "Gukhanmun Sans";
+  src: url("GukhanmunSans-Regular.woff2") format("woff2");
   font-weight: 400;
 }
-.ruby { font-family: "Gukhan Sans", sans-serif; line-height: 2; }
+.ruby { font-family: "Gukhanmun Sans", sans-serif; line-height: 2; }
 ```
 
 ```css
 @font-face {
-  font-family: "Gukhan Sans Hanja";
-  src: url("GukhanSansHanja-Regular.woff2") format("woff2");
+  font-family: "Gukhanmun Sans Hanja";
+  src: url("GukhanmunSansHanja-Regular.woff2") format("woff2");
   unicode-range: /* dist/hanja.css, cmap과 같은 8497자 */;
   ascent-override: 158%;
   descent-override: 28.8%;
   line-gap-override: 0%;
 }
-.gukhan-hanja {
-  font-family: "Gukhan Sans Hanja", "Pretendard", sans-serif;
+.gukhanmun-hanja {
+  font-family: "Gukhanmun Sans Hanja", "Pretendard", sans-serif;
   line-height: 2;
 }
 ```
 
 <!--
-정적 Regular의 폰트 패밀리는 Gukhan Sans이고, 굵기는 400입니다.
+정적 Regular의 폰트 패밀리는 Gukhanmun Sans이고, 굵기는 400입니다.
 루비는 줄 높이 2가 필요합니다.
 애드온은 폰트 패밀리 목록의 맨 앞에 둡니다.
 unicode-range는 한자 스타일시트의 목록을 그대로 붙입니다.
@@ -584,16 +584,16 @@ size-adjust 기본은 100퍼센트입니다.
 
 # 데모
 
-[morealdot.github.io/gukhan-font](https://morealdot.github.io/gukhan-font/)
+[morealdot.github.io/gukhanmun-font](../)
 
-페이지에는 웹 서브셋, Regular 한자 애드온, Gothic A1, 그리고 굵기 슬라이더용 가변 폰트가 있습니다. 가변 폰트는 슬라이더를 움직이거나 굵기 목록이 보일 때 받습니다. 일곱 굵기의 정적 파일은 [릴리스](https://github.com/morealdot/gukhan-font/releases)에 있습니다.
+페이지에는 웹 서브셋, Regular 한자 애드온, Gothic A1, 그리고 굵기 슬라이더용 가변 폰트가 있습니다. 가변 폰트는 슬라이더를 움직이거나 굵기 목록이 보일 때 받습니다. 일곱 굵기의 정적 파일은 [릴리스](https://github.com/morealdot/gukhanmun-font/releases)에 있습니다. 저장소 이름이 바뀌기 전에는 같은 사이트가 `/gukhan-font/`에 있습니다.
 
 <p class="ruby">音樂과 快樂, 女子와 男女</p>
 <p class="replace">音樂과 快樂, 女子와 男女</p>
 
 <!--
 라이브 데모는 GitHub Pages입니다.
-경로는 /gukhan-font/ 아래입니다.
+경로는 저장소 이름을 따릅니다. 목표는 /gukhanmun-font/ 이고, 이름이 바뀌기 전에는 /gukhan-font/ 입니다.
 페이지의 가변 폰트는 굵기 슬라이더와 굵기 목록에서 받습니다.
 일곱 굵기의 정적 파일은 릴리스 zip에 있습니다.
 화면의 문장을 복사하면 한자가 나옵니다.
@@ -642,7 +642,7 @@ size-adjust 기본은 100퍼센트입니다.
 
 # 내려받기
 
-[릴리스](https://github.com/morealdot/gukhan-font/releases)의 zip 네 개. `GukhanSans`, `GukhanSansKP`, `GukhanHangul`, `GukhanHangulKP`.
+[릴리스](https://github.com/morealdot/gukhanmun-font/releases)의 zip 네 개. `GukhanmunSans`, `GukhanmunSansKP`, `GukhanmunHangul`, `GukhanmunHangulKP`.
 
 각 zip에 정적 일곱 굵기, 가변, 웹 서브셋, 한자 애드온, `hanja.css`, `SHA256SUMS.txt`가 있습니다.
 

@@ -1,14 +1,16 @@
-# 국한 / Gukhan
+# 국한문 / Gukhanmun
 
 한자는 그대로 두고, 독음을 위에 루비로 그리거나 그 한자를 한글로 바꿔 보여주는 글꼴입니다.
 
 ![루비, 치환, 북한어, 굵기, 한자 애드온](docs/demo.gif)
 
-[라이브 데모](https://morealdot.github.io/gukhan-font/) · [슬라이드](https://morealdot.github.io/gukhan-font/slides/) · [릴리스](https://github.com/morealdot/gukhan-font/releases)
+[라이브 데모](https://morealdot.github.io/gukhanmun-font/) · [슬라이드](https://morealdot.github.io/gukhanmun-font/slides/) · [릴리스](https://github.com/morealdot/gukhanmun-font/releases)
+
+이 주소는 저장소 이름이 `gukhanmun-font`가 된 뒤에 열립니다. 그 전까지 데모는 [https://morealdot.github.io/gukhan-font/](https://morealdot.github.io/gukhan-font/)입니다. Pages 경로는 빌드할 때 저장소 이름을 따릅니다.
 
 ## 내려받기
 
-폰트 패밀리마다 zip이 하나 있습니다. `GukhanSans`, `GukhanSansKP`, `GukhanHangul`, `GukhanHangulKP`. 정적 일곱 굵기, 가변 폰트, 웹 서브셋, 한자 애드온, `hanja.css`, `SHA256SUMS.txt`가 들어 있습니다.
+폰트 패밀리마다 zip이 하나 있습니다. `GukhanmunSans`, `GukhanmunSansKP`, `GukhanmunHangul`, `GukhanmunHangulKP`. 정적 일곱 굵기, 가변 폰트, 웹 서브셋, 한자 애드온, `hanja.css`, `SHA256SUMS.txt`가 들어 있습니다.
 
 ## 쓰는 법
 
@@ -16,30 +18,30 @@
 <p class="ruby">國漢文混用으로 쓴 大韓民國.</p>
 <style>
   @font-face {
-    font-family: "Gukhan Sans";
-    src: url("GukhanSans-Regular.woff2") format("woff2");
+    font-family: "Gukhanmun Sans";
+    src: url("GukhanmunSans-Regular.woff2") format("woff2");
     font-weight: 400;
   }
-  .ruby { font-family: "Gukhan Sans", sans-serif; line-height: 2; }
+  .ruby { font-family: "Gukhanmun Sans", sans-serif; line-height: 2; }
 </style>
 ```
 
 한자만 다른 한글 글꼴 위에 얹을 때는 애드온을 `font-family` 맨 앞에 둡니다. `unicode-range` 전체는 zip 안의 `hanja.css`입니다.
 
 ```html
-<p class="gukhan-hanja">女子와 男女, 平壤 冷麵.</p>
+<p class="gukhanmun-hanja">女子와 男女, 平壤 冷麵.</p>
 <style>
   @font-face {
-    font-family: "Gukhan Sans Hanja";
-    src: url("GukhanSansHanja-Regular.woff2") format("woff2");
+    font-family: "Gukhanmun Sans Hanja";
+    src: url("GukhanmunSansHanja-Regular.woff2") format("woff2");
     font-weight: 400;
     unicode-range: /* hanja.css */;
     ascent-override: 158%;
     descent-override: 28.8%;
     line-gap-override: 0%;
   }
-  .gukhan-hanja {
-    font-family: "Gukhan Sans Hanja", "Pretendard", sans-serif;
+  .gukhanmun-hanja {
+    font-family: "Gukhanmun Sans Hanja", "Pretendard", sans-serif;
     line-height: 2;
   }
 </style>

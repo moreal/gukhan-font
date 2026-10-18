@@ -46,7 +46,7 @@ export function cmapPicture(step = 99): string {
     ['U+6708', '月', '5271', 'cid20702'],
     ['U+5973', '女', '3779', 'cid14218'],
   ]
-  const head = `<text x="24" y="28" font-family="sans-serif" font-size="14" fill="${muted}">GukhanSans-Regular.otf cmap</text>
+  const head = `<text x="24" y="28" font-family="sans-serif" font-size="14" fill="${muted}">GukhanmunSans-Regular.otf cmap</text>
     <text x="24" y="56" font-family="ui-monospace, monospace" font-size="13" fill="${muted}">codepoint</text>
     <text x="250" y="56" font-family="ui-monospace, monospace" font-size="13" fill="${muted}">glyph id</text>
     <text x="430" y="56" font-family="ui-monospace, monospace" font-size="13" fill="${muted}">CFF name</text>`
@@ -154,7 +154,7 @@ export function dueum(step = 99): string {
 
 export function draw(step = 99): string {
   const ruby = `<g opacity="${show(step, 0)}">
-    <text x="24" y="24" font-family="sans-serif" font-size="14" fill="${muted}">Gukhan Sans · 윤곽 안의 루비</text>
+    <text x="24" y="24" font-family="sans-serif" font-size="14" fill="${muted}">Gukhanmun Sans · 윤곽 안의 루비</text>
     <rect x="24" y="36" width="200" height="250" fill="none" stroke="${line}"/>
     <line x1="24" y1="210" x2="224" y2="210" stroke="${indigo}"/>
     <text x="124" y="78" text-anchor="middle" font-family="sans-serif" font-size="16" fill="${red}">유월</text>
@@ -165,7 +165,7 @@ export function draw(step = 99): string {
     <text x="240" y="192" font-family="sans-serif" font-size="14" fill="${muted}">hhea ascender 1330</text>
   </g>`
   const replace = `<g opacity="${show(step, 1)}">
-    <text x="500" y="24" font-family="sans-serif" font-size="14" fill="${muted}">Gukhan Hangul · 같은 글리프 ID</text>
+    <text x="500" y="24" font-family="sans-serif" font-size="14" fill="${muted}">Gukhanmun Hangul · 같은 글리프 ID</text>
     <rect x="500" y="96" width="184" height="140" fill="none" stroke="${line}"/>
     <rect x="684" y="96" width="184" height="140" fill="none" stroke="${line}"/>
     <line x1="500" y1="210" x2="868" y2="210" stroke="${indigo}"/>
@@ -206,7 +206,7 @@ export function budget(step = 99): string {
 
 export function layerStack(step = 99): string {
   const rows = [
-    ['1', 'Gukhan Sans Hanja', 'unicode-range 안의 한자만', wash, red],
+    ['1', 'Gukhanmun Sans Hanja', 'unicode-range 안의 한자만', wash, red],
     ['2', 'Gothic A1', '한글, 라틴, 그 밖의 문자', '#e7eef6', indigo],
     ['3', 'Hanja Box', '애드온이 맡지 않은 한자를 빈 상자로', paper, line],
   ]

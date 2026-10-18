@@ -58,7 +58,7 @@ async function exists(path: string): Promise<boolean> {
 }
 
 async function download(url: string, dest: string): Promise<void> {
-  const response = await fetch(url, { headers: { 'user-agent': 'gukhan-font-build' } })
+  const response = await fetch(url, { headers: { 'user-agent': 'gukhanmun-font-build' } })
   if (!response.ok)
     throw new Error(`failed to download ${url}: ${response.status}`)
   await mkdir(dirname(dest), { recursive: true })
@@ -539,7 +539,7 @@ async function pack(dist: string, files: Artifact[], metrics: DemoMetrics): Prom
   await mkdir(release)
   const groups = new Map<string, Artifact[]>()
   for (const file of files) {
-    const bundle = `${file.style === 'ruby' ? 'GukhanSans' : 'GukhanHangul'}${file.region === 'ko-KP' ? 'KP' : ''}`
+    const bundle = `${file.style === 'ruby' ? 'GukhanmunSans' : 'GukhanmunHangul'}${file.region === 'ko-KP' ? 'KP' : ''}`
     const list = groups.get(bundle)
     if (list)
       list.push(file)
@@ -550,7 +550,7 @@ async function pack(dist: string, files: Artifact[], metrics: DemoMetrics): Prom
   for (const [bundle, members] of [...groups].sort((a, b) => a[0] < b[0] ? -1 : 1)) {
     const stage = await mkdirTemp()
     const bundleRegion: Region = bundle.endsWith('KP') ? 'ko-KP' : 'ko-KR'
-    const bundleStyle: FamilyStyle = bundle.startsWith('GukhanHangul') ? 'replace' : 'ruby'
+    const bundleStyle: FamilyStyle = bundle.startsWith('GukhanmunHangul') ? 'replace' : 'ruby'
     const css = renderHanjaCss(metrics, { style: bundleStyle, region: bundleRegion })
     const lines = [
       ...members.map(member => `${member.sha256}  ${member.file}`),
@@ -592,7 +592,7 @@ async function publishSite(dist: string, metrics: DemoMetrics): Promise<void> {
 
 async function mkdirTemp(): Promise<string> {
   const { mkdtemp } = await import('node:fs/promises')
-  return mkdtemp(join(tmpdir(), 'gukhan-release-'))
+  return mkdtemp(join(tmpdir(), 'gukhanmun-release-'))
 }
 
 async function main(): Promise<void> {
