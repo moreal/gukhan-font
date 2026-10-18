@@ -9,6 +9,8 @@ import * as hb from 'harfbuzzjs'
 import { brotli, compileFont, readFontInfo, subsetWasm, toWoff2 } from '../vendor/furifont/index.ts'
 import { subsetFont } from '../vendor/furifont/subset.ts'
 import { displayCodepoints, pagesDistFonts, renderDemo, renderHanjaCss, type DemoMetrics } from './demo.ts'
+import { renderLanding } from './landing.ts'
+import { renderPlayground } from './playground.ts'
 import { emitFamily, planReadings, type BuildReport, type FamilyStyle, type ReadingPlan } from './emit.ts'
 import { fileName, productName, WEIGHTS, type ProductKind, type WeightName } from './families.ts'
 import { cssPercent, faceMetrics, rubyAscender } from './metrics.ts'
@@ -585,8 +587,9 @@ async function publishSite(dist: string, metrics: DemoMetrics): Promise<void> {
     await writeFile(join(fonts, name), await readFile(join(dist, name)))
   for (const name of DEMO_FACE_FILES)
     await writeFile(join(fonts, name), await readFile(join(root, 'demo', 'fonts', name)))
-  await writeFile(join(site, 'index.html'), renderDemo(metrics, 'pages'))
-  await cp(join(root, 'drafts'), join(site, 'drafts'), { recursive: true })
+  await writeFile(join(site, 'index.html'), renderLanding(metrics, 'pages'))
+  await mkdir(join(site, 'playground'), { recursive: true })
+  await writeFile(join(site, 'playground', 'index.html'), renderPlayground())
   await writeFile(join(site, '.nojekyll'), '')
   console.log(`wrote site/ with ${pagesDistFonts().length + DEMO_FACE_FILES.length} fonts`)
 }

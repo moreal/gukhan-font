@@ -263,7 +263,7 @@ ${blocks.join('\n')}
 `
 }
 
-function cssSnippet(metrics: DemoMetrics): { web: string, addon: string } {
+export function installSnippets(metrics: DemoMetrics): { web: string, addon: string } {
   const webFamily = productName('ruby', 'ko-KR', 'web').family
   const hanjaFamily = productName('ruby', 'ko-KR', 'hanja').family
   const hangulHanja = productName('replace', 'ko-KR', 'hanja').family
@@ -325,7 +325,7 @@ function sectionHead(numeral: string, title: string): string {
 
 /** Landing page. The Pages profile is served under `/gukhanmun-font/`. Variable fonts load when the slider or the waterfall asks for them. */
 export function renderDemo(metrics: DemoMetrics, profile: DemoProfile = 'local'): string {
-  const snippet = cssSnippet(metrics)
+  const snippet = installSnippets(metrics)
   const releases = `${githubOrigin()}/releases`
   const repo = githubOrigin()
   const slides = `${pagesBase()}slides/`
@@ -956,6 +956,7 @@ ${explainCss()}
         <div class="wrap bar-inner">
           <a class="mark" href="${profile === 'pages' ? pagesBase() : './'}">국한문</a>
           <nav class="nav" aria-label="페이지">
+            <a href="${pagesBase()}playground/">놀이터</a>
             <a href="#try">써 보기</a>
             <a href="#weights">굵기</a>
             <a href="#specimens">예문</a>
@@ -1082,12 +1083,10 @@ ${explainHtml()}
             <div>
               <p class="foot-label"><span class="fn">3</span> 더 보기</p>
               <nav aria-label="바깥 링크">
+                <a href="${pagesBase()}playground/">놀이터</a>
                 <a href="${slides}">슬라이드</a>
                 <a href="${repo}">저장소</a>
                 <a href="${releases}">릴리스</a>
-                <a href="${pagesBase()}drafts/a/">시안 조판</a>
-                <a href="${pagesBase()}drafts/b/">시안 견본</a>
-                <a href="${pagesBase()}drafts/c/">시안 시험</a>
               </nav>
             </div>
           </div>
