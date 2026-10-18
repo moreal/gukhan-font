@@ -274,7 +274,7 @@ test('the pages demo is rooted at /gukhan-font/ and ships the light font set', (
   assert.match(pages, /<base href="\/gukhan-font\/">/)
   assert.equal(pages.includes('../dist/'), false)
   assert.match(pages, /fonts\/GukhanSansVF\.woff2/)
-  assert.match(pages, />가변 폰트<\/label>/)
+  assert.match(pages, /id="vf" name="source" type="radio"><span class="full">가변 폰트<\/span>/)
   assert.equal(pages.includes('id="w700"'), false)
   assert.equal(pages.includes('id="full"'), false)
   assert.match(pages, /id="web" name="source" type="radio" checked/)

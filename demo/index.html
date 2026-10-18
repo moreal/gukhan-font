@@ -436,6 +436,7 @@
         --chip: #efe6d6;
         --ui: "Gothic A1", sans-serif;
         --display: "Gowun Batang", "Gothic A1", serif;
+        --bar: 4.5rem;
       }
       * { box-sizing: border-box; }
       html { background: var(--paper); color: var(--ink); }
@@ -463,12 +464,12 @@
       }
       .bar-inner {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         align-items: center;
         justify-content: space-between;
-        gap: 0.55rem 1.4rem;
-        padding-top: 0.85rem;
-        padding-bottom: 0.85rem;
+        gap: 0.75rem 1.4rem;
+        padding-top: 0.7rem;
+        padding-bottom: 0.7rem;
       }
       .mark {
         color: var(--cinnabar);
@@ -476,18 +477,27 @@
         font-family: var(--display);
         font-size: 1.12rem;
         letter-spacing: 0.18em;
+        line-height: 1.2;
       }
-      .nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.15rem; }
+      .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.25rem 1.15rem;
+        min-width: 0;
+      }
       .nav a {
         color: var(--ink);
         text-decoration: none;
         font-size: 0.92rem;
+        line-height: 1.2;
+        white-space: nowrap;
       }
       .nav a:hover { color: var(--cinnabar); }
       .hero {
         position: relative;
         padding: clamp(3.5rem, 9vw, 7.5rem) 0 clamp(3.2rem, 7vw, 6rem);
-        scroll-margin-top: 4.5rem;
+        scroll-margin-top: calc(var(--bar) + 0.45rem);
         background-image:
           linear-gradient(to right, rgba(28, 25, 21, 0.045) 1px, transparent 1px),
           linear-gradient(to bottom, rgba(28, 25, 21, 0.045) 1px, transparent 1px);
@@ -562,7 +572,7 @@
         text-decoration-color: var(--rule);
       }
       .btn.text:hover { color: var(--cinnabar); text-decoration-color: var(--cinnabar); background: transparent; }
-      .block { padding: clamp(4.2rem, 9vw, 7rem) 0; border-top: 1px solid var(--rule); scroll-margin-top: 4.5rem; }
+      .block { padding: clamp(4.2rem, 9vw, 7rem) 0; border-top: 1px solid var(--rule); scroll-margin-top: calc(var(--bar) + 0.45rem); }
       .sec-head {
         margin: 0 0 1.35rem;
         padding-bottom: 0.55rem;
@@ -684,7 +694,7 @@
       legend { padding: 0; margin-bottom: 0.5rem; color: var(--muted); font-family: var(--display); font-size: 0.92rem; letter-spacing: 0.04em; }
       .choice {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 0.2rem;
         width: fit-content;
         max-width: 100%;
@@ -698,7 +708,10 @@
         padding: 0.38rem 0.8rem;
         cursor: pointer;
         color: var(--ink);
+        line-height: 1.25;
+        white-space: nowrap;
       }
+      .choice .brief { display: none; }
       .choice input {
         position: absolute;
         inset: 0;
@@ -940,7 +953,7 @@
         margin-top: 0;
         padding: clamp(3rem, 7vw, 5.5rem) 0;
         border-top: 1px solid var(--rule);
-        scroll-margin-top: 4.5rem;
+        scroll-margin-top: calc(var(--bar) + 0.45rem);
       }
       .how svg { max-width: 100%; height: auto; }
       .credit { margin: 0.35rem 0; }
@@ -956,7 +969,7 @@
       .foot {
         padding: clamp(3.2rem, 7vw, 5rem) 0 clamp(2.6rem, 5vw, 3.5rem);
         border-top: 3px double var(--ink);
-        scroll-margin-top: 4.5rem;
+        scroll-margin-top: calc(var(--bar) + 0.45rem);
       }
       .foot-grid {
         display: grid;
@@ -1006,12 +1019,43 @@
         .btn, .nav a, .choice label { transition: none; }
       }
       @media (max-width: 860px) {
+        :root { --bar: 3.35rem; }
+        .bar-inner { padding-top: 0.45rem; padding-bottom: 0.45rem; gap: 0.7rem; }
+        .mark { font-size: 1rem; letter-spacing: 0.1em; flex: 0 0 auto; }
+        .nav {
+          flex: 1 1 auto;
+          justify-content: safe flex-end;
+          overflow-x: auto;
+          overscroll-behavior-x: contain;
+          gap: 0.55rem;
+          scrollbar-width: none;
+        }
+        .nav a { font-size: 0.84rem; }
+        .nav::-webkit-scrollbar { display: none; }
+        .choice {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+          width: 100%;
+          border-radius: 2px;
+        }
+        .choice label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 0;
+          border-radius: 2px;
+          padding: 0.5rem 0.3rem;
+          text-align: center;
+        }
+        .choice .full { display: none; }
+        .choice .brief { display: inline; }
         .specs { grid-template-columns: 1fr; }
         .glyphs { grid-template-columns: repeat(3, 1fr); }
         .foot-grid { grid-template-columns: 1fr; }
       }
       @media (max-width: 720px) {
-        .controls { grid-template-columns: 1fr; }
+        .controls { grid-template-columns: 1fr; min-width: 0; }
+        .stage { font-size: 32px; }
         .wrow { grid-template-columns: 1fr; gap: 0.1rem; padding-top: 0.85rem; }
         .hero-lockup { max-width: none; }
       }
@@ -1131,23 +1175,23 @@
             <fieldset>
               <legend>폰트 패밀리</legend>
               <div class="choice">
-                <label><input id="sans" name="family" type="radio" checked>루비 Gukhan Sans</label>
-                <label><input id="hangul" name="family" type="radio">치환 Gukhan Hangul</label>
+                <label><input id="sans" name="family" type="radio" checked><span class="full">루비 Gukhan Sans</span><span class="brief">루비</span></label>
+                <label><input id="hangul" name="family" type="radio"><span class="full">치환 Gukhan Hangul</span><span class="brief">치환</span></label>
               </div>
             </fieldset>
             <fieldset>
               <legend>지역</legend>
               <div class="choice">
-                <label><input id="kr" name="region" type="radio" checked>남한 ko-KR</label>
-                <label><input id="kp" name="region" type="radio">북한 ko-KP</label>
+                <label><input id="kr" name="region" type="radio" checked><span class="full">남한 ko-KR</span><span class="brief">남한</span></label>
+                <label><input id="kp" name="region" type="radio"><span class="full">북한 ko-KP</span><span class="brief">북한</span></label>
               </div>
             </fieldset>
             <fieldset>
               <legend>파일</legend>
               <div class="choice">
-                <label><input id="web" name="source" type="radio" checked>웹 서브셋</label>
-                <label><input id="vf" name="source" type="radio">가변 폰트</label>
-                <label><input id="addon" name="source" type="radio">한자 애드온</label>
+                <label><input id="web" name="source" type="radio" checked><span class="full">웹 서브셋</span><span class="brief">웹</span></label>
+                <label><input id="vf" name="source" type="radio"><span class="full">가변 폰트</span><span class="brief">가변</span></label>
+                <label><input id="addon" name="source" type="radio"><span class="full">한자 애드온</span><span class="brief">애드온</span></label>
               </div>
             </fieldset>
             <fieldset>
@@ -1679,6 +1723,8 @@ hb-shape GukhanSans-Regular.otf --text '女子와 男女'
         var vf = document.getElementById('vf')
         var web = document.getElementById('web')
         var addon = document.getElementById('addon')
+        if (window.matchMedia('(max-width: 720px)').matches && size.value === '48')
+          size.value = '32'
         function sync() {
           stage.style.fontSize = size.value + 'px'
           document.getElementById('size-out').textContent = size.value
