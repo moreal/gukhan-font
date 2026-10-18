@@ -85,6 +85,24 @@ ruby 태그는 문서를 마크업으로 바꿉니다. 그 마크업 밖에는 �
 
 ---
 
+# 앞선 작업. gukhanmun
+
+[gukhanmun](https://gukhanmun.org/)은 홍민혜의 라이브러리입니다. 국한문혼용을 한글 문자열로 바꿉니다.
+
+- 저장소는 [dahlia/gukhanmun](https://github.com/dahlia/gukhanmun)입니다.
+- 우리말샘 북한어 표를 2026-06-03에 뽑았습니다. 이 글꼴의 북한 단어 표는 그 데이터입니다.
+- 사이트 이름도 국한문입니다. 프로젝트는 다릅니다. 이 글꼴은 글리프를 바꾸고, gukhanmun은 문자열을 바꿉니다.
+
+코드를 가져오지 않았습니다.
+
+<!--
+gukhanmun.org는 홍민혜의 변환 라이브러리입니다. 이 글꼴과 이름이 같지만 다른 프로젝트입니다.
+북한 단어 표는 그 라이브러리가 2026-06-03에 우리말샘에서 뽑은 표입니다.
+선비가 문자열을 바꾸듯, gukhanmun도 문자열을 바꿉니다. 이 글꼴은 글리프를 바꿉니다.
+-->
+
+---
+
 # 앞선 작업. furifont
 
 [antfu/furifont](https://github.com/antfu/furifont) 0.5.1은 후리가나를 글꼴이 직접 그리는 컴파일러입니다.
@@ -646,7 +664,7 @@ size-adjust 기본은 100퍼센트입니다.
 
 각 zip에 정적 일곱 굵기, 가변, 웹 서브셋, 한자 애드온, `hanja.css`, `SHA256SUMS.txt`가 있습니다.
 
-코드는 MIT, 글꼴은 SIL OFL, 남한 사전은 CC BY-SA 4.0, 북한 사전은 CC BY-SA 2.0 KR, Unihan은 Unicode 라이선스입니다.
+코드는 MIT, 글꼴은 SIL OFL, 남한 사전은 CC BY-SA 4.0, 북한 사전은 CC BY-SA 2.0 KR, Unihan은 Unicode 라이선스입니다. 북한 사전 표는 [gukhanmun](https://gukhanmun.org/)이 2026-06-03에 뽑은 것입니다.
 
 <!--
 받는 곳은 GitHub 릴리스입니다. 폰트 패밀리마다 zip이 하나이고, 체크섬이 들어 있습니다.

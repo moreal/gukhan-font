@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>시안 B. 견본 — 국한문</title>
+  <meta name="description" content="한 장씩 넘기는 국한문 견본첩. 인장이 찍히고, 예문이 천천히 나타납니다.">
+  <link rel="preload" href="/gukhanmun-font/fonts/GukhanmunSans-Web.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/gukhanmun-font/fonts/GothicA1-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face {
+      font-family: "Gukhanmun Sans Web";
+      src: url("/gukhanmun-font/fonts/GukhanmunSans-Web.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Gukhanmun Hangul Web";
+      src: url("/gukhanmun-font/fonts/GukhanmunHangul-Web.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Gukhanmun Sans KP Web";
+      src: url("/gukhanmun-font/fonts/GukhanmunSansKP-Web.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Gukhanmun Mark";
+      src: url("/gukhanmun-font/fonts/GukhanmunSans-Web.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+      ascent-override: 86%;
+      descent-override: 14%;
+      line-gap-override: 0%;
+    }
+    @font-face {
+      font-family: "Gothic A1";
+      src: url("/gukhanmun-font/fonts/GothicA1-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    :root {
+      color-scheme: light;
+      --paper: #f3efe4;
+      --ink: #1c1915;
+      --muted: #5a534b;
+      --rule: #d9d0c2;
+      --cinnabar: #8c2f2b;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-snap-type: y mandatory; background: #e7e0d4; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Gothic A1", sans-serif;
+      background: #e7e0d4;
+    }
+    a { color: inherit; }
+    .sheet {
+      min-height: 100vh;
+      min-height: 100dvh;
+      scroll-snap-align: start;
+      display: grid;
+      align-content: center;
+      padding: 4.5rem 1.25rem 3rem;
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+    }
+    .folio {
+      position: absolute;
+      top: 1.15rem;
+      left: 1.25rem;
+      right: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+    }
+    .folio nav { display: flex; gap: 0.8rem; letter-spacing: 0; }
+    .folio a { text-decoration: none; }
+    .folio a[aria-current="page"] { color: var(--cinnabar); }
+    .kicker {
+      margin: 0 0 0.8rem;
+      color: var(--cinnabar);
+      letter-spacing: 0.2em;
+      font-size: 0.78rem;
+    }
+    h1, h2 {
+      margin: 0;
+      font-weight: 400;
+      font-family: "Gothic A1", sans-serif;
+      letter-spacing: 0;
+    }
+    .cover { justify-items: center; text-align: center; }
+    .seal {
+      width: 2.2em;
+      height: 2.2em;
+      margin: 0 0 1.4rem;
+      display: grid;
+      place-items: center;
+      background: var(--cinnabar);
+      color: var(--paper);
+      font-family: "Gukhanmun Mark", "Gukhanmun Sans Web", sans-serif;
+      font-feature-settings: "ss01" 1;
+      font-size: clamp(2.6rem, 8vw, 4.2rem);
+      line-height: 1;
+      animation: stamp 1.05s cubic-bezier(.16, .84, .28, 1) both;
+    }
+    h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
+    .deck {
+      margin: 0.8rem 0 0;
+      max-width: 22em;
+      color: var(--muted);
+    }
+    .rule {
+      width: min(16rem, 70%);
+      height: 1px;
+      margin: 1.4rem auto 0;
+      background: var(--cinnabar);
+      transform-origin: left center;
+      animation: draw 1.1s 0.35s cubic-bezier(.2, .7, .2, 1) both;
+    }
+    .spread { width: min(68rem, 100%); margin: 0 auto; }
+    h2 { font-size: clamp(1.35rem, 2vw, 1.7rem); margin-bottom: 0.35rem; }
+    .note { margin: 0 0 1rem; max-width: 36em; color: var(--muted); }
+    .sample {
+      margin: 0;
+      font-family: "Gukhanmun Sans Web", sans-serif;
+      font-weight: 400;
+      font-size: clamp(2rem, 6vw, 4.6rem);
+      line-height: 2;
+    }
+    .hangul {
+      font-family: "Gukhanmun Hangul Web", sans-serif;
+      line-height: 1.35;
+      font-size: clamp(2rem, 5.2vw, 4rem);
+    }
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem 2rem;
+    }
+    .pair p { margin: 0.2rem 0 0; }
+    .where { margin: 0; color: var(--cinnabar); letter-spacing: 0.14em; font-size: 0.78rem; }
+    .kp { font-family: "Gukhanmun Sans KP Web", sans-serif; }
+    .glyphs {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      border-top: 1px solid var(--ink);
+      border-left: 1px solid var(--ink);
+    }
+    .glyphs b {
+      display: grid;
+      place-items: center;
+      min-height: 2.15em;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      font-family: "Gukhanmun Sans Web", sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.7rem, 4vw, 3rem);
+      line-height: 2;
+    }
+    .colophon .note { margin-top: 0.8rem; }
+    .rise {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+    @keyframes stamp {
+      0% { opacity: 0; transform: scale(1.42) rotate(-7deg); filter: blur(5px); }
+      58% { opacity: 1; transform: scale(0.95) rotate(0.4deg); filter: none; }
+      100% { opacity: 1; transform: none; }
+    }
+    @keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(1.1rem); }
+      to { opacity: 1; transform: none; }
+    }
+    @media (max-width: 720px) {
+      .pair { grid-template-columns: 1fr; }
+      .glyphs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .sheet { padding-top: 4.2rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-snap-type: none; }
+      .seal, .rule, .rise { animation: none; }
+      .rule { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <section class="sheet cover">
+    <div class="folio">
+      <span>01</span>
+      <nav aria-label="시안">
+        <a href="/gukhanmun-font/">국한문</a>
+        <a href="/gukhanmun-font/drafts/a/">조판</a>
+        <a href="/gukhanmun-font/drafts/b/" aria-current="page">견본</a>
+        <a href="/gukhanmun-font/drafts/c/">시험</a>
+      </nav>
+    </div>
+    <div class="seal" aria-hidden="true">國</div>
+    <p class="kicker">GUKHANMUN SANS</p>
+    <h1>국한문 견본</h1>
+    <p class="deck">한 장에 한 가지. 루비, 치환, 남한과 북한, 글자.</p>
+    <div class="rule"></div>
+  </section>
+
+  <section class="sheet">
+    <div class="folio"><span>02 · 루비</span><span>Gukhanmun Sans</span></div>
+    <div class="spread rise">
+      <p class="kicker">RUBY</p>
+      <h2>독음은 전각 위에 있습니다</h2>
+      <p class="note">줄 높이를 2로 두면 잘리지 않습니다. 복사하면 한자입니다.</p>
+      <p class="sample">大韓民國의 憲法</p>
+    </div>
+  </section>
+
+  <section class="sheet">
+    <div class="folio"><span>03 · 치환</span><span>Gukhanmun Hangul</span></div>
+    <div class="spread rise">
+      <p class="kicker">REPLACE</p>
+      <h2>한자 자리에 독음이 앉습니다</h2>
+      <p class="note">화면의 글자는 한글이고, 코드포인트는 한자입니다.</p>
+      <p class="sample hangul">音樂과 快樂</p>
+    </div>
+  </section>
+
+  <section class="sheet">
+    <div class="folio"><span>04 · 지역</span><span>ko-KR · ko-KP</span></div>
+    <div class="spread rise">
+      <p class="kicker">REGION</p>
+      <h2>같은 한자, 다른 독음</h2>
+      <div class="pair">
+        <div>
+          <p class="where">남한 · ko-KR</p>
+          <p class="sample">平壤 冷麵</p>
+        </div>
+        <div>
+          <p class="where">북한 · ko-KP</p>
+          <p class="sample kp">平壤 冷麵</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sheet">
+    <div class="folio"><span>05 · 글자</span><span>한 칸에 한 자</span></div>
+    <div class="spread rise">
+      <p class="kicker">GLYPHS</p>
+      <h2>글자</h2>
+      <div class="glyphs" aria-label="한자 견본">
+        <b>國</b><b>漢</b><b>文</b><b>樂</b><b>女</b><b>男</b><b>六</b><b>月</b><b>冷</b><b>麵</b><b>平</b><b>壤</b>
+      </div>
+    </div>
+  </section>
+
+  <section class="sheet colophon">
+    <div class="folio"><span>06</span><a href="/gukhanmun-font/">본문</a></div>
+    <div class="spread">
+      <p class="kicker">COLOPHON</p>
+      <h2>국한문</h2>
+      <p class="note">윤곽은 Source Han Sans KR입니다. 글꼴은 SIL OFL 1.1입니다. 남한 단어 표는 선비, 북한 단어 표는 <a href="https://gukhanmun.org/">gukhanmun</a>이 2026-06-03에 뽑은 우리말샘 표입니다. gukhanmun은 이 글꼴과 다른 프로젝트입니다.</p>
+    </div>
+  </section>
+</body>
+</html>

@@ -1076,7 +1076,7 @@ ${explainHtml()}
             </div>
             <div>
               <p class="foot-label"><span class="fn">2</span> 바탕</p>
-              <p>윤곽은 Adobe <a href="https://github.com/adobe-fonts/source-han-sans">Source Han Sans</a> KR에서 왔습니다. 단어 독음 표는 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서 왔습니다. 글꼴 컴파일은 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>입니다.</p>
+              <p>윤곽은 Adobe <a href="https://github.com/adobe-fonts/source-han-sans">Source Han Sans</a> KR에서 왔습니다. 남한 단어 표는 <a href="https://github.com/dahlia/seonbi">dahlia의 선비</a>에서 왔습니다. 북한 단어 표는 <a href="https://gukhanmun.org/">dahlia의 gukhanmun</a>이 2026-06-03에 우리말샘에서 뽑은 것입니다. gukhanmun은 국한문혼용을 한글 문자열로 바꾸는 라이브러리이고, 이 글꼴과 다른 프로젝트입니다. 글꼴 컴파일은 <a href="https://github.com/antfu/furifont">Anthony Fu의 furifont</a>입니다.</p>
               <p>본문은 Gothic A1(OFL)이고, 제목은 류양희의 <a href="https://github.com/yangheeryu/Gowun-Batang">고운바탕</a>(OFL)입니다. 애드온과 짝이 되는 폰트 패밀리에는 같은 메트릭 오버라이드를 얹었습니다.</p>
             </div>
             <div>
@@ -1085,6 +1085,9 @@ ${explainHtml()}
                 <a href="${slides}">슬라이드</a>
                 <a href="${repo}">저장소</a>
                 <a href="${releases}">릴리스</a>
+                <a href="${pagesBase()}drafts/a/">시안 조판</a>
+                <a href="${pagesBase()}drafts/b/">시안 견본</a>
+                <a href="${pagesBase()}drafts/c/">시안 시험</a>
               </nav>
             </div>
           </div>

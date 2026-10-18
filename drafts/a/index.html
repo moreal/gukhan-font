@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>시안 A. 조판 — 국한문</title>
+  <meta name="description" content="스크롤하면 독음이 한자 위에 앉고, 音樂이 음악으로 묶이며, 굵기가 따라갑니다.">
+  <link rel="preload" href="/gukhanmun-font/fonts/GukhanmunSans-Web.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/gukhanmun-font/fonts/GukhanmunSansVF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/gukhanmun-font/fonts/GothicA1-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face {
+      font-family: "Gukhanmun Sans Web";
+      src: url("/gukhanmun-font/fonts/GukhanmunSans-Web.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Gukhanmun Sans VF";
+      src: url("/gukhanmun-font/fonts/GukhanmunSansVF.woff2") format("woff2");
+      font-weight: 250 900;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Gothic A1";
+      src: url("/gukhanmun-font/fonts/GothicA1-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    :root {
+      color-scheme: light;
+      --paper: #f6f3ec;
+      --ink: #1b1916;
+      --muted: #5c564e;
+      --line: rgba(27, 25, 22, 0.14);
+      --cinnabar: #8c2f2b;
+      --bar: 3.25rem;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--paper); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(to right, rgba(27, 25, 22, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(27, 25, 22, 0.045) 1px, transparent 1px),
+        var(--paper);
+      background-size: 3.5rem 3.5rem;
+      font-family: "Gothic A1", sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      overflow-x: clip;
+    }
+    a { color: inherit; }
+    .top {
+      position: fixed;
+      z-index: 5;
+      inset: 0 0 auto 0;
+      height: var(--bar);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0 1.1rem;
+      background: color-mix(in srgb, var(--paper) 88%, transparent);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+    .brand {
+      text-decoration: none;
+      letter-spacing: 0.18em;
+      font-size: 0.92rem;
+    }
+    .top nav { display: flex; gap: 0.9rem; }
+    .top nav a {
+      text-decoration: none;
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+    .top nav a[aria-current="page"] { color: var(--cinnabar); }
+    .act { height: 230vh; view-timeline-name: --act; view-timeline-axis: block; }
+    .pin {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      padding: calc(var(--bar) + 1.25rem) 1.25rem 2rem;
+      text-align: center;
+    }
+    .step {
+      margin: 0 0 0.35rem;
+      color: var(--cinnabar);
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+    }
+    .stack { position: relative; }
+    .hero, .split, .joined, .axis {
+      margin: 0;
+      font-weight: 400;
+      font-size: clamp(2.7rem, 12vw, 8rem);
+      line-height: 2;
+      letter-spacing: 0;
+    }
+    .hero { font-family: "Gukhanmun Sans Web", sans-serif; }
+    .plain { font-feature-settings: "ss01" 1; }
+    .ruby {
+      position: absolute;
+      inset: 0;
+      font-feature-settings: "ss01" 0;
+    }
+    .cap {
+      position: relative;
+      min-height: 3.2em;
+      margin: 0.2rem 0 0;
+      max-width: 28rem;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+    .cap span { display: block; }
+    .cap .on { position: absolute; inset: 0; }
+    .meet { position: relative; min-height: 2em; }
+    .split {
+      display: flex;
+      justify-content: center;
+      font-family: "Gukhanmun Sans Web", sans-serif;
+    }
+    .joined {
+      position: absolute;
+      inset: 0;
+      font-family: "Gukhanmun Sans Web", sans-serif;
+      opacity: 0;
+    }
+    .axis {
+      font-family: "Gukhanmun Sans VF", "Gukhanmun Sans Web", sans-serif;
+      font-weight: 900;
+    }
+    .axis-out {
+      margin: 0.4rem 0 0;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.14em;
+      color: var(--cinnabar);
+    }
+    .colophon {
+      padding: 12vh 1.25rem 18vh;
+      text-align: center;
+    }
+    .colophon a { color: var(--cinnabar); }
+    .plain {
+      animation: plain-out linear both;
+      animation-timeline: --act;
+      animation-range: entry 100% exit 0%;
+    }
+    .ruby {
+      animation: ruby-in linear both;
+      animation-timeline: --act;
+      animation-range: entry 100% exit 0%;
+    }
+    #open .off {
+      animation: plain-out linear both;
+      animation-timeline: --act;
+      animation-range: entry 100% exit 0%;
+    }
+    #open .on {
+      animation: cap-on linear both;
+      animation-timeline: --act;
+      animation-range: entry 100% exit 0%;
+    }
+    .split span:first-child, .split span:last-child {
+      animation: meet linear both;
+      animation-timeline: --act;
+      animation-range: entry 100% exit 35%;
+    }
+    .split span:first-child { --from: -11vw; }
+    .split span:last-child { --from: 11vw; }
+    .split {
+      animation: fade-out linear both;
+      animation-timeline: --act;
+      animation-range: entry 100% exit 0%;
+    }
+    .joined {
+      animation: fade-in linear both;
+      animation-timeline: --act;
+      animation-range: entry 100% exit 0%;
+    }
+    #liga .off {
+      animation: fade-out linear both;
+      animation-timeline: --act;
+      animation-range: entry 100% exit 0%;
+    }
+    #liga .on {
+      animation: fade-in linear both;
+      animation-timeline: --act;
+      animation-range: entry 100% exit 0%;
+    }
+    .axis {
+      animation: weigh linear both;
+      animation-timeline: --act;
+      animation-range: entry 100% exit 0%;
+    }
+    @keyframes plain-out {
+      0%, 6% { opacity: 1; }
+      30%, 100% { opacity: 0; }
+    }
+    @keyframes ruby-in {
+      0%, 12% { opacity: 0; transform: translateY(-0.1em); }
+      26% { opacity: 0.4; transform: none; }
+      42%, 100% { opacity: 1; transform: none; }
+    }
+    @keyframes cap-on {
+      0%, 8% { opacity: 0; }
+      36%, 100% { opacity: 1; }
+    }
+    @keyframes meet {
+      from { transform: translateX(var(--from)); }
+      to { transform: none; }
+    }
+    @keyframes fade-out {
+      0%, 42% { opacity: 1; }
+      68%, 100% { opacity: 0; }
+    }
+    @keyframes fade-in {
+      0%, 46% { opacity: 0; }
+      72%, 100% { opacity: 1; }
+    }
+    @keyframes weigh {
+      from { font-weight: 250; }
+      to { font-weight: 900; }
+    }
+    @media (max-width: 720px) {
+      .split span:first-child { --from: -6vw; }
+      .split span:last-child { --from: 6vw; }
+      .hero, .split, .joined, .axis { font-size: clamp(2.35rem, 14vw, 3.4rem); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .plain, .ruby, .split, .split span, .joined, .axis, .cap span { animation: none; }
+      .plain, #open .off, #liga .off { opacity: 0; }
+      .ruby { opacity: 1; clip-path: none; }
+      .joined, #open .on, #liga .on { opacity: 1; }
+      .axis { font-weight: 560; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/gukhanmun-font/">국한문</a>
+    <nav aria-label="시안">
+      <a href="/gukhanmun-font/drafts/a/" aria-current="page">조판</a>
+      <a href="/gukhanmun-font/drafts/b/">견본</a>
+      <a href="/gukhanmun-font/drafts/c/">시험</a>
+    </nav>
+  </header>
+  <h1 class="visually-hidden">조판. 스크롤하면 독음이 한자 위에 앉습니다.</h1>
+
+  <section class="act" id="open">
+    <div class="pin">
+      <p class="step">01 · ss01</p>
+      <div class="stack">
+        <p class="hero plain">國漢文混用</p>
+        <p class="hero ruby">國漢文混用</p>
+      </div>
+      <p class="cap">
+        <span class="off">한자만 보입니다. 스타일 세트 ss01이 루비를 끄고 있습니다.</span>
+        <span class="on">같은 글꼴이 독음을 글리프 안에 그립니다. 자바스크립트가 붙인 주석이 아닙니다.</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="act" id="liga">
+    <div class="pin">
+      <p class="step">02 · GSUB</p>
+      <div class="meet">
+        <p class="split hero"><span>音</span><span>樂</span></p>
+        <p class="joined hero">音樂</p>
+      </div>
+      <p class="cap">
+        <span class="off">글자마다 읽으면 樂은 락입니다. 음락.</span>
+        <span class="on">音樂은 합자 하나입니다. 셰이핑이 음악으로 바꿉니다.</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="act" id="axis">
+    <div class="pin">
+      <p class="step">03 · wght</p>
+      <p class="axis">音樂</p>
+      <p class="axis-out" id="wght">250</p>
+      <p class="cap"><span class="on">가변 폰트입니다. 한자와 독음의 획이 같은 굵기 축을 탑니다.</span></p>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <p>Gukhanmun Sans · <a href="/gukhanmun-font/">본문으로</a></p>
+  </footer>
+  <style>
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+  </style>
+  <script>
+    (function () {
+      var axis = document.querySelector('.axis')
+      var out = document.getElementById('wght')
+      if (!axis || !out) return
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      function tick() {
+        var weight = Math.round(parseFloat(getComputedStyle(axis).fontWeight))
+        if (weight) out.textContent = String(weight)
+        if (!reduce) requestAnimationFrame(tick)
+      }
+      tick()
+    })()
+  </script>
+</body>
+</html>

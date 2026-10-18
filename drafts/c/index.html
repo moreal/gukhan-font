@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>시안 C. 시험 — 국한문</title>
+  <meta name="description" content="한자를 치면 독음이 바로 붙습니다. 커서를 움직이면 굵기가 따라갑니다.">
+  <link rel="preload" href="/gukhanmun-font/fonts/GukhanmunSans-Web.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/gukhanmun-font/fonts/GukhanmunSansVF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/gukhanmun-font/fonts/GothicA1-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face {
+      font-family: "Gukhanmun Sans Web";
+      src: url("/gukhanmun-font/fonts/GukhanmunSans-Web.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Gukhanmun Sans Play";
+      src: url("/gukhanmun-font/fonts/GukhanmunSansVF.woff2") format("woff2");
+      font-weight: 250 900;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Gukhanmun Hangul Web";
+      src: url("/gukhanmun-font/fonts/GukhanmunHangul-Web.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Gukhanmun Hangul Play";
+      src: url("/gukhanmun-font/fonts/GukhanmunHangulVF.woff2") format("woff2");
+      font-weight: 250 900;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Gothic A1";
+      src: url("/gukhanmun-font/fonts/GothicA1-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    :root {
+      color-scheme: dark;
+      --ink: #141210;
+      --paper: #f3efe6;
+      --muted: #b7aea2;
+      --line: rgba(243, 239, 230, 0.16);
+      --cinnabar: #e07a62;
+      --bar: 3.15rem;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "Gothic A1", sans-serif;
+      overflow: hidden;
+    }
+    a { color: inherit; }
+    .top, .dock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+    }
+    .top { border-bottom: 1px solid var(--line); }
+    .brand { text-decoration: none; letter-spacing: 0.16em; font-size: 0.92rem; }
+    .top nav, .modes { display: flex; gap: 0.75rem; align-items: center; }
+    .top nav a { color: var(--muted); text-decoration: none; font-size: 0.86rem; }
+    .top nav a[aria-current="page"] { color: var(--cinnabar); }
+    .stage-wrap {
+      position: relative;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      padding: 0.5rem 1.1rem 0.25rem;
+    }
+    #stage {
+      width: min(100%, 16em);
+      margin: 0;
+      text-align: center;
+      font-family: "Gukhanmun Sans Play", "Gukhanmun Sans Web", sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.85rem, 5.6vw, 4.6rem);
+      line-height: 2;
+      outline: none;
+      overflow-wrap: anywhere;
+      caret-color: var(--cinnabar);
+    }
+    #stage:focus-visible { outline: 1px solid var(--cinnabar); outline-offset: 0.35rem; }
+    #stage.is-replace {
+      font-family: "Gukhanmun Hangul Play", "Gukhanmun Hangul Web", sans-serif;
+      line-height: 1.35;
+    }
+    #stage.morph { transition: opacity 220ms ease; }
+    .hairline {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 1px;
+      background: var(--cinnabar);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 4;
+    }
+    .dock {
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+    }
+    .modes { border: 0; margin: 0; padding: 0; display: flex; gap: 0.35rem; }
+    .modes button, .chips button {
+      font: inherit;
+      color: var(--paper);
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+    }
+    .modes button[aria-pressed="true"] {
+      background: var(--cinnabar);
+      border-color: var(--cinnabar);
+      color: var(--ink);
+    }
+    .weight {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-width: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+    .weight input { width: min(16rem, 100%); accent-color: var(--cinnabar); }
+    #wght { color: var(--paper); font-variant-numeric: tabular-nums; min-width: 3ch; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: flex-end; }
+    .hint {
+      position: absolute;
+      bottom: 0.4rem;
+      left: 0;
+      right: 0;
+      margin: 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      pointer-events: none;
+    }
+    .hint-touch { display: none; }
+    @media (hover: none) {
+      .hint-mouse { display: none; }
+      .hint-touch { display: block; }
+    }
+    @media (max-width: 720px) {
+      body { overflow: auto; }
+      .dock { grid-template-columns: 1fr; justify-items: stretch; }
+      .chips { justify-content: flex-start; }
+      .hairline { display: none; }
+      #stage { font-size: 2.15rem; width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #stage.morph { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/gukhanmun-font/">국한문</a>
+    <nav aria-label="시안">
+      <a href="/gukhanmun-font/drafts/a/">조판</a>
+      <a href="/gukhanmun-font/drafts/b/">견본</a>
+      <a href="/gukhanmun-font/drafts/c/" aria-current="page">시험</a>
+    </nav>
+  </header>
+  <h1 class="visually-hidden">시험. 한자를 치면 독음이 붙습니다.</h1>
+  <div class="stage-wrap">
+    <div id="stage" contenteditable="true" role="textbox" aria-multiline="true" aria-label="시험 문장" spellcheck="false">大韓民國의 音樂과 平壤 冷麵.</div>
+    <p class="hint hint-mouse">마우스를 좌우로 움직이면 굵기가 바뀝니다.</p>
+    <p class="hint hint-touch">슬라이더로 굵기를 바꿉니다.</p>
+  </div>
+  <div class="hairline" id="hair" aria-hidden="true"></div>
+  <footer class="dock">
+    <fieldset class="modes">
+      <legend class="visually-hidden">그리는 방식</legend>
+      <button type="button" id="ruby" aria-pressed="true">루비</button>
+      <button type="button" id="replace" aria-pressed="false">치환</button>
+    </fieldset>
+    <label class="weight">굵기
+      <input id="range" type="range" min="250" max="900" value="400" aria-valuemin="250" aria-valuemax="900" aria-valuenow="400">
+      <span id="wght">400</span>
+    </label>
+    <div class="chips" aria-label="예문">
+      <button type="button" data-sample="國漢文混用">國漢文混用</button>
+      <button type="button" data-sample="音樂과 快樂">音樂</button>
+      <button type="button" data-sample="女子와 男女">女子</button>
+      <button type="button" data-sample="平壤 冷麵">冷麵</button>
+    </div>
+  </footer>
+  <style>
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+  </style>
+  <script>
+    (function () {
+      var stage = document.getElementById('stage')
+      var range = document.getElementById('range')
+      var out = document.getElementById('wght')
+      var hair = document.getElementById('hair')
+      var ruby = document.getElementById('ruby')
+      var replace = document.getElementById('replace')
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      var mode = 'ruby'
+
+      function paint(weight) {
+        weight = Math.max(250, Math.min(900, Math.round(weight)))
+        stage.style.fontWeight = String(weight)
+        range.value = String(weight)
+        range.setAttribute('aria-valuenow', String(weight))
+        out.textContent = String(weight)
+      }
+
+      function applyMode(next) {
+        mode = next
+        var hangul = next === 'replace'
+        ruby.setAttribute('aria-pressed', hangul ? 'false' : 'true')
+        replace.setAttribute('aria-pressed', hangul ? 'true' : 'false')
+        stage.classList.toggle('is-replace', hangul)
+      }
+
+      function morph(next) {
+        if (next === mode) return
+        if (reduce) {
+          applyMode(next)
+          return
+        }
+        stage.classList.add('morph')
+        stage.style.opacity = '0'
+        window.setTimeout(function () {
+          applyMode(next)
+          stage.style.opacity = '1'
+        }, 180)
+      }
+
+      ruby.addEventListener('click', function () { morph('ruby') })
+      replace.addEventListener('click', function () { morph('replace') })
+      range.addEventListener('input', function () { paint(range.value) })
+      window.addEventListener('pointermove', function (event) {
+        if (event.pointerType !== 'mouse') return
+        if (event.clientX < 12) {
+          hair.style.opacity = '0'
+          return
+        }
+        hair.style.opacity = '0.85'
+        hair.style.transform = 'translateX(' + event.clientX + 'px)'
+        paint(250 + (event.clientX / window.innerWidth) * 650)
+      })
+      window.addEventListener('pointerleave', function () { hair.style.opacity = '0' })
+      stage.addEventListener('paste', function (event) {
+        event.preventDefault()
+        var text = event.clipboardData ? event.clipboardData.getData('text') : ''
+        var selection = window.getSelection()
+        if (!selection || !selection.rangeCount) return
+        selection.deleteFromDocument()
+        selection.getRangeAt(0).insertNode(document.createTextNode(text))
+        selection.collapseToEnd()
+      })
+      document.querySelectorAll('[data-sample]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          stage.textContent = button.getAttribute('data-sample')
+        })
+      })
+      paint(400)
+      document.fonts.load('250 16px "Gukhanmun Sans Play"')
+      document.fonts.load('250 16px "Gukhanmun Hangul Play"')
+    })()
+  </script>
+</body>
+</html>

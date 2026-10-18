@@ -18,7 +18,7 @@ Unihan data: Unicode, Inc. https://www.unicode.org/Public/UCD/latest/ucd/Unihan.
 
 ## `ko-kp-opendict.tsv`
 
-North Korean (ko-KP) headwords. Each row is `hanja`, `hangul`, `require_hanja`, `require_hangul`. The file is the 우리말샘 북한어 extract published with [gukhanmun](https://github.com/dahlia/gukhanmun) (`crates/gukhanmun-opendict/data/north-korean.tsv`), dumped 2026-06-03. This repository does not copy gukhanmun's Rust source.
+North Korean (ko-KP) headwords. Each row is `hanja`, `hangul`, `require_hanja`, `require_hangul`. The file is the 우리말샘 북한어 extract published with [gukhanmun](https://gukhanmun.org/) (`crates/gukhanmun-opendict/data/north-korean.tsv` in [dahlia/gukhanmun](https://github.com/dahlia/gukhanmun)), dumped 2026-06-03. That project is Hong Minhee’s library for turning mixed-script Korean into Hangul text. It is not this font. This repository does not copy gukhanmun's Rust source.
 
 - Source dictionary: 우리말샘, 국립국어원. https://opendict.korean.go.kr/
 - License of this extract: [CC BY-SA 2.0 KR](https://creativecommons.org/licenses/by-sa/2.0/kr/). Share-alike applies to the table itself.

@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { execFile } from 'node:child_process'
-import { mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
+import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -586,6 +586,7 @@ async function publishSite(dist: string, metrics: DemoMetrics): Promise<void> {
   for (const name of DEMO_FACE_FILES)
     await writeFile(join(fonts, name), await readFile(join(root, 'demo', 'fonts', name)))
   await writeFile(join(site, 'index.html'), renderDemo(metrics, 'pages'))
+  await cp(join(root, 'drafts'), join(site, 'drafts'), { recursive: true })
   await writeFile(join(site, '.nojekyll'), '')
   console.log(`wrote site/ with ${pagesDistFonts().length + DEMO_FACE_FILES.length} fonts`)
 }

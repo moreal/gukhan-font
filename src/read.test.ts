@@ -335,5 +335,17 @@ test('the pages demo is rooted at /gukhanmun-font/ and ships the light font set'
   assert.match(pages, /<svg /)
   assert.match(pages, /가장 긴 단어가 이깁니다/)
   assert.match(pages, /href="\/gukhanmun-font\/slides\/"/)
+  assert.match(pages, /href="https:\/\/gukhanmun\.org\/"/)
+  assert.match(pages, /이 글꼴과 다른 프로젝트/)
+  assert.match(pages, /href="\/gukhanmun-font\/drafts\/a\/"/)
+  assert.match(pages, /href="\/gukhanmun-font\/drafts\/b\/"/)
+  assert.match(pages, /href="\/gukhanmun-font\/drafts\/c\/"/)
+  for (const id of ['a', 'b', 'c']) {
+    const draft = readFileSync(join(root, 'drafts', id, 'index.html'), 'utf8')
+    assert.match(draft, /\/gukhanmun-font\/fonts\/GukhanmunSans-Web\.woff2/)
+    assert.match(draft, /prefers-reduced-motion/)
+    assert.equal(draft.includes('gukhan-font'), false)
+    assert.equal(draft.includes('가족'), false)
+  }
   assert.match(local, /id="how"/)
 })
