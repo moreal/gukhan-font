@@ -16,13 +16,13 @@ export type FamilyStyle = 'ruby' | 'replace'
 const FAMILIES: Record<FamilyStyle, { family: string, description: string, placement: FamilyStyle, metrics: Plan['metrics'] }> = {
   ruby: {
     family: 'Gukhanmun Sans',
-    description: 'Hangul readings above Hanja. Outlines from Adobe Source Han Sans KR; the reserved name Source is not a name of this font. Word readings: NIKL Standard Korean Language Dictionary (CC BY-SA) via seonbi. Character readings: Unicode Unihan kHangul.',
+    description: 'Hangul readings above Hanja. Outlines from Adobe Source Han Sans KR; the reserved name Source is not a name of this font. Word readings: 표준국어대사전 (Standard Korean Language Dictionary), 국립국어원, CC BY-SA 2.0 KR, via 선비 (seonbi). ko-KP word readings are 우리말샘, 국립국어원, CC BY-SA 2.0 KR. Character readings: Unicode Unihan kHangul.',
     placement: 'ruby',
     metrics: RUBY_METRICS,
   },
   replace: {
     family: 'Gukhanmun Hangul',
-    description: 'Hanja replaced by Hangul readings, each syllable at its own advance. Outlines from Adobe Source Han Sans KR; the reserved name Source is not a name of this font. Word readings: NIKL Standard Korean Language Dictionary (CC BY-SA) via seonbi. Character readings: Unicode Unihan kHangul.',
+    description: 'Hanja replaced by Hangul readings, each syllable at its own advance. Outlines from Adobe Source Han Sans KR; the reserved name Source is not a name of this font. Word readings: 표준국어대사전 (Standard Korean Language Dictionary), 국립국어원, CC BY-SA 2.0 KR, via 선비 (seonbi). ko-KP word readings are 우리말샘, 국립국어원, CC BY-SA 2.0 KR. Character readings: Unicode Unihan kHangul.',
     placement: 'replace',
     metrics: { rubyScale: 1, rubyGap: 0, compressionFloor: 1, maxRubyWidth: 1 },
   },

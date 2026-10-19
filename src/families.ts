@@ -21,8 +21,8 @@ export interface ProductName {
   description: string
 }
 
-const KR_WORDS = 'Word readings: NIKL Standard Korean Language Dictionary (CC BY-SA 4.0) via seonbi.'
-const KP_WORDS = 'Word readings: NIKL Urimalsaem 북한어 (CC BY-SA 2.0 KR). Headwords missing there keep the South Korean reading with only 두음 법칙 undone, so unlisted words can still be wrong.'
+const KR_WORDS = 'Word readings: 표준국어대사전 (Standard Korean Language Dictionary), 국립국어원, CC BY-SA 2.0 KR, via 선비 (seonbi).'
+const KP_WORDS = 'Word readings: 우리말샘 (Urimalsaem) 북한어, 국립국어원, CC BY-SA 2.0 KR, via gukhanmun. Headwords missing there keep the 표준국어대사전 reading (국립국어원, CC BY-SA 2.0 KR) with only 두음 법칙 undone, so unlisted words can still be wrong.'
 
 function draw(style: FamilyStyle): string {
   return style === 'ruby'

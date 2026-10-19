@@ -8,11 +8,13 @@ import { displayCodepoints, pagesDistFonts, renderDemo } from './demo.ts'
 import { renderLanding } from './landing.ts'
 import { renderPlayground } from './playground.ts'
 import { githubOrigin, pagesBase, pagesOrigin } from './site.ts'
-import { emitFamily, planReadings } from './emit.ts'
-import { productName } from './families.ts'
+import { Writer } from '../vendor/furifont/binary.ts'
+import { nameOf, renameFont, type FontNames } from '../vendor/furifont/names.ts'
+import { emitFamily, planReadings, type FamilyStyle } from './emit.ts'
+import { productName, type ProductKind } from './families.ts'
 import { applyInitialSoundLaw, revertInitialSoundLaw } from './hangul.ts'
 import { ksx1001Codepoints, loadUnderlying, underlyingSyllable } from './readings.ts'
-import { applyCharacterOverrides, entriesForRegion, loadNorthKorean, loadSouthKorean, undoDueum } from './region.ts'
+import { applyCharacterOverrides, entriesForRegion, loadNorthKorean, loadSouthKorean, undoDueum, type Region } from './region.ts'
 import { SAMPLES } from './samples.ts'
 import { readWithDictionary, selectLigatures, type WordEntry } from './select.ts'
 import { NORTH_KOREAN_SHA256 } from './sources.ts'
@@ -79,6 +81,11 @@ test('dictionary readings, 두음 법칙, and ligatures', () => {
   const { reader, shape, report, plan } = emitFamily(planned, 'ruby')
   const hangul = emitFamily(planned, 'replace')
   assert.equal(plan.names.family, 'Gukhanmun Sans')
+  assert.match(plan.names.description, /표준국어대사전/)
+  assert.match(plan.names.description, /우리말샘/)
+  assert.match(plan.names.description, /국립국어원/)
+  assert.match(plan.names.description, /CC BY-SA 2\.0 KR/)
+  assert.equal(plan.names.description.includes('CC BY-SA 4.0'), false)
   assert.equal(plan.placement, 'ruby')
   assert.equal(hangul.plan.names.family, 'Gukhanmun Hangul')
   assert.equal(hangul.plan.placement, 'replace')
@@ -212,6 +219,11 @@ test('ko-KP keeps 우리말샘 readings and does not build 두음 glyphs', () =>
   const planned = planReadings({ underlying: kpUnderlying, entries, coverage, baseGlyphCount: 24973, initialSoundLaw: false })
   const { reader, shape, report, plan } = emitFamily(planned, 'ruby', productName('ruby', 'ko-KP', 'static'))
   assert.equal(plan.names.family, 'Gukhanmun Sans KP')
+  assert.match(plan.names.description, /우리말샘/)
+  assert.match(plan.names.description, /표준국어대사전/)
+  assert.match(plan.names.description, /국립국어원/)
+  assert.match(plan.names.description, /CC BY-SA 2\.0 KR/)
+  assert.equal(plan.names.description.includes('CC BY-SA 4.0'), false)
   assert.equal(plan.names.family.includes('Source'), false)
   assert.equal(report.initialSoundLaw, false)
   assert.equal(report.initialGlyphs, 0)
@@ -322,6 +334,10 @@ test('the pages landing is the typesetting story and the playground is separate'
   assert.match(pages, /href="https:\/\/gukhanmun\.org\/"/)
   assert.match(pages, /dahlia의 선비/)
   assert.match(pages, /이 글꼴과는 별개의 프로젝트/)
+  assert.match(pages, /표준국어대사전/)
+  assert.match(pages, /우리말샘/)
+  assert.match(pages, /CC BY-SA 2\.0 KR/)
+  assert.equal(pages.includes('CC BY-SA 4.0'), false)
   assert.match(pages, /SIL OFL 1\.1/)
   assert.match(pages, /북한 ko-KP/)
   assert.equal(play.includes('루비'), false)
@@ -348,10 +364,82 @@ test('the pages landing is the typesetting story and the playground is separate'
   assert.match(local, /id="how"/)
   assert.match(local, /gkw00891/)
   assert.match(local, /가장 긴 단어가 이깁니다/)
+  assert.match(local, /표준국어대사전/)
+  assert.match(local, /CC BY-SA 2\.0 KR/)
+  assert.equal(local.includes('CC BY-SA 4.0'), false)
   assert.equal(local.includes('slides/'), false)
   assert.equal(local.includes('슬라이드'), false)
   const display = displayCodepoints()
   assert.ok(display.length < 400)
   assert.ok(display.includes('국'.codePointAt(0)!))
   assert.ok(pagesDistFonts().includes('GukhanmunSans-Web.woff2'))
+})
+
+function utf16NameTable(entries: readonly [number, string][]): Uint8Array {
+  const encoded = entries.map(([id, text]) => {
+    const bytes = new Uint8Array(text.length * 2)
+    for (let i = 0; i < text.length; i++) {
+      bytes[i * 2] = text.charCodeAt(i) >> 8
+      bytes[i * 2 + 1] = text.charCodeAt(i) & 0xFF
+    }
+    return { id, bytes }
+  })
+  const strings = new Writer()
+  const head = new Writer().u16(0).u16(encoded.length).u16(6 + encoded.length * 12)
+  for (const record of encoded) {
+    head.u16(3).u16(1).u16(0x409).u16(record.id).u16(record.bytes.length).u16(strings.length)
+    strings.bytes(record.bytes)
+  }
+  return head.bytes(strings.finish()).finish()
+}
+
+test('font name descriptions credit the dictionaries and leave the OFL name IDs', () => {
+  const styles: FamilyStyle[] = ['ruby', 'replace']
+  const regions: Region[] = ['ko-KR', 'ko-KP']
+  const kinds: ProductKind[] = ['static', 'vf', 'web', 'hanja']
+  const licenseDescription = 'SIL Open Font License, Version 1.1'
+  const licenseUrl = 'https://scripts.sil.org/OFL'
+  for (const style of styles) {
+    for (const region of regions) {
+      for (const kind of kinds) {
+        const { description, family } = productName(style, region, kind)
+        assert.match(description, /CC BY-SA 2\.0 KR/)
+        assert.match(description, /국립국어원/)
+        assert.equal(description.includes('CC BY-SA 4.0'), false)
+        assert.equal(description.includes('세온비'), false)
+        assert.equal(description.includes('루비'), false)
+        assert.equal(description.includes('SIL OFL'), false)
+        if (region === 'ko-KR') {
+          assert.match(description, /표준국어대사전/)
+          assert.equal(description.includes('우리말샘'), false)
+        }
+        else {
+          assert.match(description, /우리말샘/)
+          assert.match(description, /표준국어대사전/)
+        }
+        const names: FontNames = {
+          family,
+          style: 'Regular',
+          full: `${family} Regular`,
+          postScript: `${family.replaceAll(' ', '')}-Regular`,
+        }
+        const renamed = renameFont(
+          utf16NameTable([[13, licenseDescription], [14, licenseUrl]]),
+          names,
+          '0.2.0',
+          description,
+          [],
+        )
+        assert.equal(nameOf(renamed, 10), description)
+        assert.equal(nameOf(renamed, 13), licenseDescription)
+        assert.equal(nameOf(renamed, 14), licenseUrl)
+        assert.equal(nameOf(renamed, 1), family)
+      }
+    }
+  }
+  const pointer = readFileSync(join(root, 'LICENSES', 'CC-BY-SA-2.0-KR.txt'), 'utf8')
+  assert.match(pointer, /https:\/\/creativecommons\.org\/licenses\/by-sa\/2\.0\/kr\//)
+  assert.match(pointer, /https:\/\/creativecommons\.org\/licenses\/by-sa\/2\.0\/kr\/legalcode/)
+  assert.equal(pointer.includes('CC BY-SA 4.0'), false)
+  assert.throws(() => readFileSync(join(root, 'LICENSES', 'CC-BY-SA-4.0.txt')))
 })
