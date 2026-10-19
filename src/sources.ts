@@ -29,7 +29,7 @@ export const GOTHIC_A1_URL = 'https://github.com/google/fonts/raw/16680f8688ffcd
 export const GOTHIC_A1_SHA256 = '211151bea98098c579610ab1114bb1bfe909057207db561f357b896d076c21ac'
 
 /**
- * Gowun Batang Regular, SIL OFL, Yanghee Ryu (류양희). Display serif for the landing page.
+ * Gowun Batang Regular, SIL OFL, Yanghee Ryu (류양희). Display serif for the local catalog.
  * google/fonts commit 539f6c4bb51e9b328dd5826bcbf2fd9b1ce56e19. The page ships a subset.
  */
 export const GOWUN_BATANG_URL = 'https://github.com/google/fonts/raw/539f6c4bb51e9b328dd5826bcbf2fd9b1ce56e19/ofl/gowunbatang/GowunBatang-Regular.ttf'

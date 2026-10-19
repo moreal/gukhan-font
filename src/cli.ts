@@ -299,7 +299,7 @@ async function ensureGothic(): Promise<void> {
   }
 }
 
-/** Subsets Gowun Batang to the landing page's display text. The full face is about 8 MB and has no Hanja. */
+/** Subsets Gowun Batang to the local catalog's display text. The full face is about 8 MB and has no Hanja. */
 async function ensureDisplayFace(): Promise<void> {
   const cache = join(root, '.cache', 'GowunBatang-Regular.ttf')
   const ttf = await hashedFile(cache, GOWUN_BATANG_URL, GOWUN_BATANG_SHA256)

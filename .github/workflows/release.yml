@@ -69,10 +69,10 @@ jobs:
 
           ## 보기
 
-          - 본문: https://morealdot.github.io/gukhanmun-font/
-          - 놀이터: https://morealdot.github.io/gukhanmun-font/playground/
+          - 본문: https://moreal.github.io/gukhanmun-font/
+          - 놀이터: https://moreal.github.io/gukhanmun-font/playground/
 
-          ## 바탕
+          ## 출처
 
           윤곽은 Adobe Source Han Sans KR입니다. 글꼴 컴파일은 Anthony Fu의 furifont입니다. 남한 단어 표는 dahlia의 선비에서 왔고, 북한 단어 표는 dahlia의 gukhanmun이 2026-06-03에 우리말샘에서 뽑은 것입니다. gukhanmun은 국한문혼용을 한글 문자열로 바꾸는 라이브러리이고, 이 글꼴과 다른 프로젝트입니다.
 
